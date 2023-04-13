@@ -35,8 +35,6 @@ build:backend:
 
 lint:frontend:
   stage: "test"
-  needs:
-    - "build:frontend"
   script:
     - "cd frontend"
     - "npm ci --cache .npm --prefer-offline"
@@ -49,8 +47,6 @@ lint:frontend:
 
 lint:backend:
   stage: "test"
-  needs:
-    - "build:backend"
   script:
     - "cd backend"
     - "npm ci --cache .npm --prefer-offline"
@@ -60,3 +56,18 @@ lint:backend:
       files:
         - "backend/package-lock.json"
       prefix: "backend"
+
+deploy:prod:frontend:
+  stage: "deploy"
+  when: "manual"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  needs:
+    - "build:frontend"
+    - "lint:frontend"
+  script:
+    - "npm install --global firebase-tools"
+    - "firebase deploy --only hosting --token $FIREBASE_TOKEN"
+  environment:
+    name: production
+    url: https://swipefood-a5664.web.app/
