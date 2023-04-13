@@ -1,0 +1,62 @@
+default:
+  image: "node:18-alpine"
+
+build:frontend:
+  stage: "build"
+  script:
+    - "cd frontend"
+    - "npm ci --cache .npm --prefer-offline"
+    - "npm run build"
+  artifacts:
+    paths:
+      - "frontend/dist"
+  cache:
+    key:
+      files:
+        - "frontend/package-lock.json"
+      prefix: "frontend"
+    paths:
+      - "frontend/.npm"
+
+build:backend:
+  stage: "build"
+  script:
+    - "cd backend"
+    - "npm ci --cache .npm --prefer-offline"
+    - "npm run build"
+  artifacts:
+    paths:
+      - "backend/dist"
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+
+lint:frontend:
+  stage: "test"
+  needs:
+    - "build:frontend"
+  script:
+    - "cd frontend"
+    - "npm ci --cache .npm --prefer-offline"
+    - "npm run lint"
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+
+lint:backend:
+  stage: "test"
+  needs:
+    - "build:backend"
+  script:
+    - "cd backend"
+    - "npm ci --cache .npm --prefer-offline"
+    - "npm run lint"
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
