@@ -69,7 +69,7 @@ deploy:prod:frontend:
     - "lint:frontend"
   script:
     - "npm install --global firebase-tools"
-    - "firebase deploy --only hosting --token $FIREBASE_TOKEN"
+    - "firebase deploy --only hosting"
   environment:
     name: production
     url: https://swipefood-a5664.web.app/
