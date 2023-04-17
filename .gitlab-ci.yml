@@ -73,3 +73,48 @@ deploy:prod:frontend:
   environment:
     name: production
     url: https://swipefood-a5664.web.app/
+
+deploy:staging:backend:
+  image: jdrouet/docker-with-buildx:stable
+  tags:
+    - docker-in-docker
+  stage: "deploy"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  needs:
+    - "build:backend"
+    - "lint:backend"
+  services:
+    - "docker:dind"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/backend
+    TAG: staging
+    PLATFORMS: linux/amd64
+  script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
+    - docker context create cxt
+    - docker buildx create --driver docker-container --use cxt
+    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push backend
+
+deploy:prod:backend:
+  image: jdrouet/docker-with-buildx:stable
+  tags:
+    - docker-in-docker
+  stage: "deploy"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  when: "manual"
+  needs:
+    - "build:backend"
+    - "lint:backend"
+  services:
+    - "docker:dind"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/backend
+    TAG: latest
+    PLATFORMS: linux/amd64
+  script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
+    - docker context create cxt
+    - docker buildx create --driver docker-container --use cxt
+    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$CI_COMMIT_SHA --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push backend
