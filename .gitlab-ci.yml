@@ -107,6 +107,7 @@ deploy:prod:backend:
   needs:
     - "build:backend"
     - "lint:backend"
+    - "deploy:staging:backend"
   services:
     - "docker:dind"
   variables:
