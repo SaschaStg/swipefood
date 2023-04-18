@@ -1,0 +1,13 @@
+<p>swipe works!</p>
+
+<mat-card  *ngIf="recipe">
+  <div>
+{{recipe.name}}
+  </div>
+  <div>
+    <img [src]="recipe.image">
+  </div>
+  <div>
+    {{recipe.imageType}}
+  </div>
+</mat-card>
