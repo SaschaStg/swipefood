@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('SwipeFood API')
     .setDescription('Backend API for the SwipeFood App')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const oaDoc = SwaggerModule.createDocument(app, oaConfig);
   SwaggerModule.setup('swagger', app, oaDoc);
