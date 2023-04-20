@@ -4,7 +4,8 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SwipeComponent} from './swipe/swipe.component';
 import {MatCardModule} from "@angular/material/card";
-import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
+import {RecipeDetailsComponent} from './recipe-details/recipe-details.component';
+import {AppRoutingModule} from "./app-routing.module";
 
 @NgModule({
   declarations: [
@@ -13,9 +14,12 @@ import { RecipeDetailsComponent } from './recipe-details/recipe-details.componen
     RecipeDetailsComponent
   ],
   imports: [
+    // External Modules
     BrowserModule,
     BrowserAnimationsModule,
-    MatCardModule
+    MatCardModule,
+    // Routing Module
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
