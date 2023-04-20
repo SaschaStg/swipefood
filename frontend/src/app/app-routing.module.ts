@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'information',
     component: RecipeInformationComponent,
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   }
 ];
 
