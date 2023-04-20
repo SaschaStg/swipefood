@@ -1,0 +1,19 @@
+<mat-card *ngIf="recipe" class="information-card">
+  <mat-card-header class="information-header">
+    <mat-card-title>{{recipe.name}}</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image class="information-image" [src]="recipe.image" alt="{{recipe.name}}">
+  <mat-card-content>
+    <mat-chip-listbox class="information-chipbox" aria-label="categories">
+      <mat-chip>vegetarian</mat-chip>
+      <mat-chip>vegan</mat-chip>
+    </mat-chip-listbox>
+
+    <div class="information-prepare">
+    <mat-icon class="information-icon">access_time</mat-icon>
+      <span>60 minutes to prepare</span>
+    </div>
+
+    <div class="information-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</div>
+  </mat-card-content>
+</mat-card>

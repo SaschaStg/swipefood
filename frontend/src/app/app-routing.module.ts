@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {SwipeComponent} from "./swipe/swipe.component";
-import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component";
+import {RecipeInformationComponent} from "./recipe-details/recipe-information.component";
 
 const routes: Routes = [
   {
@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'information',
-    component: RecipeDetailsComponent,
+    component: RecipeInformationComponent,
   }
 ];
 

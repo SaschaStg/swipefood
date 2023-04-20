@@ -4,14 +4,16 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SwipeComponent} from './swipe/swipe.component';
 import {MatCardModule} from "@angular/material/card";
-import {RecipeDetailsComponent} from './recipe-details/recipe-details.component';
+import {RecipeInformationComponent} from './recipe-details/recipe-information.component';
 import {AppRoutingModule} from "./app-routing.module";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
     AppComponent,
     SwipeComponent,
-    RecipeDetailsComponent
+    RecipeInformationComponent
   ],
   imports: [
     // External Modules
@@ -20,6 +22,8 @@ import {AppRoutingModule} from "./app-routing.module";
     MatCardModule,
     // Routing Module
     AppRoutingModule,
+    MatChipsModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

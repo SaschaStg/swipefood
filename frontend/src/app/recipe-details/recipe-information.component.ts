@@ -4,10 +4,10 @@ import {RecipeService} from "../services/recipe.service";
 
 @Component({
   selector: 'app-recipe-details',
-  templateUrl: './recipe-details.component.html',
-  styleUrls: ['./recipe-details.component.scss']
+  templateUrl: './recipe-information.component.html',
+  styleUrls: ['./recipe-information.component.scss']
 })
-export class RecipeDetailsComponent implements OnInit {
+export class RecipeInformationComponent implements OnInit {
 
   recipe?: Recipe;
 
