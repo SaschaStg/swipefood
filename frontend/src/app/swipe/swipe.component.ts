@@ -5,7 +5,7 @@ import {Recipe} from "../models/recipe";
 @Component({
   selector: 'app-swipe',
   templateUrl: './swipe.component.html',
-  styleUrls: ['./swipe.component.css']
+  styleUrls: ['./swipe.component.scss']
 })
 
 export class SwipeComponent implements OnInit {
