@@ -1,0 +1,31 @@
+# Local Development Environment
+
+To set up your local clone to start developing the backend, you need to perform some tasks.
+
+* Install npm packages (`npm install`)
+* Create a local `.env` file
+* Create a local `jwt.secret` file
+
+## Create local `.env` file
+
+You can use this template to create your `.env` file:
+
+```dotenv
+DB_HOST=localhost
+# Use if not using default port
+#DB_PORT=5432
+DB_USER=swipefood
+DB_PASSWORD=someSooperSecurePassword
+DB_NAME=swipefood
+
+# Could use any file, but *.secret files are ignored by git.
+JWT_SECRET_FILE=./jwt.secret
+```
+
+## Create local `jwt.secret` file
+
+The filename could be something different if you like (or be a file not in this directory at all). Just remember to
+adjust the value in the `.env` file accordingly.  
+The content of this file will be used as a symmetric key to sign JWT tokens.
+
+For "inspiration" on what to put in here, you can go to https://randomkeygen.com.
