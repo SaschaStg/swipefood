@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 75vw;
+  margin: 2em 0;
+}
+
+.register-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.5em;
+}
+
+.login-btn-container {
+  align-self: end;
+}
