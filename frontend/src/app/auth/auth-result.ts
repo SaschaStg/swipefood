@@ -1,4 +1,4 @@
-export enum LoginResult {
+export enum AuthResult {
   Ok,
   WrongCredentials,
   ServerError,

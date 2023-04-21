@@ -3,7 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpStatusCode} from "@angular/common/htt
 import {LocalStorageService} from "../services/local-storage.service";
 import {catchError, map, Observable, of} from "rxjs";
 import {apiRoot} from "../constants";
-import {LoginResult} from "./login-result";
+import {AuthResult} from "./auth-result";
 
 interface AccessTokenDto {
   access_token: string;
@@ -25,20 +25,20 @@ export class AuthService {
     this.token = localStorage.getItem('token');
   }
 
-  login(username: string, password: string): Observable<LoginResult> {
+  login(username: string, password: string): Observable<AuthResult> {
     return this.http.post<AccessTokenDto>(`${this.authRoot}/login`, {username, password}).pipe(
       map(response => {
         this.updateToken(response.access_token)
-        return LoginResult.Ok;
+        return AuthResult.Ok;
       }),
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
           case HttpStatusCode.Unauthorized:
-            return of(LoginResult.WrongCredentials);
+            return of(AuthResult.WrongCredentials);
           case HttpStatusCode.InternalServerError:
-            return of(LoginResult.ServerError);
+            return of(AuthResult.ServerError);
           default:
-            return of(LoginResult.NetworkError);
+            return of(AuthResult.NetworkError);
         }
       })
     )

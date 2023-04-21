@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
-import {LoginResult} from "../login-result";
+import {AuthResult} from "../auth-result";
 
 @Component({
   selector: 'app-login',
@@ -28,22 +28,22 @@ export class LoginComponent {
 
     this.authService.login(username ?? '', password ?? '').subscribe(result => {
       switch (result) {
-        case LoginResult.Ok:
+        case AuthResult.Ok:
           console.log('Login successful.')
           this.router.navigate(['']);
           return;
-        case LoginResult.WrongCredentials:
+        case AuthResult.WrongCredentials:
           console.error('Login credentials were wrong.');
           // TODO: Display error message
           break;
-        case LoginResult.ServerError:
-        case LoginResult.NetworkError:
-          console.error(`Could not log in: ${result === LoginResult.NetworkError ? 'network error' : 'server error'}`);
+        case AuthResult.ServerError:
+        case AuthResult.NetworkError:
+          console.error(`Could not log in: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`);
           // TODO: Display error message
           break;
       }
       this.loginForm.enable();
-      if (result === LoginResult.WrongCredentials) {
+      if (result === AuthResult.WrongCredentials) {
         this.loginForm.reset();
       }
     });
