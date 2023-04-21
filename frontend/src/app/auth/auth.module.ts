@@ -9,11 +9,13 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 
 import {LoginComponent} from './login/login.component';
+import {RegisterComponent} from './register/register.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
+    RegisterComponent
   ],
   imports: [
     // External modules

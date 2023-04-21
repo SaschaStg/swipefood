@@ -9,6 +9,12 @@ interface AccessTokenDto {
   access_token: string;
 }
 
+interface RegisterDto {
+  username: string;
+  password: string;
+  displayName: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +29,10 @@ export class AuthService {
     private localStorage: LocalStorageService,
   ) {
     this.token = localStorage.getItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.token
   }
 
   login(username: string, password: string): Observable<AuthResult> {
@@ -47,5 +57,24 @@ export class AuthService {
   private updateToken(token: string) {
     this.localStorage.setItem('token', token)
     this.token = token;
+  }
+
+  register(registerData: RegisterDto): Observable<AuthResult> {
+    return this.http.post<AccessTokenDto>(`${this.authRoot}/register`, registerData).pipe(
+      map(result => {
+        this.updateToken(result.access_token);
+        return AuthResult.Ok;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        switch (err.status) {
+          case HttpStatusCode.BadRequest:
+            return of(AuthResult.WrongCredentials);
+          case HttpStatusCode.InternalServerError:
+            return of(AuthResult.ServerError);
+          default:
+            return of(AuthResult.NetworkError);
+        }
+      })
+    )
   }
 }
