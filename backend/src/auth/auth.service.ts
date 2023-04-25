@@ -73,4 +73,9 @@ export class AuthService {
 
     return this.login(user);
   }
+
+  async isUsernameAvailable(username: string): Promise<boolean> {
+    const logins = await this.loginRepo.findBy({ username });
+    return logins.length === 0;
+  }
 }
