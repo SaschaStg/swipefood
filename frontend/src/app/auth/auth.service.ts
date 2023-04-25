@@ -15,6 +15,13 @@ interface RegisterDto {
   displayName: string;
 }
 
+interface JwtPayload {
+  sub: number;
+  displayName: string;
+  iat: number;
+  exp: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,13 +29,28 @@ export class AuthService {
 
   private readonly authRoot = `${apiRoot}/auth`
 
-  private token?: string;
+  private token: string | null = null;
+  private tokenPayload: JwtPayload | null = null;
 
   constructor(
     private http: HttpClient,
     private localStorage: LocalStorageService,
   ) {
     this.token = localStorage.getItem('token');
+    if (this.token) {
+      this.tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
+      if (!this.tokenPayload) {
+        // Invalid token
+        this.clearToken();
+        return;
+      }
+
+      const expiryTime = this.tokenPayload.exp * 1000;
+      if (Date.now() > expiryTime) {
+        // Token is expired
+        this.clearToken();
+      }
+    }
   }
 
   isLoggedIn(): boolean {
@@ -54,11 +76,6 @@ export class AuthService {
     )
   }
 
-  private updateToken(token: string) {
-    this.localStorage.setItem('token', token)
-    this.token = token;
-  }
-
   register(registerData: RegisterDto): Observable<AuthResult> {
     return this.http.post<AccessTokenDto>(`${this.authRoot}/register`, registerData).pipe(
       map(result => {
@@ -76,5 +93,16 @@ export class AuthService {
         }
       })
     )
+  }
+
+  private updateToken(token: string) {
+    this.localStorage.setItem('token', token)
+    this.token = token;
+  }
+
+  private clearToken() {
+    this.localStorage.removeItem('token');
+    this.token = null;
+    this.tokenPayload = null;
   }
 }
