@@ -100,7 +100,7 @@ deploy:prod:frontend:docker:
   needs:
     - "build:frontend"
     - "lint:frontend"
-    - "deploy:staging:frontend"
+    - "deploy:staging:frontend:docker" # TODO: change this to need the actual deployment once it is implemented
   services:
     - "docker:dind"
   variables:
@@ -146,7 +146,7 @@ deploy:prod:backend:docker:
   needs:
     - "build:backend"
     - "lint:backend"
-    - "deploy:staging:backend"
+    - "deploy:staging:backend:docker" # TODO: change this to need the actual deployment once it is implemented
   services:
     - "docker:dind"
   variables:
