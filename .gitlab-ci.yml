@@ -1,6 +1,14 @@
 default:
   image: "node:18-alpine"
 
+workflow:
+  # set rules for when to create a pipeline
+  rules:
+    # only run on default branch
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    # only run on merge requests
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 build:frontend:
   stage: "build"
   script:
@@ -63,7 +71,7 @@ deploy:prod:frontend:
   stage: "deploy"
   when: "manual"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - "build:frontend"
     - "lint:frontend"
@@ -80,7 +88,7 @@ deploy:staging:backend:
     - docker-in-docker
   stage: "deploy"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - "build:backend"
     - "lint:backend"
@@ -102,7 +110,7 @@ deploy:prod:backend:
     - docker-in-docker
   stage: "deploy"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   when: "manual"
   needs:
     - "build:backend"
