@@ -67,22 +67,53 @@ lint:backend:
         - "backend/package-lock.json"
       prefix: "backend"
 
-deploy:prod:frontend:
+deploy:staging:frontend:docker:
+  image: jdrouet/docker-with-buildx:stable
+  tags:
+    - docker-in-docker
   stage: "deploy"
-  when: "manual"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - "build:frontend"
     - "lint:frontend"
+  services:
+    - "docker:dind"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/frontend
+    TAG: staging
+    PLATFORMS: linux/amd64
   script:
-    - "npm install --global firebase-tools"
-    - "firebase deploy --only hosting"
-  environment:
-    name: production
-    url: https://swipefood-a5664.web.app/
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
+    - docker context create cxt
+    - docker buildx create --driver docker-container --use cxt
+    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push frontend
 
-deploy:staging:backend:
+deploy:prod:frontend:docker:
+  image: jdrouet/docker-with-buildx:stable
+  tags:
+    - docker-in-docker
+  stage: "deploy"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  when: "manual"
+  needs:
+    - "build:frontend"
+    - "lint:frontend"
+    - "deploy:staging:frontend"
+  services:
+    - "docker:dind"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/frontend
+    TAG: latest
+    PLATFORMS: linux/amd64
+  script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
+    - docker context create cxt
+    - docker buildx create --driver docker-container --use cxt
+    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$CI_COMMIT_SHA --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push frontend
+
+deploy:staging:backend:docker:
   image: jdrouet/docker-with-buildx:stable
   tags:
     - docker-in-docker
@@ -104,7 +135,7 @@ deploy:staging:backend:
     - docker buildx create --driver docker-container --use cxt
     - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push backend
 
-deploy:prod:backend:
+deploy:prod:backend:docker:
   image: jdrouet/docker-with-buildx:stable
   tags:
     - docker-in-docker
