@@ -16,3 +16,6 @@ FROM nginx:stable-alpine AS final
 
 COPY --link nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --link --from=build /build/dist/frontend /app
+
+HEALTHCHECK --interval=1m --timeout=3s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:80/ || exit 1
