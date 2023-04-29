@@ -1,0 +1,9 @@
+node_modules/
+dist/
+docs/
+
+.gitignore
+
+# Local secrets
+.env
+*.secret
