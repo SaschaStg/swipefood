@@ -16,7 +16,7 @@ workflow:
     - "npm ci --cache .npm --prefer-offline"
     - "npm run build"
 
-.lint-template:
+.lint_template:
   stage: "test"
   needs: [ ]
   script:
