@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist-migrations"
+  },
+  "files": [
+    "typeorm.config.ts"
+  ]
+}
