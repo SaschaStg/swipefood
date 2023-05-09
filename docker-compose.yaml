@@ -18,8 +18,10 @@ services:
       DB_PASSWORD: "secret"
       DB_NAME: "swipefood"
       JWT_SECRET_FILE: "/var/run/secrets/jwt-secret"
+      SPOONACULAR_API_KEY_FILE: "/var/run/secrets/spoonacular-api-key"
     secrets:
       - "jwt-secret"
+      - "spoonacular-api-key"
 
   database:
     image: "postgres:14-alpine"
@@ -34,6 +36,8 @@ services:
 secrets:
   jwt-secret:
     file: "./jwt.secret"
+  spoonacular-api-key:
+    file: "./spoonacular-api-key.secret"
 
 volumes:
   db-data:

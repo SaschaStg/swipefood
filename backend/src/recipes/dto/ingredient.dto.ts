@@ -1,3 +1,5 @@
+import { SpoonacularIngredient } from '../spoonacular';
+
 export class IngredientDto {
   id: string;
   name: string;
@@ -9,5 +11,16 @@ export class IngredientDto {
     this.name = name;
     this.amount = amount;
     this.unit = unit;
+  }
+
+  static fromSpoonacularIngredient(
+    ingredient: SpoonacularIngredient,
+  ): IngredientDto {
+    return new IngredientDto(
+      `sp-${ingredient.id}`,
+      ingredient.name,
+      ingredient.measures.metric.amount,
+      ingredient.measures.metric.unitShort,
+    );
   }
 }
