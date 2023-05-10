@@ -8,6 +8,7 @@ import {RecipeInformationComponent} from './recipe-details/recipe-information.co
 import {AppRoutingModule} from "./app-routing.module";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -16,14 +17,16 @@ import {MatIconModule} from "@angular/material/icon";
     RecipeInformationComponent
   ],
   imports: [
-    // External Modules
+    // External modules
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
+    // Material modules
     MatCardModule,
-    // Routing Module
-    AppRoutingModule,
     MatChipsModule,
     MatIconModule,
+    // Routing module
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
