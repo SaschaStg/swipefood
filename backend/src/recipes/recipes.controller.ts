@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   NotImplementedException,
@@ -20,7 +21,9 @@ export class RecipesController {
     switch (collection) {
       case 'sw':
         // get SwipefoodRecipe
-        return new NotImplementedException();
+        return new NotImplementedException(
+          'Custom recipes are not implemented yet',
+        );
       case 'sp':
         // get SpoonacularRecipe
         return this.spoonacularService
@@ -30,6 +33,8 @@ export class RecipesController {
               RecipeDto.fromSpoonacularRecipe(spoonacularRecipe),
             ),
           );
+      default:
+        return new BadRequestException('Invalid recipe id');
     }
   }
 }
