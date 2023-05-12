@@ -4,6 +4,7 @@ import {
   Get,
   NotImplementedException,
   Param,
+  Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SpoonacularService } from './spoonacular.service';
@@ -37,4 +38,7 @@ export class RecipesController {
         return new BadRequestException('Invalid recipe id');
     }
   }
+
+  @Post(':id/swipe')
+  async swipeRecipe(@Param('id') taggedId: string) {}
 }
