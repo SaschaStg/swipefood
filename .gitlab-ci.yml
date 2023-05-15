@@ -50,6 +50,8 @@ workflow:
     DEPLOY_HOST: "bwc01.host.kienhoefr.de"
     DEPLOY_USER: "deploy"
   script:
+    # this is needed to appease ssh (otherwise it will complain about the permissions being too open)
+    - chmod 600 $SSH_KEY
     - printf "$COMMANDS" | ssh -o "BatchMode=yes" -o "UserKnownHostsFile=$HOST_KEY" -i $SSH_KEY $DEPLOY_USER@$DEPLOY_HOST
 
 build:frontend:
