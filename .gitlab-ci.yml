@@ -11,10 +11,12 @@ workflow:
 
 .build_template:
   stage: "build"
+  variables:
+    TARGET: "build"
   script:
     - "cd $CONTEXT"
     - "npm ci --cache .npm --prefer-offline"
-    - "npm run build"
+    - "npm run $TARGET"
 
 .lint_template:
   stage: "test"
@@ -35,11 +37,12 @@ workflow:
     - "docker:dind"
   variables:
     PLATFORMS: linux/amd64
+    DOCKERFILE: "Dockerfile"
   script:
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
     - docker context create cxt
     - docker buildx create --driver docker-container --use cxt
-    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push $CONTEXT
+    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push -f $CONTEXT\$DOCKERFILE $CONTEXT
 
 .deploy_template:
   image: registry.gitlab.com/ci-images/alpine-deploy
@@ -79,6 +82,22 @@ build:backend:
   artifacts:
     paths:
       - "backend/dist"
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "backend/.npm"
+
+build:migrations:
+  extends: .build_template
+  variables:
+    CONTEXT: "backend"
+    TARGET: "build:migrations"
+  artifacts:
+    paths:
+      - "backend/dist-migrations"
   cache:
     key:
       files:
@@ -145,6 +164,17 @@ deploy:staging:backend:docker:
     TAG: staging
     CONTEXT: backend
 
+deploy:staging:migrations:docker:
+  extends: .docker_template
+  needs:
+    - "build:migrations"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/migrations
+    TAG: staging
+    CONTEXT: backend
+    DOCKERFILE: "migrations.dockerfile"
+
+# This will also run migrations
 deploy:staging:backend:
   extends: .deploy_template
   needs:
@@ -194,6 +224,17 @@ deploy:prod:backend:docker:
     TAG: latest
     CONTEXT: backend
 
+deploy:prod:migrations:docker:
+  extends: .docker_template
+  needs:
+    - "deploy:staging:backend"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/migrations
+    TAG: latest
+    CONTEXT: backend
+    DOCKERFILE: "migrations.dockerfile"
+
+# This will also run migrations
 deploy:prod:backend:
   extends: .deploy_template
   when: "manual"
