@@ -9,12 +9,53 @@ workflow:
     # only run on merge requests
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-build:frontend:
+.build_template:
   stage: "build"
   script:
-    - "cd frontend"
+    - "cd $CONTEXT"
     - "npm ci --cache .npm --prefer-offline"
     - "npm run build"
+
+.lint_template:
+  stage: "test"
+  needs: [ ]
+  script:
+    - "cd $CONTEXT"
+    - "npm ci --cache .npm --prefer-offline"
+    - "npm run lint"
+
+.docker_template:
+  image: jdrouet/docker-with-buildx:stable
+  tags:
+    - docker-in-docker
+  stage: "deploy"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  services:
+    - "docker:dind"
+  variables:
+    PLATFORMS: linux/amd64
+  script:
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
+    - docker context create cxt
+    - docker buildx create --driver docker-container --use cxt
+    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push $CONTEXT
+
+.deploy_template:
+  image: registry.gitlab.com/ci-images/alpine-deploy
+  stage: "deploy"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    DEPLOY_HOST: "bwc01.mi.kienhoefr.de"
+    DEPLOY_USER: "deploy"
+  script:
+    - printf "$COMMANDS" | ssh -o "BatchMode=yes" -o "UserKnownHostsFile=$HOST_KEY" -i $SSH_KEY $DEPLOY_USER@$DEPLOY_HOST
+
+build:frontend:
+  extends: .build_template
+  variables:
+    CONTEXT: frontend
   artifacts:
     paths:
       - "frontend/dist"
@@ -27,11 +68,9 @@ build:frontend:
       - "frontend/.npm"
 
 build:backend:
-  stage: "build"
-  script:
-    - "cd backend"
-    - "npm ci --cache .npm --prefer-offline"
-    - "npm run build"
+  extends: .build_template
+  variables:
+    CONTEXT: backend
   artifacts:
     paths:
       - "backend/dist"
@@ -40,121 +79,127 @@ build:backend:
       files:
         - "backend/package-lock.json"
       prefix: "backend"
+    paths:
+      - "backend/.npm"
 
 lint:frontend:
-  stage: "test"
-  needs: []
-  script:
-    - "cd frontend"
-    - "npm ci --cache .npm --prefer-offline"
-    - "npm run lint"
+  extends: .lint_template
+  variables:
+    CONTEXT: frontend
   cache:
     key:
       files:
-        - "backend/package-lock.json"
-      prefix: "backend"
+        - "frontend/package-lock.json"
+      prefix: "frontend"
+    paths:
+      - "frontend/.npm"
 
 lint:backend:
-  stage: "test"
-  needs: []
-  script:
-    - "cd backend"
-    - "npm ci --cache .npm --prefer-offline"
-    - "npm run lint"
+  extends: .lint_template
+  variables:
+    CONTEXT: backend
   cache:
     key:
       files:
         - "backend/package-lock.json"
       prefix: "backend"
+    paths:
+      - "backend/.npm"
 
 deploy:staging:frontend:docker:
-  image: jdrouet/docker-with-buildx:stable
-  tags:
-    - docker-in-docker
-  stage: "deploy"
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  extends: .docker_template
   needs:
     - "build:frontend"
     - "lint:frontend"
-  services:
-    - "docker:dind"
   variables:
     IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/frontend
     TAG: staging
-    PLATFORMS: linux/amd64
-  script:
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
-    - docker context create cxt
-    - docker buildx create --driver docker-container --use cxt
-    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push frontend
+    CONTEXT: frontend
 
-deploy:prod:frontend:docker:
-  image: jdrouet/docker-with-buildx:stable
-  tags:
-    - docker-in-docker
-  stage: "deploy"
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  when: "manual"
+deploy:staging:frontend:
+  extends: .deploy_template
   needs:
-    - "build:frontend"
-    - "lint:frontend"
-    - "deploy:staging:frontend:docker" # TODO: change this to need the actual deployment once it is implemented
-  services:
-    - "docker:dind"
+    - "deploy:staging:frontend:docker"
   variables:
-    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/frontend
-    TAG: latest
-    PLATFORMS: linux/amd64
-  script:
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
-    - docker context create cxt
-    - docker buildx create --driver docker-container --use cxt
-    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$CI_COMMIT_SHA --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push frontend
+    COMMANDS: |
+      frontend
+      exit
+    SSH_KEY: $STAGING_SSH_KEY
+    HOST_KEY: $BWC01_HOST_KEY
+  environment:
+    name: "staging"
+    url: "https://swipefood-staging.mi.kienhoefr.de"
 
 deploy:staging:backend:docker:
-  image: jdrouet/docker-with-buildx:stable
-  tags:
-    - docker-in-docker
-  stage: "deploy"
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  extends: .docker_template
   needs:
     - "build:backend"
     - "lint:backend"
-  services:
-    - "docker:dind"
   variables:
     IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/backend
     TAG: staging
-    PLATFORMS: linux/amd64
-  script:
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
-    - docker context create cxt
-    - docker buildx create --driver docker-container --use cxt
-    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$TAG --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push backend
+    CONTEXT: backend
 
-deploy:prod:backend:docker:
-  image: jdrouet/docker-with-buildx:stable
-  tags:
-    - docker-in-docker
-  stage: "deploy"
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+deploy:staging:backend:
+  extends: .deploy_template
+  needs:
+    - "deploy:staging:backend:docker"
+  variables:
+    COMMANDS: |
+      backend
+      exit
+    SSH_KEY: $STAGING_SSH_KEY
+    HOST_KEY: $BWC01_HOST_KEY
+  environment:
+    name: "staging API"
+    url: "https://swipefood-staging.mi.kienhoefr.de/api"
+
+deploy:prod:frontend:docker:
+  extends: .docker_template
   when: "manual"
   needs:
-    - "build:backend"
-    - "lint:backend"
-    - "deploy:staging:backend:docker" # TODO: change this to need the actual deployment once it is implemented
-  services:
-    - "docker:dind"
+    - "deploy:staging:frontend"
+  variables:
+    IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/frontend
+    TAG: latest
+    CONTEXT: frontend
+
+deploy:prod:frontend:
+  extends: .deploy_template
+  when: "manual"
+  needs:
+    - "deploy:prod:frontend:docker"
+  variables:
+    COMMANDS: |
+      frontend
+      exit
+    SSH_KEY: $PROD_SSH_KEY
+    HOST_KEY: $BWC01_HOST_KEY
+  environment:
+    name: "production"
+    url: "https://swipefood.mi.kienhoefr.de"
+
+deploy:prod:backend:docker:
+  extends: .docker_template
+  when: "manual"
+  needs:
+    - "deploy:staging:backend"
   variables:
     IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/backend
     TAG: latest
-    PLATFORMS: linux/amd64
-  script:
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD registry.mi.kienhoefr.de
-    - docker context create cxt
-    - docker buildx create --driver docker-container --use cxt
-    - docker buildx build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from=type=registry,ref=$IMAGE_REPO:$CI_COMMIT_SHA --pull --platform $PLATFORMS -t $IMAGE_REPO:$TAG -t $IMAGE_REPO:$CI_COMMIT_SHA --push backend
+    CONTEXT: backend
+
+deploy:prod:backend:
+  extends: .deploy_template
+  when: "manual"
+  needs:
+    - "deploy:prod:backend:docker"
+  variables:
+    COMMANDS: |
+      backend
+      exit
+    SSH_KEY: $PROD_SSH_KEY
+    HOST_KEY: $BWC01_HOST_KEY
+  environment:
+    name: "production API"
+    url: "https://swipefood.mi.kienhoefr.de/api"
