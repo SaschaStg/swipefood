@@ -45,7 +45,6 @@ services:
       POSTGRES_USER: "swipefood"
       POSTGRES_PASSWORD: "secret"
       POSTGRES_DB: "swipefood"
-      # TODO: add db init script
 
 secrets:
   jwt-secret:
