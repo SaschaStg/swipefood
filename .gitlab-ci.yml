@@ -47,7 +47,7 @@ workflow:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   variables:
-    DEPLOY_HOST: "bwc01.mi.kienhoefr.de"
+    DEPLOY_HOST: "bwc01.host.kienhoefr.de"
     DEPLOY_USER: "deploy"
   script:
     - printf "$COMMANDS" | ssh -o "BatchMode=yes" -o "UserKnownHostsFile=$HOST_KEY" -i $SSH_KEY $DEPLOY_USER@$DEPLOY_HOST
