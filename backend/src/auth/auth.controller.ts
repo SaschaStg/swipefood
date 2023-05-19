@@ -17,12 +17,14 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Public } from './public';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -32,6 +34,7 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  @Public()
   @Post('register')
   @ApiBadRequestResponse({ description: 'Username already taken' })
   async register(@Body() registerUserDto: RegisterUserDto) {
