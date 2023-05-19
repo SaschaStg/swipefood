@@ -1,0 +1,69 @@
+@use '@angular/material' as mat;
+
+//taken from: https://eatmorecarrots.medium.com/changing-the-background-color-in-an-angular-material-theme-90d29f864759
+@function modify-background($theme, $background-color) {
+  // Replace the background in the color object's background palette.
+  $theme-color: map-get($theme, color);
+  $color-background-palette: map-get($theme-color, background);
+  $color-background-palette: map-merge($color-background-palette, (background: $background-color));
+  $color-background-palette: map-merge($color-background-palette, (raised-button: $background-color));
+
+  // Replace the background in the background palette.
+  $background-palette: map-get($theme, background);
+  $background-palette: map-merge($background-palette, (background: $background-color));
+  $background-palette: map-merge($background-palette, (raised-button: $background-color));
+
+  // Merge the changes into a new theme.
+  $modified-theme-color: map-merge($theme-color, (background: $color-background-palette));
+  $modified-theme: map-merge($theme, (color: $modified-theme-color));
+  $modified-theme: map-merge($modified-theme, (background: $background-palette));
+
+  @return $modified-theme;
+}
+
+@include mat.core();
+@include mat.legacy-core();
+$sf-palette: (
+  50: #E8F5E9,
+  100: #C8E6C9,
+  200: #A5D6A7,
+  300: #81C784,
+  400: #66BB6A,
+  500: #4CAF50,
+  600: #43A047,
+  700: #388E3C,
+  800: #2E7D32,
+  900: #1B5E20,
+  A100: #FFFFFF,
+  A200: #E9E9E9,
+  A400: #B00020,
+  A700: #E9E9E9,
+  contrast: (
+    50: #f3e5f3,
+    100: #e0bee2,
+    200: #cc94d0,
+    300: #b86abd,
+    400: #a84aaf,
+    500: #992ea1,
+    600: #8c2a9b,
+    700: #7a2493,
+    800: #6a208a,
+    900: #4e187a,
+  )
+);
+
+$sf-primary: mat.define-palette($sf-palette, 500);
+$sf-accent: mat.define-palette($sf-palette, A200, A100, A700);
+$sf-warn: mat.define-palette($sf-palette, A400);
+
+$sf-theme: mat.define-light-theme((
+  color: (
+    primary: $sf-primary,
+    accent: $sf-accent,
+    warn: $sf-warn,
+  )
+));
+
+$sf-theme: modify-background($sf-theme, map-get($sf-palette, A700));
+@include mat.all-component-themes($sf-theme);
+@include mat.all-legacy-component-themes($sf-theme);
