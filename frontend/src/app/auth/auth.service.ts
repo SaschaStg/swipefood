@@ -29,7 +29,7 @@ export class AuthService {
 
   private readonly authRoot = `${apiRoot}/auth`
 
-  private token: string | null = null;
+  private _token: string | null = null;
   private tokenPayload: JwtPayload | null = null;
 
   constructor(
@@ -37,8 +37,16 @@ export class AuthService {
     private localStorage: LocalStorageService,
   ) {
     this.token = localStorage.getItem('token');
-    if (this.token) {
-      this.tokenPayload = JSON.parse(atob(this.token.split('.')[1]));
+  }
+
+  get token(): string | null {
+    return this._token;
+  }
+
+  private set token(value: string | null) {
+    this._token = value;
+    if (value) {
+      this.tokenPayload = JSON.parse(atob(value.split('.')[1]));
       if (!this.tokenPayload) {
         // Invalid token
         this.clearToken();
@@ -93,6 +101,10 @@ export class AuthService {
         }
       })
     )
+  }
+
+  logout() {
+    this.clearToken();
   }
 
   private updateToken(token: string) {
