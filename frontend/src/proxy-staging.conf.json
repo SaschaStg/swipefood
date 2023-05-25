@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://swipefood-staging.mi.kienhoefr.de",
+    "secure": true,
+    "changeOrigin": true
+  }
+}
