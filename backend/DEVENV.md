@@ -1,3 +1,5 @@
+[&larr; Back to README.md](README.md)
+<hr/>
 # Local Development Environment
 
 To set up your local clone to start developing the backend, you need to perform some tasks.
@@ -20,6 +22,10 @@ DB_NAME=swipefood
 
 # Could use any file, but *.secret files are ignored by git.
 JWT_SECRET_FILE=./jwt.secret
+
+# Can use either (direct key will override file)
+SPOONACULAR_API_KEY=<API KEY>
+SPOONACULAR_API_KEY_FILE=./spoonacular_api_key.secret
 ```
 
 ## Create local `jwt.secret` file
