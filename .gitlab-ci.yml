@@ -1,13 +1,56 @@
 default:
   image: "node:18-alpine"
 
+stages:
+  - lint
+  - build
+  - test
+  - deploy:staging
+  - deploy:prod
+
 workflow:
   # set rules for when to create a pipeline
   rules:
-    # only run on default branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    # only run on merge requests
+    # run on default branch
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    # run on merge requests
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+.frontend_rules_template:
+  # only run if there are changes in the frontend directory or if on default branch
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - frontend/**/*
+          # run if pipeline config changes
+          - .gitlab-ci.yml
+        compare_to: "main"
+
+.backend_rules_template:
+  # only run if there are changes in the backend directory or if on default branch
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - backend/**/*
+          # run if pipeline config changes
+          - .gitlab-ci.yml
+        compare_to: "main"
+
+.migrations_rules_template:
+  # only run if there are changes in the backend/migrations directory or if on default branch
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - backend/migrations/**/*
+          # run if pipeline config changes
+          - .gitlab-ci.yml
+        compare_to: "main"
 
 .build_template:
   stage: "build"
@@ -19,7 +62,7 @@ workflow:
     - "npm run $TARGET"
 
 .lint_template:
-  stage: "test"
+  stage: "lint"
   needs: [ ]
   script:
     - "cd $CONTEXT"
@@ -30,7 +73,6 @@ workflow:
   image: jdrouet/docker-with-buildx:stable
   tags:
     - docker-in-docker
-  stage: "deploy"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   services:
@@ -46,7 +88,6 @@ workflow:
 
 .deploy_template:
   image: registry.gitlab.com/ci-images/alpine-deploy
-  stage: "deploy"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   variables:
@@ -60,8 +101,37 @@ workflow:
   script:
     - printf "$COMMANDS" | ssh -o "BatchMode=yes" -o "UserKnownHostsFile=$HOST_KEY" $DEPLOY_USER@$DEPLOY_HOST
 
+lint:frontend:
+  extends: .lint_template
+  variables:
+    CONTEXT: frontend
+  rules: !reference [ .frontend_rules_template, rules ]
+  cache:
+    key:
+      files:
+        - "frontend/package-lock.json"
+      prefix: "frontend"
+    paths:
+      - "frontend/.npm"
+
+lint:backend:
+  extends: .lint_template
+  variables:
+    CONTEXT: backend
+  rules: !reference [ .backend_rules_template, rules ]
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "backend/.npm"
+
 build:frontend:
   extends: .build_template
+  rules: !reference [ .frontend_rules_template, rules ]
+  needs:
+    - "lint:frontend"
   variables:
     CONTEXT: frontend
   artifacts:
@@ -77,6 +147,9 @@ build:frontend:
 
 build:backend:
   extends: .build_template
+  rules: !reference [ .backend_rules_template, rules ]
+  needs:
+    - "lint:backend"
   variables:
     CONTEXT: backend
   artifacts:
@@ -92,6 +165,9 @@ build:backend:
 
 build:migrations:
   extends: .build_template
+  rules: !reference [ .migrations_rules_template, rules ]
+  needs:
+    - "lint:backend"
   variables:
     CONTEXT: "backend"
     TARGET: "build:migrations"
@@ -106,35 +182,11 @@ build:migrations:
     paths:
       - "backend/.npm"
 
-lint:frontend:
-  extends: .lint_template
-  variables:
-    CONTEXT: frontend
-  cache:
-    key:
-      files:
-        - "frontend/package-lock.json"
-      prefix: "frontend"
-    paths:
-      - "frontend/.npm"
-
-lint:backend:
-  extends: .lint_template
-  variables:
-    CONTEXT: backend
-  cache:
-    key:
-      files:
-        - "backend/package-lock.json"
-      prefix: "backend"
-    paths:
-      - "backend/.npm"
-
 deploy:staging:frontend:docker:
   extends: .docker_template
+  stage: "deploy:staging"
   needs:
     - "build:frontend"
-    - "lint:frontend"
   variables:
     IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/frontend
     TAG: staging
@@ -142,6 +194,7 @@ deploy:staging:frontend:docker:
 
 deploy:staging:frontend:
   extends: .deploy_template
+  stage: "deploy:staging"
   needs:
     - "deploy:staging:frontend:docker"
   variables:
@@ -156,9 +209,9 @@ deploy:staging:frontend:
 
 deploy:staging:backend:docker:
   extends: .docker_template
+  stage: "deploy:staging"
   needs:
     - "build:backend"
-    - "lint:backend"
   variables:
     IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/backend
     TAG: staging
@@ -166,6 +219,7 @@ deploy:staging:backend:docker:
 
 deploy:staging:migrations:docker:
   extends: .docker_template
+  stage: "deploy:staging"
   needs:
     - "build:migrations"
   variables:
@@ -177,8 +231,11 @@ deploy:staging:migrations:docker:
 # This will also run migrations
 deploy:staging:backend:
   extends: .deploy_template
+  stage: "deploy:staging"
   needs:
     - "deploy:staging:backend:docker"
+    - job: "deploy:staging:migrations:docker"
+      optional: true
   variables:
     COMMANDS: |
       backend
@@ -191,6 +248,7 @@ deploy:staging:backend:
 
 deploy:prod:frontend:docker:
   extends: .docker_template
+  stage: "deploy:prod"
   when: "manual"
   needs:
     - "deploy:staging:frontend"
@@ -201,6 +259,7 @@ deploy:prod:frontend:docker:
 
 deploy:prod:frontend:
   extends: .deploy_template
+  stage: "deploy:prod"
   when: "manual"
   needs:
     - "deploy:prod:frontend:docker"
@@ -216,6 +275,7 @@ deploy:prod:frontend:
 
 deploy:prod:backend:docker:
   extends: .docker_template
+  stage: "deploy:prod"
   when: "manual"
   needs:
     - "deploy:staging:backend"
@@ -226,6 +286,8 @@ deploy:prod:backend:docker:
 
 deploy:prod:migrations:docker:
   extends: .docker_template
+  stage: "deploy:prod"
+  when: "manual"
   needs:
     - "deploy:staging:backend"
   variables:
@@ -237,9 +299,12 @@ deploy:prod:migrations:docker:
 # This will also run migrations
 deploy:prod:backend:
   extends: .deploy_template
+  stage: "deploy:prod"
   when: "manual"
   needs:
     - "deploy:prod:backend:docker"
+    - job: "deploy:prod:migrations:docker"
+      optional: true
   variables:
     COMMANDS: |
       backend
