@@ -1,20 +1,32 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
   NotImplementedException,
   Param,
   Post,
+  Req,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SpoonacularService } from './spoonacular.service';
 import { map } from 'rxjs';
-import { RecipeDto } from './dto';
+import { RecipeDto, SwipeDto } from './dto';
+import { RecipesService } from './recipes.service';
+import { Request } from 'express';
+import { User } from '../users/user.entity';
 
 @ApiTags('recipes')
+@ApiBearerAuth()
 @Controller('recipes')
 export class RecipesController {
-  constructor(private readonly spoonacularService: SpoonacularService) {}
+  constructor(
+    private readonly spoonacularService: SpoonacularService,
+    private readonly recipeService: RecipesService,
+  ) {}
 
   @Get(':id')
   async getRecipeById(@Param('id') taggedId: string) {
@@ -40,5 +52,19 @@ export class RecipesController {
   }
 
   @Post(':id/swipe')
-  async swipeRecipe(@Param('id') taggedId: string) {}
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async swipeRecipe(
+    @Param('id') taggedId: string,
+    @Body() swipeDto: SwipeDto,
+    @Req() req: Request,
+  ) {
+    if (!(await this.recipeService.isRecipeIdValid(taggedId))) {
+      throw new NotFoundException('Recipe not found');
+    }
+    await this.recipeService.swipeRecipe(
+      taggedId,
+      swipeDto.isLiked,
+      (req.user as User).id,
+    );
+  }
 }
