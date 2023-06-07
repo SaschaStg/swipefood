@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
+import { DietUpdateDto } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -22,5 +23,17 @@ export class UsersService {
 
   findOne(id: number): Promise<User | null> {
     return this.usersRepo.findOneBy({ id });
+  }
+
+  async updateDiet(id, dietUpdate: DietUpdateDto): Promise<User> {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    Object.assign(user, dietUpdate);
+    await this.usersRepo.save(user);
+
+    return user;
   }
 }
