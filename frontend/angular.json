@@ -35,9 +35,14 @@
             },
             "styles": [
               {
-                "input": "src/styles/theme.scss",
-                "inject": true,
-                "bundleName": "theme"
+                "input": "src/styles/dark-theme.scss",
+                "inject": false,
+                "bundleName": "dark-theme"
+              },
+              {
+                "input": "src/styles/light-theme.scss",
+                "inject": false,
+                "bundleName": "light-theme"
               },
               {
                 "input": "src/styles/styles.scss",
@@ -112,8 +117,21 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.scss"
+              {
+                "input": "src/styles/dark-theme.scss",
+                "inject": false,
+                "bundleName": "dark-theme"
+              },
+              {
+                "input": "src/styles/light-theme.scss",
+                "inject": false,
+                "bundleName": "light-theme"
+              },
+              {
+                "input": "src/styles/styles.scss",
+                "inject": true,
+                "bundleName": "style"
+              }
             ],
             "scripts": []
           }
