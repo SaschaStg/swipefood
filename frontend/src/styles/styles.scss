@@ -11,6 +11,7 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: white !important;
 }
 
 
@@ -46,3 +47,13 @@ body {
   color: #fff !important;
   padding-right: 0;
 }
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-color: white;
+}
+
+.mat-button{
+  color:white;
+}
+
+
