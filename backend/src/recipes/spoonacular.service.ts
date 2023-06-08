@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SpoonacularRecipe } from './spoonacular';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable, tap } from 'rxjs';
 import { AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 
@@ -11,6 +11,8 @@ export class SpoonacularService {
   private readonly spoonacularApiEndpoint = 'https://api.spoonacular.com';
 
   private readonly requestConfig: AxiosRequestConfig;
+
+  private readonly recipeIdCache: Map<number, boolean> = new Map();
 
   constructor(
     private readonly httpService: HttpService,
@@ -37,6 +39,17 @@ export class SpoonacularService {
         `${this.spoonacularApiEndpoint}/recipes/${id}/information`,
         this.requestConfig,
       )
-      .pipe(map((response) => response.data));
+      .pipe(
+        map((response) => response.data),
+        tap((recipe) => this.recipeIdCache.set(recipe.id, true)),
+      );
+  }
+
+  async validateRecipeId(id: number) {
+    if (this.recipeIdCache.has(id)) {
+      return this.recipeIdCache.get(id);
+    }
+    const recipe = await firstValueFrom(this.getSpoonacularRecipeById(id));
+    return recipe !== undefined;
   }
 }
