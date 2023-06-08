@@ -37,7 +37,7 @@ $sf-palette: (
   A100: #FFFFFF,
   A200: #E9E9E9,
   A400: #B00020,
-  A700: #E9E9E9,
+  A700: #121212,
   contrast: (
     50: #f3e5f3,
     100: #e0bee2,
@@ -56,7 +56,7 @@ $sf-primary: mat.define-palette($sf-palette, 500);
 $sf-accent: mat.define-palette($sf-palette, A200, A100, A700);
 $sf-warn: mat.define-palette($sf-palette, A400);
 
-$sf-theme: mat.define-light-theme((
+$sf-light-theme: mat.define-light-theme((
   color: (
     primary: $sf-primary,
     accent: $sf-accent,
@@ -64,6 +64,6 @@ $sf-theme: mat.define-light-theme((
   )
 ));
 
-$sf-theme: modify-background($sf-theme, map-get($sf-palette, A700));
-@include mat.all-component-themes($sf-theme);
-@include mat.all-legacy-component-themes($sf-theme);
+$sf-light-theme: modify-background($sf-light-theme, map-get($sf-palette, A100));
+@include mat.all-component-themes($sf-light-theme);
+@include mat.all-legacy-component-themes($sf-light-theme);

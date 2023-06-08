@@ -29,3 +29,27 @@ export class LocalStorageService implements Storage {
     localStorage.setItem(key, JSON.stringify(value))
   }
 }
+
+export class NoopStorage implements Storage {
+  length = 0;
+
+  clear() {
+    return null;
+  }
+
+  getItem() {
+    return null;
+  }
+
+  key() {
+    return null;
+  }
+
+  removeItem() {
+    return null;
+  }
+
+  setItem() {
+    return null;
+  }
+}

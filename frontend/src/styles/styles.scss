@@ -1,4 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
 
 html, body {
   height: 100%;
@@ -7,16 +10,4 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.mat-mdc-standard-chip {
-  --mdc-chip-elevated-container-color: #e0e0e0;
-  --mdc-chip-elevated-disabled-container-color: #e0e0e0;
-  --mdc-chip-label-text-color: #fff;
-  --mdc-chip-disabled-label-text-color: #212121;
-  --mdc-chip-with-icon-icon-color: #212121;
-  --mdc-chip-with-icon-disabled-icon-color: #212121;
-  --mdc-chip-with-trailing-icon-disabled-trailing-icon-color: #212121;
-  --mdc-chip-with-trailing-icon-trailing-icon-color: #212121;
-  --mdc-chip-with-icon-selected-icon-color: #212121;
 }
