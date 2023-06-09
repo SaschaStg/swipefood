@@ -56,6 +56,10 @@ export class AuthService {
     // Create user
     const user = await this.usersService.create({
       displayName: registerUserDto.displayName,
+      vegan: registerUserDto.vegan,
+      vegetarian: registerUserDto.vegetarian,
+      glutenFree: registerUserDto.glutenFree,
+      dairyFree: registerUserDto.dairyFree,
     });
     // Create user login
     const login = new UserLogin();

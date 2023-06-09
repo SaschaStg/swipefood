@@ -7,4 +7,16 @@ export class User {
 
   @Column()
   displayName: string;
+
+  @Column({ default: false })
+  vegetarian: boolean;
+
+  @Column({ default: false })
+  vegan: boolean;
+
+  @Column({ default: false })
+  glutenFree: boolean;
+
+  @Column({ default: false })
+  dairyFree: boolean;
 }
