@@ -11,3 +11,21 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+
+// need to stay here because the Snackbar component only reads from here https://anglesvar.medium.com/add-custom-css-to-material-snackbar-91ed36b48fba
+.snackbar {
+  color: #fff !important;
+}
+
+.snackbar button {
+  background-color: #B00020;
+  color: #fff !important;
+}
+
+.snackbar div {
+  background-color: #B00020;
+  border-radius: 4px;
+  color: #fff !important;
+  padding-right: 0;
+}
