@@ -10,6 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -24,10 +25,11 @@ import {RegisterComponent} from './register/register.component';
     // Routing module
     AuthRoutingModule,
     // Material modules
-    MatCardModule,
-    MatInputModule,
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
+    MatInputModule,
+    MatSnackBarModule,
   ],
   providers: []
 })

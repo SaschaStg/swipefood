@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 import {AuthResult} from "../auth-result";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) {
   }
 
@@ -33,19 +35,28 @@ export class LoginComponent {
           this.router.navigate(['']);
           return;
         case AuthResult.WrongCredentials:
-          console.error('Login credentials were wrong.');
-          // TODO: Display error message
+          this.openSnackBar('Wrong username or password.')
           break;
         case AuthResult.ServerError:
         case AuthResult.NetworkError:
-          console.error(`Could not log in: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`);
-          // TODO: Display error message
+          this.openSnackBar(`Could not log in: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`);
           break;
       }
       this.loginForm.enable();
       if (result === AuthResult.WrongCredentials) {
         this.loginForm.reset();
       }
+    });
+  }
+
+  openSnackBar(message: string) {
+    const sbRef = this.snackBar.open(
+      message, 'Close', {
+        duration: 4000,
+        panelClass: ["snackbar"],
+      })
+    sbRef.onAction().subscribe(() => {
+      sbRef.dismiss();
     });
   }
 }
