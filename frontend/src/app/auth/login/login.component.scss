@@ -1,11 +1,11 @@
-:host{
+:host {
 
-  .headline{
+  .headline {
     display: flex;
     justify-content: center;
     align-items: bottom;
   }
- 
+
   .container {
     display: flex;
     height: 100%;
@@ -14,15 +14,15 @@
     background-color: white;
     background-position: left top;
     background-size: cover;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.549)), url("hintergrund.jpg"); 
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.549)), url("hintergrund.jpg");
   }
-  
-  .img{
-    display:flex;
+
+  .img {
+    display: flex;
     justify-content: center;
   }
 
-  .inner-container{
+  .inner-container {
     margin-top: 150px;
   }
 
@@ -30,21 +30,22 @@
     display: flex;
     align-items: bottom;
     flex-direction: column;
-     margin: 2em 0;  
+    margin: 2em 0;
   }
-  
-   .register-container {
+
+  .register-container {
     display: flex;
     justify-content: center;
-   font-size: 10pt;
-   .register-link{
-    padding-left:2px;
-    color:#399B2A;
-    text-decoration: none;
-  }
-  } 
+    font-size: 10pt;
 
-  
+    .register-link {
+      padding-left: 2px;
+      color: #399B2A;
+      text-decoration: none;
+    }
+  }
+
+
   .login-btn-container {
     display: flex;
     justify-content: center;
@@ -56,36 +57,34 @@
       border-radius: 4px;
       color: white;
     }
-    
+
   }
-  
+
 }
 
 .white-form-field {
- mat-label {
+  mat-label {
+    color: white !important;
+  }
+}
+
+::ng-deep .white-form-field input {
   color: white !important;
- }
 }
 
-  ::ng-deep .white-form-field input{
-    color: white !important;
-  }
-
-  ::ng-deep .white-form-field input::selection,
-  ::ng-deep .white-form-field input::-moz-selection {
-    color: white !important;
-    background: rgb(18, 140, 185) !important;
-  }
-
-  ::ng-deep .white-form-field .mat-focused, .mat-form-field-label{
-    color:white !important;
-  }
-
-  ::ng-deep .white-form-field .mdc-notched-outline__leading, 
-  ::ng-deep .white-form-field .mdc-notched-outline__notch, 
-  ::ng-deep .white-form-field .mdc-notched-outline__trailing {
-    border-color: white !important;
+::ng-deep .white-form-field input::selection,
+::ng-deep .white-form-field input::-moz-selection {
+  color: white !important;
+  background: rgb(18, 140, 185) !important;
 }
 
+::ng-deep .white-form-field .mat-focused,
+.mat-form-field-label {
+  color: white !important;
+}
 
-
+::ng-deep .white-form-field .mdc-notched-outline__leading,
+::ng-deep .white-form-field .mdc-notched-outline__notch,
+::ng-deep .white-form-field .mdc-notched-outline__trailing {
+  border-color: white !important;
+}
