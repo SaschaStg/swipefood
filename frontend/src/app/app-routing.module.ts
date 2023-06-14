@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {SwipeComponent} from "./swipe/swipe.component";
 import {RecipeInformationComponent} from "./recipe-details/recipe-information.component";
+import {WelcomeComponent} from './auth/welcome/welcome.component';
 import {authGuard} from "./auth/auth.guards";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {SettingsComponent} from "./settings/settings.component";
@@ -30,6 +31,10 @@ const routes: Routes = [
       },
       {path: 'recipes/:id', component: RecipeInformationComponent},
     ],
+  },
+  {
+    path: 'home',
+    component: WelcomeComponent,
   },
   {
     path: 'auth',

@@ -1,0 +1,39 @@
+:host{
+    .container {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        background-position: left top;
+        background-size: cover;
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/assets/img/hintergrund.jpg");
+      }
+
+    .start-btn-container {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 50px;
+        width: 187px;
+
+        &__content {
+          background-color: green;
+          width: 187px;
+          border-radius: 4px;
+          color: white;
+        }
+    }
+
+    .img {
+        margin-bottom:50px;
+    }
+
+    .text{
+        display:flex;
+        justify-content: center;
+        align-content: center;
+        font-size: 12px;
+        padding-bottom: 50px;
+    }
+
+}
