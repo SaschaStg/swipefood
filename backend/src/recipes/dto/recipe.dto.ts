@@ -1,5 +1,6 @@
 import { IngredientDto } from './ingredient.dto';
 import { SpoonacularRecipe } from '../spoonacular';
+import { SwipefoodRecipe } from '../recipe.entity';
 
 export class RecipeDto {
   id: string;
@@ -61,6 +62,27 @@ export class RecipeDto {
       },
       recipe.extendedIngredients.map((ingredient) =>
         IngredientDto.fromSpoonacularIngredient(ingredient),
+      ),
+    );
+  }
+
+  static fromSwipefoodRecipe(recipe: SwipefoodRecipe): RecipeDto {
+    return new RecipeDto(
+      `sw-${recipe.id}`,
+      recipe.title,
+      recipe.readyInMinutes,
+      recipe.servings,
+      null,
+      recipe.summary,
+      recipe.instructions,
+      {
+        dairyFree: recipe.dairyFree,
+        glutenFree: recipe.glutenFree,
+        vegan: recipe.vegan,
+        vegetarian: recipe.vegetarian,
+      },
+      recipe.ingredients.map((ingredient) =>
+        IngredientDto.fromSwipefoodIngredient(ingredient),
       ),
     );
   }
