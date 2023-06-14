@@ -11,7 +11,7 @@ export class UsersService {
     private usersRepo: Repository<User>,
   ) {}
 
-  create(userAttrs: Omit<User, 'id'>): Promise<User> {
+  create(userAttrs: Omit<User, 'id' | 'recipes'>): Promise<User> {
     const user = new User();
     user.displayName = userAttrs.displayName;
     return this.usersRepo.save(user);

@@ -9,6 +9,8 @@ import { User } from './users/user.entity';
 import { UserLogin } from './auth/user-login.entity';
 import { RecipesModule } from './recipes/recipes.module';
 import { Swipe } from './recipes/swipe.entity';
+import { SwipefoodRecipe } from './recipes/recipe.entity';
+import { SwipefoodIngredient } from './recipes/ingredient.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,13 @@ import { Swipe } from './recipes/swipe.entity';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, UserLogin, Swipe],
+        entities: [
+          User,
+          UserLogin,
+          Swipe,
+          SwipefoodRecipe,
+          SwipefoodIngredient,
+        ],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
