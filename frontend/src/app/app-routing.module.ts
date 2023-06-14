@@ -6,6 +6,7 @@ import {authGuard} from "./auth/auth.guards";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {SettingsComponent} from "./settings/settings.component";
 import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
+import {RecipeInputComponent} from "./recipe-input/recipe-input.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
           {path: 'cookbook', component: RecipeBookComponent},
           {path: ':id', component: SwipeComponent}
         ]
+      },
+      {
+        path:'recipe-input',
+        component: RecipeInputComponent,
       }
     ],
   },

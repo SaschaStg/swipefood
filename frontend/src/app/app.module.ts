@@ -31,6 +31,8 @@ import {MatListModule} from "@angular/material/list";
 import {SettingsComponent} from "./settings/settings.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {RecipeInputComponent} from './recipe-input/recipe-input.component';
+
 
 @NgModule({
   declarations: [
@@ -81,6 +83,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     NgxSkeletonLoaderModule,
     CdkDrag,
     NgOptimizedImage,
+    RecipeInputComponent,
+    ReactiveFormsModule,
   ],
   providers: [
     httpInterceptorProviders,
