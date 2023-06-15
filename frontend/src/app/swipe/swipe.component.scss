@@ -1,0 +1,103 @@
+.swipe-container {
+  max-width: 450px;
+  height: 600px;
+  border-radius: 5px;
+  position: relative;
+  margin: auto;
+}
+
+#color-container1, #color-container2 {
+  height: 100%;
+  border-radius: 20px;
+}
+
+/* smartphone */
+@media (max-width: 499px) {
+  .swipe-container {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+/* tablet and pc */
+@media (min-width: 500px) {
+  .swipe-container {
+    margin: auto;
+  }
+}
+
+.swipe-card {
+  display: flex;
+  width: 100%;
+  height: 500px;
+  align-content: center;
+  border-radius: 20px;
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 1px 5px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease-out;
+  position: absolute;
+  left: 0;
+  z-index: 2;
+}
+
+.swipe-card + .swipe-card {
+  z-index: 1;
+}
+
+.swipe-actions {
+  position: relative;
+  top: 500px;
+  display: flex;
+  justify-content: space-around;
+  height: 120px;
+
+  button {
+    width: 48%;
+  }
+}
+
+.popup-container {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  font-size: 40px;
+  background-color: white;
+}
+
+#dislikeButton {
+  color: unset;
+}
+
+#likeButton {
+  color: unset;
+}
+
+.like-container {
+  color: green;
+}
+
+.dislike-container {
+  color: red;
+}
+
+.padding-left {
+  padding-left: 16px;
+}
+
+.padding-right {
+  padding-right: 16px;
+}
+
+.padding-null {
+  padding: 0 !important;
+}
+
+.padding-top {
+  padding-top: 16px;
+}
+
+.color-white {
+  color: white;
+}

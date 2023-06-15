@@ -1,13 +1,33 @@
-<app-theme-toggle></app-theme-toggle>
+<div style="margin: auto; width: 100%; padding-top: 10px">
+  <div class="swipe-container">
 
-<mat-card *ngIf="recipe">
-  <div>
-    {{recipe.title}}
+    <div id="like" class="popup-container like-container">LIKE!</div>
+    <div id="dislike" class="popup-container dislike-container">DISLIKE!</div>
+
+    <mat-card id="card1" class="swipe-card" *ngIf="recipe" cdkDrag [cdkDragDisabled]="cardsDisabled" (cdkDragMoved)="onSwipe($event)"
+              (cdkDragEnded)="onSwipeEnd($event)">
+      <div id="color-container1">
+      <app-swipe-card [loading]="loadingCard1" [recipe]="recipe"></app-swipe-card>
+      </div>
+    </mat-card>
+
+    <mat-card id="card2" class="swipe-card" *ngIf="nextRecipe" cdkDrag [cdkDragDisabled]="cardsDisabled" (cdkDragMoved)="onSwipe($event)"
+              (cdkDragEnded)="onSwipeEnd($event)">
+      <div id="color-container2">
+      <app-swipe-card [loading]="loadingCard2" [recipe]="nextRecipe"></app-swipe-card>
+      </div>
+    </mat-card>
+
+
+    <div class="swipe-actions padding-top">
+      <button mat-raised-button color="warn" id="dislikeButton" (click)="swipeLeft()" aria-label="dislike button">
+        <mat-icon>close</mat-icon>
+        DISLIKE
+      </button>
+      <button mat-raised-button color="primary" id="likeButton" (click)="swipeRight()" aria-label="like button">
+        <mat-icon>favorite</mat-icon>
+        LIKE
+      </button>
+    </div>
   </div>
-  <div>
-    <img [src]="recipe.image">
-  </div>
-  <div>
-    {{recipe.imageType}}
-  </div>
-</mat-card>
+</div>

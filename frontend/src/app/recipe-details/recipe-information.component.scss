@@ -1,22 +1,64 @@
-.information-header {
-  margin-bottom: 20px;
+$default-spacing: 20px;
+$smaller-spacing: 10px;
+$border-radius: 20px;
+$placeholder-background-color: #5A8154;
+
+.information-container {
+  margin: 20px;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.information-image {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.information-card {
+  margin-top: $default-spacing;
+  margin-bottom: $default-spacing;
+  padding: $smaller-spacing;
+}
+
+.mat-mdc-standard-chip {
+  background-color: $placeholder-background-color !important;
 }
 
 .information-chipbox {
-  margin-top: 20px;
+  margin-top: $default-spacing;
 }
+
 .information-text {
-  margin-top: 20px;
-  padding-bottom: 20px;
+  margin-top: $default-spacing;
+  padding-bottom: $default-spacing;
 }
 
 .information-prepare {
-  margin-top: 20px;
+  margin-top: $default-spacing;
   display: flex;
   align-items: center;
 
   .information-icon {
-    margin-right: 10px;
+    margin-right: $smaller-spacing;
+  }
+}
+
+.information-summary {
+  margin-top: $default-spacing;
+  border-radius: $border-radius;
+}
+
+.information-ingredients {
+  margin-top: $default-spacing;
+  text-align: center;
+
+  hr {
+    border-top: 1px solid var(--mat-background);
   }
 
+  .information-ingredients-single {
+    padding-bottom: $smaller-spacing;
+    padding-top: $smaller-spacing;
+  }
 }
