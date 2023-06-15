@@ -52,4 +52,13 @@ export class SpoonacularService {
     const recipe = await firstValueFrom(this.getSpoonacularRecipeById(id));
     return recipe !== undefined;
   }
+
+  getRandomSpoonacularRecipe(): Observable<SpoonacularRecipe> {
+    return this.httpService
+      .get<{ recipes: SpoonacularRecipe[] }>(
+        `${this.spoonacularApiEndpoint}/recipes/random?number=1`,
+        this.requestConfig,
+      )
+      .pipe(map((response) => response.data.recipes[0]));
+  }
 }

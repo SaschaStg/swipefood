@@ -1,11 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {Recipe} from "../models/recipe";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   data: Recipe = {
     "id": "test-1234",
@@ -20,7 +24,7 @@ export class RecipeService {
       "glutenFree": true,
       "dairyFree": true
     },
-    "extendedIngredients": [
+    "ingredients": [
       {
         "id": 1001,
         "name": "butter",
@@ -91,6 +95,29 @@ export class RecipeService {
     "servings": 4,
     "summary": "Spicy Thai Noodle Soup is a perfect recipe for a cold winter day. It is packed with flavor and is easy to make. This recipe is gluten-free and dairy-free, making it a great option for those with dietary restrictions."
   };
+
+  getRecipeById(recipeId: string): Observable<Recipe> {
+    return this.httpClient.get<Recipe>(`api/recipes/${recipeId}`);
+  }
+
+  addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
+    const body = { isLiked: isLiked };
+    return this.httpClient.post<Recipe>(`api/recipes/${recipeId}/swipe`, body);
+  }
+
+  getRandomRecipe(): Observable<Recipe> {
+    return this.httpClient.get<Recipe>(`api/recipes/random`);
+  }
+
+
+
+
+
+
+
+
+
+//sp-1747693
 
   getRecipeData(): Observable<Recipe> {
     return of(this.data);

@@ -28,6 +28,17 @@ export class RecipesController {
     private readonly recipeService: RecipesService,
   ) {}
 
+  @Get('random')
+  async getRandomRecipe() {
+    return this.spoonacularService
+      .getRandomSpoonacularRecipe()
+      .pipe(
+        map((spoonacularRecipe) =>
+          RecipeDto.fromSpoonacularRecipe(spoonacularRecipe),
+        ),
+      );
+  }
+
   @Get(':id')
   async getRecipeById(@Param('id') taggedId: string) {
     const [collection, id] = taggedId.split('-');

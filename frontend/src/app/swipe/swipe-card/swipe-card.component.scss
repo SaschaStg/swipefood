@@ -1,0 +1,108 @@
+.swipe-container {
+  display: flex;
+  flex-direction: column;
+  height: 480px;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 21px;
+}
+
+.swipe-more-information {
+  margin-top: auto;
+  margin-left: 15px;
+}
+
+.swipe-more-information > button {
+  color: unset;
+  padding: 0 10px 0 10px !important;
+  width: 150px;
+}
+
+.swipe-img {
+  height: 180px;
+  width: 100%;
+  border-radius: 20px 20px 0 0 !important;
+  position: relative;
+  display: flex;
+
+  img {
+    object-fit: cover;
+    position: absolute;
+  }
+}
+
+.swipe-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.swipe-content {
+  margin: 0;
+  color: black;
+}
+
+.swipe-chips-container {
+  margin-top: 10px;
+}
+
+.swipe-chips {
+  background-color: #4CAF50 !important;
+}
+
+.swipe-text, .swipe-recipe-information {
+  padding: 0 16px 0 16px;
+}
+
+.swipe-icon {
+  margin-right: 7px;
+}
+
+.swipe-recipe-information-container {
+  margin-top: 20px;
+  display: flex;
+  margin-right: 16px;
+}
+
+.swipe-recipe-information {
+  display: flex;
+  align-items: center;
+}
+
+.swipe-recipe-information:last-child {
+  margin-right: 0;
+}
+
+.swipe-text-container {
+  overflow: hidden;
+}
+
+.padding-left {
+  padding-left: 16px;
+}
+
+.padding-right {
+  padding-right: 16px;
+}
+
+.padding-null {
+  padding: 0 !important;
+}
+
+.padding-top {
+  padding-top: 16px;
+}
+
+.color-white {
+  color: white;
+}
+
+.img-error {
+  display: none;
+  width: 100%;
+  color: red;
+  justify-content: center;
+  align-items: center;
+
+}

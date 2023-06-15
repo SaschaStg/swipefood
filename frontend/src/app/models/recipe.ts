@@ -2,10 +2,10 @@ export interface Recipe {
   id: string;
   title: string;
   readyInMinutes: number;
-  servings?: number;
+  servings: number;
   image: string;
   imageType: string;
-  summary?: string;
+  summary: string;
   instructions: string;
   categories: {
     vegetarian: boolean;
@@ -13,7 +13,7 @@ export interface Recipe {
     glutenFree: boolean;
     dairyFree: boolean;
   };
-  extendedIngredients?: {
+  ingredients: {
     id: number;
     name: string;
     amount: number;

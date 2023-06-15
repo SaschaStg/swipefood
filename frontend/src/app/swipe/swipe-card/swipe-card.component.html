@@ -1,0 +1,71 @@
+<div style="text-align: center" *ngIf="loading">
+
+  <ngx-skeleton-loader count="1" animation="progress-dark" [theme]="{
+      'border-radius': '5px',
+      width: '90%',
+      height: '250px',
+            background: '#656565'
+      }" appearance="circle"></ngx-skeleton-loader>
+  <ngx-skeleton-loader count="1" animation="progress-dark" [theme]="{
+      width: '90%',
+      height: '50px',
+      background: '#656565'
+      }" appearance="line"
+  ></ngx-skeleton-loader>
+  <ngx-skeleton-loader count="4" animation="progress-dark" [theme]="{
+      width: '90%',
+              background: '#656565'}"
+                       appearance="line"></ngx-skeleton-loader>
+</div>
+
+<div class="swipe-container" *ngIf="!loading">
+  <mat-card-content class="swipe-content padding-null">
+    <div class="swipe-img">
+      <img mat-card-image *ngIf="recipe.image" [ngSrc]="recipe.image"
+           (error)="imgError=true"
+           fill priority alt="Photo of a the recipe">
+      <div [ngStyle]="{'display':imgError ? 'flex': 'none'}" class="img-error">
+        Image could not be loaded
+      </div>
+
+    </div>
+
+  </mat-card-content>
+  <div class="swipe-text-container">
+    <h2>
+      <mat-card-title class="swipe-text">{{recipe.title}}</mat-card-title>
+    </h2>
+    <mat-card-subtitle class="swipe-text" [innerHtml]="removeATagsService.removeATags(recipe.summary, 20)">
+    </mat-card-subtitle>
+  </div>
+
+  <div class="swipe-recipe-information-container">
+    <div class="swipe-recipe-information">
+      <mat-icon class="swipe-icon">access_time</mat-icon>
+      <span>{{recipe.readyInMinutes}} minutes</span>
+    </div>
+    <div class="swipe-recipe-information">
+      <mat-icon class="swipe-icon">person</mat-icon>
+      <span>{{recipe.servings}} servings</span>
+    </div>
+  </div>
+  <mat-chip-listbox role="list" class="swipe-content swipe-chips-container padding-left">
+    <ng-container
+      *ngIf="recipe.categories.vegetarian || recipe.categories.vegan || recipe.categories.glutenFree || recipe.categories.dairyFree; else noSpecialDiet">
+      <mat-chip role="list-item" class="swipe-chips" *ngIf="recipe.categories.vegetarian">vegetarian</mat-chip>
+      <mat-chip role="list-item" class="swipe-chips" *ngIf="recipe.categories.vegan">vegan</mat-chip>
+      <mat-chip role="list-item" class="swipe-chips" *ngIf="recipe.categories.glutenFree">gluten free</mat-chip>
+      <mat-chip role="list-item" class="swipe-chips" *ngIf="recipe.categories.dairyFree">dairy free</mat-chip>
+    </ng-container>
+  </mat-chip-listbox>
+
+  <ng-template #noSpecialDiet>
+    <mat-chip role="list-item" class="swipe-chips">no special diet</mat-chip>
+  </ng-template>
+
+  <div class="swipe-more-information">
+    <button mat-raised-button color="primary" (click)="openRecipe(recipe.id)">more
+      information
+    </button>
+  </div>
+</div>

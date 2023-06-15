@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #318524, #42ad31);
+  text-align: center;
+}
+
+.header img {
+  width: 140px;
+  height: auto;
+  margin-left: calc(50% - 75px);
+}
+
+.theme-toggle {
+  margin-left: 10px;
+}

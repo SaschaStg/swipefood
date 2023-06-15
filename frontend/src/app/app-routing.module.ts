@@ -3,6 +3,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {SwipeComponent} from "./swipe/swipe.component";
 import {RecipeInformationComponent} from "./recipe-details/recipe-information.component";
 import {authGuard} from "./auth/auth.guards";
+import {LayoutComponent} from "./layout/layout/layout.component";
 
 const routes: Routes = [
   {
@@ -12,12 +13,24 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: SwipeComponent,
+        component: LayoutComponent,
+        children: [
+          {path: '', component: SwipeComponent},]
       },
       {
-        path: 'information',
-        component: RecipeInformationComponent,
+        path: 'recipes/:id',
+        component: LayoutComponent,
+        children: [
+          {path: '', component: RecipeInformationComponent},]
       },
+      {
+        path: ':id',
+        component: LayoutComponent,
+        children: [
+          {path: '', component: SwipeComponent},
+        ]
+      },
+
     ],
   },
   {
