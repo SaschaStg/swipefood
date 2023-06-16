@@ -4,100 +4,120 @@
 
 <!-- App Header-->
 <!-- https://angular.io/guide/reactive-forms -->
-<div>
-  <mat-tab-group>
-    <mat-tab label="Overview">
-      <div>
-        <div>
-          <span class="material-symbols-outlined">publish</span>
-          <p>Upload a picture</p>
-        </div>
+<form [formGroup]="recipeForm"> <!--(ngSubmit)="onSubmit()"-->
+  <div>
 
+    <mat-tab-group>
+      <mat-tab label="Overview">
         <div>
-          <p>Enter title</p>
-          <span class="material-symbols-outlined">edit</span>
-        </div>
-        <p>Enter description</p>
-        <span class="material-symbols-outlined">edit</span>
-        <div>
+          <mat-card>
+            <mat-card-content>
+              <span class="material-symbols-outlined">publish</span>
+              <p>Upload a picture</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card>
+            <mat-card-content>
+              <mat-label>Title</mat-label>
+              <input id="title" type="text" value="enter title">
+              <mat-icon matSuffix>edit</mat-icon>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card>
+            <mat-label>Enter description</mat-label>
+            <mat-icon matSuffix>edit</mat-icon>
+          </mat-card>
+
           <div>
-            <span class="material-symbols-outlined">schedule</span>
-            <p>Duration</p>
-            <mat-form-field>
-              <mat-label>h</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let h of houres" [value]="h">{{h.viewValue}}</mat-option>
-                <!-- https://material.angular.io/components/select/examples -->
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>min</mat-label>
-              <mat-select>
-                <mat-option></mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div>
+              <mat-icon matSuffix>schedule</mat-icon>
+              <mat-label>Duration</mat-label>
+
+
+                <mat-label>h</mat-label>
+                <mat-select>
+                  <mat-option></mat-option>
+                  <!-- https://material.angular.io/components/select/examples -->
+                </mat-select>
+
+
+
+                <mat-label>min</mat-label>
+                <mat-select>
+                  <mat-option></mat-option>
+                </mat-select>
+
+            </div>
+            <div>
+              <mat-icon matSuffix>person</mat-icon>
+              <p>Portions</p>
+
+                <mat-label>portions</mat-label>
+                <mat-select>
+                  <mat-option></mat-option>
+                </mat-select>
+
+            </div>
+
           </div>
+
           <div>
-            <span class="material-symbols-outlined">person</span>
-            <p>Portions</p>
-            <mat-form-field>
-              <mat-label>portions</mat-label>
-              <mat-select>
-                <mat-option></mat-option>
-              </mat-select>
-            </mat-form-field>
+            <p>Categories </p>
+            <mat-chip-listbox class="information-chipbox" aria-label="categories">
+              <mat-chip>vegetarian</mat-chip>
+              <mat-chip>vegan</mat-chip>
+            </mat-chip-listbox>
           </div>
 
-        </div>
 
+        </div>
+      </mat-tab>
+      <mat-tab label="Ingredients">
+        <mat-label>Ingredients</mat-label>
         <div>
-          <p>Categories </p>
-          <mat-chip-listbox class="information-chipbox" aria-label="categories">
-            <mat-chip>vegetarian</mat-chip>
-            <mat-chip>vegan</mat-chip>
-          </mat-chip-listbox>
+
+            <label for="amount">Amount</label>
+
+            <input matInput id="amount" type="number" [formControl]="amount">
+            <mat-icon matSuffix>edit</mat-icon>
+
+
+
+
+            <mat-label>unit</mat-label>
+            <mat-icon matSuffix>edit</mat-icon>
+            <mat-select>
+              <mat-option>ml</mat-option>
+              <mat-option>l</mat-option>
+              <mat-option>g</mat-option>
+              <mat-option>kg</mat-option>
+            </mat-select>
+
         </div>
+        <div formGroupName="extendedIngredients">
+          <label for="ingredient">Ingredient</label>
+          <div></div>
+          <input id="ingredient" type="text" [formControl]="ingredient">
+          <mat-icon matSuffix>edit</mat-icon>
+        </div>
+        <button mat-button (click)="addIngredient()">+ Add Ingredient</button>
+      </mat-tab>
+      <mat-tab label="Instructions">
+        <div>
+          <label for="instructions">Enter Instruction</label>
+          <textarea matinput id="instructions" type="text" formControlName="instructions">description</textarea>
+          <mat-icon matSuffix>edit</mat-icon>
 
+        </div>
+        <button mat-button (click)="updateRecipe()" type="submit">
+          <mat-icon matSuffix>save</mat-icon>
+          Save Recipes
+        </button>
 
-      </div>
-    </mat-tab>
-    <mat-tab label="Ingredients">
-      Ingredients
-      <div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</form>
 
-        <label for="amount">Amount</label>
-
-        <input id="amount" type="number" [formControl]="amount">
-        <span class="material-symbols-outlined">edit</span>
-
-        <mat-form-field>
-          <mat-label>unit</mat-label>
-          <span class="material-symbols-outlined">edit</span>
-          <mat-select>
-            <mat-option>ml</mat-option>
-            <mat-option>l</mat-option>
-            <mat-option>g</mat-option>
-            <mat-option>kg</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div>
-        <label for="ingredient">Ingredient</label>
-        <input id="ingredient" type="text" [formControl]="ingredient">
-        <span class="material-symbols-outlined">edit</span>
-      </div>
-      <button mat-button>+ Add Ingredient</button>
-    </mat-tab>
-    <mat-tab label="Instructions">
-      <div>
-        <label for="instructions">Enter Instruction</label>
-        <input id="instructions" type="text" [formControl]="instructions">
-        <span class="material-symbols-outlined">edit</span>
-      </div>
-      <button mat-button><span class="material-symbols-outlined">save</span> Save Recipes</button>
-
-    </mat-tab>
-  </mat-tab-group>
-
-
-</div>
