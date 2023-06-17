@@ -7,7 +7,7 @@ import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-
+import {MatChipsModule} from '@angular/material/chips';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
@@ -30,6 +30,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatIconModule,
     MatInputModule,
     MatSnackBarModule,
+    MatChipsModule,
   ],
   providers: []
 })

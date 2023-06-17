@@ -13,6 +13,10 @@ interface RegisterDto {
   username: string;
   password: string;
   displayName: string;
+  vegan: boolean,
+  vegetarian: boolean,
+  glutenFree: boolean,
+  dairyFree: boolean,
 }
 
 interface JwtPayload {
