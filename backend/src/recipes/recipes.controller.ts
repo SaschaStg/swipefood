@@ -2,22 +2,25 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   NotFoundException,
-  NotImplementedException,
   Param,
+  Patch,
   Post,
   Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SpoonacularService } from './spoonacular.service';
-import { map } from 'rxjs';
-import { RecipeDto, SwipeDto } from './dto';
+import { map, tap } from 'rxjs';
+import { CreateRecipeDto, RecipeDto, SwipeDto, UpdateRecipeDto } from './dto';
 import { RecipesService } from './recipes.service';
 import { Request } from 'express';
 import { User } from '../users/user.entity';
+import { ReqUser } from '../auth/user.decorator';
+import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 @ApiTags('recipes')
 @ApiBearerAuth()
@@ -39,14 +42,30 @@ export class RecipesController {
       );
   }
 
+  @Post()
+  async createRecipe(@Body() recipe: CreateRecipeDto, @ReqUser() user: User) {
+    return RecipeDto.fromSwipefoodRecipe(
+      await this.recipeService.createSwipefoodRecipe(recipe, user as User),
+    );
+  }
+
   @Get(':id')
-  async getRecipeById(@Param('id') taggedId: string) {
+  getRecipeById(@Param('id') taggedId: string, @ReqUser() user: User) {
     const [collection, id] = taggedId.split('-');
     switch (collection) {
       case 'sw':
         // get SwipefoodRecipe
-        return new NotImplementedException(
-          'Custom recipes are not implemented yet',
+        return fromPromise(
+          this.recipeService.getSwipefoodRecipeById(+id, user),
+        ).pipe(
+          tap((recipe) => {
+            if (!recipe) {
+              throw new NotFoundException('Recipe not found');
+            }
+          }),
+          map((swipefoodRecipe) =>
+            RecipeDto.fromSwipefoodRecipe(swipefoodRecipe),
+          ),
         );
       case 'sp':
         // get SpoonacularRecipe
@@ -58,8 +77,33 @@ export class RecipesController {
             ),
           );
       default:
-        return new BadRequestException('Invalid recipe id');
+        throw new BadRequestException('Invalid recipe id');
     }
+  }
+
+  @Patch(':id')
+  async updateRecipe(
+    @Param('id') taggedId: string,
+    @Body() recipe: UpdateRecipeDto,
+    @ReqUser() user: User,
+  ) {
+    if (!recipe.id || !recipe.id.startsWith('sw-')) {
+      throw new BadRequestException('Invalid recipe id');
+    }
+    if (recipe.id !== taggedId) {
+      throw new BadRequestException('Cannot change recipe id');
+    }
+    return RecipeDto.fromSwipefoodRecipe(
+      await this.recipeService.updateRecipe(recipe, user),
+    );
+  }
+
+  @Delete(':id')
+  async deleteRecipe(@Param('id') taggedId: string, @ReqUser() user: User) {
+    if (!taggedId.startsWith('sw-')) {
+      throw new BadRequestException('Cannot delete non-custom recipes');
+    }
+    await this.recipeService.deleteRecipe(taggedId, user);
   }
 
   @Post(':id/swipe')

@@ -1,4 +1,5 @@
 import { SpoonacularIngredient } from '../spoonacular';
+import { SwipefoodIngredient } from '../ingredient.entity';
 
 export class IngredientDto {
   id: string;
@@ -21,6 +22,15 @@ export class IngredientDto {
       ingredient.name,
       ingredient.measures.metric.amount,
       ingredient.measures.metric.unitShort,
+    );
+  }
+
+  static fromSwipefoodIngredient(ingredient: SwipefoodIngredient) {
+    return new IngredientDto(
+      `sw-${ingredient.id}`,
+      ingredient.name,
+      ingredient.amount,
+      ingredient.unit,
     );
   }
 }

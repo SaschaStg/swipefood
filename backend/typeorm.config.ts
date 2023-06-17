@@ -7,6 +7,9 @@ import { CreateUserTables1683148265321 } from './migrations/1683148265321-Create
 import { Swipe } from './src/recipes/swipe.entity';
 import { CreateSwipeTable1686160681491 } from './migrations/1686160681491-CreateSwipeTable';
 import { AddDietPreferences1686162763297 } from './migrations/1686162763297-AddDietPreferences';
+import { SwipefoodRecipe } from './src/recipes/recipe.entity';
+import { SwipefoodIngredient } from './src/recipes/ingredient.entity';
+import { AddCustomRecipes1686773753909 } from './migrations/1686773753909-AddCustomRecipes';
 
 config();
 
@@ -19,10 +22,11 @@ export default new DataSource({
   username: configService.get('DB_USER'),
   password: configService.get('DB_PASSWORD'),
   database: configService.get('DB_NAME'),
-  entities: [User, UserLogin, Swipe],
+  entities: [User, UserLogin, Swipe, SwipefoodRecipe, SwipefoodIngredient],
   migrations: [
     CreateUserTables1683148265321,
     CreateSwipeTable1686160681491,
     AddDietPreferences1686162763297,
+    AddCustomRecipes1686773753909,
   ],
 });

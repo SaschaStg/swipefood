@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { SwipefoodRecipe } from '../recipes/recipe.entity';
 
 @Entity()
 export class User {
@@ -19,4 +20,7 @@ export class User {
 
   @Column({ default: false })
   dairyFree: boolean;
+
+  @OneToMany(() => SwipefoodRecipe, (recipe) => recipe.user)
+  recipes: SwipefoodRecipe[];
 }

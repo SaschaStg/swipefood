@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { SpoonacularRecipe } from './spoonacular';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { firstValueFrom, map, Observable, tap } from 'rxjs';
-import { AxiosRequestConfig } from 'axios';
+import { catchError, firstValueFrom, map, Observable, tap } from 'rxjs';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 
 @Injectable()
@@ -42,6 +42,11 @@ export class SpoonacularService {
       .pipe(
         map((response) => response.data),
         tap((recipe) => this.recipeIdCache.set(recipe.id, true)),
+        catchError((err: AxiosError) => {
+          if (err.response?.status === HttpStatus.NOT_FOUND) {
+            throw new NotFoundException('Recipe not found');
+          } else throw err;
+        }),
       );
   }
 
