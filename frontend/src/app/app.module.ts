@@ -23,6 +23,9 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
 import {SettingsComponent} from "./settings/settings.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
@@ -31,9 +34,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
   declarations: [
     AppComponent,
     SwipeComponent,
-    RecipeInformationComponent,
     SwipeCardComponent,
     ThemeToggleComponent,
+    RecipeInformationComponent,
     HeaderComponent,
     FooterComponent,
     LayoutComponent,
@@ -62,6 +65,13 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatTableModule,
     // Routing module
     AppRoutingModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTableModule,
+    NgxSkeletonLoaderModule,
+    CdkDrag,
+    NgOptimizedImage,
   ],
   providers: [
     httpInterceptorProviders,
