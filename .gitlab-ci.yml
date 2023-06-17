@@ -70,7 +70,7 @@ workflow:
     - "npm run lint"
 
 .docker_template:
-  image: jdrouet/docker-with-buildx:stable
+  image: docker:cli
   tags:
     - docker-in-docker
   rules:
