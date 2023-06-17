@@ -5,6 +5,21 @@
   z-index: 99;
 }
 
+a {
+  text-decoration: none;
+}
+
+.mdc-button {
+  position: inherit;
+}
+
+/* tablet and pc */
+@media (min-width: 768px) {
+  .footer-container {
+    display: none;
+  }
+}
+
 .footer-content-container {
   display: flex;
   justify-content: space-around;

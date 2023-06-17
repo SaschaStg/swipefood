@@ -1,6 +1,35 @@
 <header>
   <div class="header">
+    <button class="menu-button" mat-icon-button (click)="toggleMenu(!isMenuOpen)">
+      <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
     <img src="assets/img/logo-white.png" alt="Logo" height="117" width="580">
     <app-theme-toggle class="theme-toggle"></app-theme-toggle>
+  </div>
+
+  <div class="container">
+    <div class="overlay" [class.open]="isMenuOpen" (click)="toggleMenu(false)"></div>
+
+    <mat-sidenav-container>
+      <mat-sidenav mode="push" [opened]="isMenuOpen" class="sidenav" (closed)="toggleMenu(false)">
+        <mat-nav-list>
+          <mat-list-item>
+            <a mat-button [routerLink]="['']" (click)="toggleMenu(false)">
+              <mat-icon color="primary">style</mat-icon>
+              Swipe</a>
+          </mat-list-item>
+          <mat-list-item>
+            <a mat-button (click)="toggleMenu(false)">
+              <mat-icon color="primary">menu_book</mat-icon>
+              Cookbook</a>
+          </mat-list-item>
+          <mat-list-item>
+            <a mat-button [routerLink]="['settings']" (click)="toggleMenu(false)">
+              <mat-icon color="primary">person</mat-icon>
+              Account</a>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-sidenav>
+    </mat-sidenav-container>
   </div>
 </header>
