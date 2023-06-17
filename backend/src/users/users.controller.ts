@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { DietUpdateDto } from './dto';
 import { User } from './user.entity';
+import { ReqUser } from '../auth/user.decorator';
+import { RecipeDto } from '../recipes/dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -13,6 +15,15 @@ export class UsersController {
   @Get('me')
   getCurrentUser(@Request() req) {
     return this.usersService.findOne(req.user.id);
+  }
+
+  @Get('me/recipes')
+  async getCustomRecipes(
+    @Request() req,
+    @ReqUser() user: User,
+  ): Promise<RecipeDto[]> {
+    const recipes = await this.usersService.getCustomRecipes(user);
+    return recipes.map((recipe) => RecipeDto.fromSwipefoodRecipe(recipe));
   }
 
   @Patch('me/diet')

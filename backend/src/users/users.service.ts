@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { DietUpdateDto } from './dto';
+import { SwipefoodRecipe } from '../recipes/recipe.entity';
 
 @Injectable()
 export class UsersService {
@@ -35,5 +36,15 @@ export class UsersService {
     await this.usersRepo.save(user);
 
     return user;
+  }
+
+  async getCustomRecipes(user: User): Promise<SwipefoodRecipe[]> {
+    user = await this.usersRepo.findOne({
+      where: { id: user.id },
+      relations: {
+        recipes: true,
+      },
+    });
+    return user.recipes;
   }
 }
