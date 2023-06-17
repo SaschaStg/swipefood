@@ -14,13 +14,14 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SpoonacularService } from './spoonacular.service';
-import { map, tap } from 'rxjs';
+import { forkJoin, map, switchMap, tap } from 'rxjs';
 import { CreateRecipeDto, RecipeDto, SwipeDto, UpdateRecipeDto } from './dto';
 import { RecipesService } from './recipes.service';
 import { Request } from 'express';
 import { User } from '../users/user.entity';
 import { ReqUser } from '../auth/user.decorator';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
+import { SwipefoodRecipe } from './recipe.entity';
 
 @ApiTags('recipes')
 @ApiBearerAuth()
@@ -46,6 +47,34 @@ export class RecipesController {
   async createRecipe(@Body() recipe: CreateRecipeDto, @ReqUser() user: User) {
     return RecipeDto.fromSwipefoodRecipe(
       await this.recipeService.createSwipefoodRecipe(recipe, user as User),
+    );
+  }
+
+  @Get('liked')
+  async getLikedRecipes(@ReqUser() user: User): Promise<any> {
+    return fromPromise(this.recipeService.getLikedRecipeIds(user)).pipe(
+      switchMap((recipeIds) => {
+        return forkJoin(
+          recipeIds.map((unifiedId) => {
+            const [collection, id] = unifiedId.split('-');
+            switch (collection) {
+              case 'sw':
+                return this.recipeService.getSwipefoodRecipeById(+id, user);
+              case 'sp':
+                return this.spoonacularService.getSpoonacularRecipeById(+id);
+            }
+          }),
+        );
+      }),
+      map((recipes) =>
+        recipes.map((recipe) => {
+          if (recipe instanceof SwipefoodRecipe) {
+            return RecipeDto.fromSwipefoodRecipe(recipe);
+          } else {
+            return RecipeDto.fromSpoonacularRecipe(recipe);
+          }
+        }),
+      ),
     );
   }
 
