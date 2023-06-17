@@ -1,0 +1,57 @@
+<div class="settings-container" *ngIf="user">
+
+  <mat-card>
+    <form [formGroup]="UserData">
+      <mat-card-header>
+        <mat-card-title aria-label="Settings">
+          <h2>
+            Settings
+          </h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-card-subtitle>
+          <h3>
+            User Data
+          </h3>
+        </mat-card-subtitle>
+        <mat-form-field class="settings-input" aria-label="Change Username">
+          <mat-label>Change Username</mat-label>
+          <input matInput placeholder="Username WIP" formControlName="displayName">
+          <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="settings-input" disabled="true">
+          <mat-label>Change Password !WIP!</mat-label>
+          <input matInput placeholder="Password !WIP!" disabled>
+          <!-- <mat-icon matSuffix>edit</mat-icon> -->
+        </mat-form-field>
+
+        <mat-card-subtitle>
+          <h3>
+            User Preferences
+          </h3>
+        </mat-card-subtitle>
+
+        <mat-chip-listbox aria-label="Diary selection" multiple>
+          <mat-chip-option [selected]="user.vegetarian" (selectionChange)="updateDiet($event,'vegetarian')">vegetarian
+          </mat-chip-option>
+          <mat-chip-option [selected]="user.vegan" (selectionChange)="updateDiet($event,'vegan')">vegan
+          </mat-chip-option>
+          <mat-chip-option [selected]="user.glutenFree" (selectionChange)="updateDiet($event,'glutenFree')">glutenFree
+          </mat-chip-option>
+          <mat-chip-option [selected]="user.dairyFree" (selectionChange)="updateDiet($event,'dairyFree')">dairyFree
+          </mat-chip-option>
+        </mat-chip-listbox>
+
+
+      </mat-card-content>
+    </form>
+  </mat-card>
+  <div class="settings-button">
+    <button mat-raised-button (click)="updateUserData()" color="primary">
+      <mat-icon>save</mat-icon>
+      Save Changes
+    </button>
+  </div>
+
+</div>

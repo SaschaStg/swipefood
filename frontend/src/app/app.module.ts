@@ -20,9 +20,12 @@ import {LayoutComponent} from "./layout/layout/layout.component";
 import {NgOptimizedImage} from "@angular/common";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
+import {SettingsComponent} from "./settings/settings.component";
+import {MatInputModule} from "@angular/material/input";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
     HeaderComponent,
     FooterComponent,
     LayoutComponent,
+    SettingsComponent,
   ],
   imports: [
     // External modules
@@ -42,6 +46,10 @@ import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
     FormsModule,
     HttpClientModule,
     HammerModule,
+    NgxSkeletonLoaderModule,
+    CdkDrag,
+    NgOptimizedImage,
+    ReactiveFormsModule,
     // Material modules
     MatButtonToggleModule,
     MatCardModule,
@@ -49,12 +57,11 @@ import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
     MatChipsModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatTableModule,
     // Routing module
     AppRoutingModule,
-    MatTableModule,
-    NgxSkeletonLoaderModule,
-    CdkDrag,
-    NgOptimizedImage,
   ],
   providers: [
     httpInterceptorProviders,

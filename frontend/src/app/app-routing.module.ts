@@ -4,6 +4,7 @@ import {SwipeComponent} from "./swipe/swipe.component";
 import {RecipeInformationComponent} from "./recipe-details/recipe-information.component";
 import {authGuard} from "./auth/auth.guards";
 import {LayoutComponent} from "./layout/layout/layout.component";
+import {SettingsComponent} from "./settings/settings.component";
 
 const routes: Routes = [
   {
@@ -15,22 +16,12 @@ const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-          {path: '', component: SwipeComponent},]
-      },
-      {
-        path: 'recipes/:id',
-        component: LayoutComponent,
-        children: [
-          {path: '', component: RecipeInformationComponent},]
-      },
-      {
-        path: ':id',
-        component: LayoutComponent,
-        children: [
           {path: '', component: SwipeComponent},
+          {path: 'settings', component: SettingsComponent},
+          {path: 'recipes/:id', component: RecipeInformationComponent},
+          {path: ':id', component: SwipeComponent}
         ]
-      },
-
+      }
     ],
   },
   {
