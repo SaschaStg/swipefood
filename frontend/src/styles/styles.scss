@@ -15,17 +15,33 @@ body {
 
 
 // need to stay here because the Snackbar component only reads from here https://anglesvar.medium.com/add-custom-css-to-material-snackbar-91ed36b48fba
-.snackbar {
+.snackbarWarn {
   color: #fff !important;
 }
 
-.snackbar button {
+.snackbarWarn button {
   background-color: #B00020;
   color: #fff !important;
 }
 
-.snackbar div {
+.snackbarWarn div {
   background-color: #B00020;
+  border-radius: 4px;
+  color: #fff !important;
+  padding-right: 0;
+}
+
+.snackbarPrimary {
+  color: #fff !important;
+}
+
+.snackbarPrimary button {
+  background-color: #4CAF50;
+  color: #fff !important;
+}
+
+.snackbarPrimary div {
+  background-color: #4CAF50;
   border-radius: 4px;
   color: #fff !important;
   padding-right: 0;

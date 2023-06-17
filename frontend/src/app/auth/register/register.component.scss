@@ -1,24 +1,113 @@
-.container {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+:host {
+
+  .login-btn-container {
+    display: flex;
+    justify-content: center;
+    width: 187px;
+
+    &__content {
+      background-color: #399B2A;
+      width: 187px;
+      border-radius: 4px;
+      color: white;
+    }
+  }
+
+  .container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    background-position: left top;
+    background-size: cover;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.549)), url("/assets/img/hintergrund.jpg");
+  }
+
+  .inner-container {
+    margin-top: 50px;
+  }
+
+  .img {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+  }
+
+  h3 {
+    display: flex;
+    justify-content: center;
+  }
+
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+    margin: 2em 0;
+  }
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5em;
+  }
+
+  .white-form-field {
+    mat-label {
+      color: white !important;
+    }
+
+    .register-btn-container {
+      display: flex;
+      justify-content: center;
+      width: 200px;
+
+      &__content {
+        background-color: #399B2A;
+        width: 187px;
+        border-radius: 4px;
+        color: white;
+      }
+    }
+  }
+
+  .register-container {
+    display: flex;
+    justify-content: center;
+    font-size: 10pt;
+
+    .register-link {
+      padding-left: 2px;
+      color: #399B2A;
+      text-decoration: none;
+    }
+  }
 }
 
-.register-form {
-  display: flex;
-  flex-direction: column;
-  width: 75vw;
-  margin: 2em 0;
+.white-form-field {
+  mat-label {
+    color: white !important;
+  }
 }
 
-.login-container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 0.5em;
+::ng-deep .white-form-field input {
+  color: white !important;
 }
 
-.register-btn-container {
-  align-self: end;
+::ng-deep .white-form-field input::selection,
+::ng-deep .white-form-field input::-moz-selection {
+  color: white !important;
+  background: rgb(18, 140, 185) !important;
+}
+
+::ng-deep .white-form-field .mat-focused,
+.mat-form-field-label {
+  color: white !important;
+}
+
+::ng-deep .white-form-field .mdc-notched-outline__leading,
+::ng-deep .white-form-field .mdc-notched-outline__notch,
+::ng-deep .white-form-field .mdc-notched-outline__trailing {
+  border-color: white !important;
 }

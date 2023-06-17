@@ -1,33 +1,40 @@
 <div class="container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Register</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="register-form" (submit)="onSubmit()" [formGroup]="registerForm">
-        <mat-form-field hideRequiredMarker>
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="displayName">
-        </mat-form-field>
-        <mat-form-field hideRequiredMarker>
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username">
-        </mat-form-field>
-        <mat-form-field hideRequiredMarker>
-          <mat-label>Password</mat-label>
-          <input matInput formControlName="password" type="password">
-        </mat-form-field>
-        <div class="register-btn-container">
-          <button mat-flat-button color="primary" type="submit" [disabled]="registerForm.disabled || registerForm.invalid">
-            <mat-icon>check</mat-icon>
-            Register
-          </button>
-        </div>
-      </form>
-      <div class="login-container">
-        Already have an account?
-        <div><a mat-flat-button color="accent" [routerLink]="['..', 'login']">Login</a></div>
+  <div class="inner-container">
+    <div class="img">
+      <img src="../../../assets/img/logo-white.png" width=211px alt="logo">
+    </div>
+    <h3>Create Account</h3>
+    <form class="register-form" (submit)="onSubmit()" [formGroup]="registerForm">
+      <mat-form-field color="accent" hideRequiredMarker appearance="outline" class="white-form-field">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="displayName">
+      </mat-form-field>
+      <mat-form-field color="accent" hideRequiredMarker appearance="outline" class="white-form-field">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+      <mat-form-field color="accent" hideRequiredMarker appearance="outline" class="white-form-field">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password">
+      </mat-form-field>
+      <h4>Choose your preferences</h4>
+      <mat-chip-listbox aria-label="Food selection">
+        <mat-chip-option (selectionChange)="setDiet($event,'vegan')">Vegan</mat-chip-option>
+        <mat-chip-option (selectionChange)="setDiet($event,'vegetarian')">Vegetarian</mat-chip-option>
+        <mat-chip-option (selectionChange)="setDiet($event,'glutenFree')">Gluten free</mat-chip-option>
+        <mat-chip-option (selectionChange)="setDiet($event,'dairyFree')">Dairy free</mat-chip-option>
+      </mat-chip-listbox>
+      <div class="login-btn-container">
+        <button mat-flat-button class="login-btn-container__content" type="submit"
+                [disabled]="registerForm.disabled || registerForm.invalid">
+          Create Account
+        </button>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </form>
+    <div class="register-container">
+      Already have an account?
+      <a class="register-link" [routerLink]="['..', 'login']">Login</a>
+    </div>
+
+  </div>
 </div>
