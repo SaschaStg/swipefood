@@ -6,3 +6,21 @@
       'GRAD' 0,
       'opsz' 48
   }
+  .beneath{
+    display: flex;
+    flex-direction: row;
+  }
+  .ThirtyWidth{
+    width: 30%;
+  }
+
+  mat-tab-group {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 25px;
+  }
+  mat-tab {
+    width:70%
+  }

@@ -1,34 +1,70 @@
-import {Component} from '@angular/core';
-import {MatTabsModule} from '@angular/material/tabs';
-import {FormBuilder, FormControl, ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from "@angular/material/select";
-import {MatChipsModule} from "@angular/material/chips";
-import {MatButtonModule} from "@angular/material/button";
-import {MatCardModule} from "@angular/material/card";
-import {MatIconModule} from "@angular/material/icon";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {RecipeService} from "../services/recipe.service";
+import {Recipe} from "../models/recipe";
+import {ActivatedRoute, Router} from "@angular/router";
+import {MatTableDataSource} from "@angular/material/table";
+import {Ingredients} from "../models/ingredients";
+
 
 @Component({
   selector: 'app-recipe-input',
   templateUrl: './recipe-input.component.html',
   styleUrls: ['./recipe-input.component.scss'],
-  standalone: true,
-  imports: [MatTabsModule, MatSelectModule, MatChipsModule, ReactiveFormsModule, MatButtonModule, MatCardModule, MatIconModule],
 })
 
-export class RecipeInputComponent {
-  constructor(private fb: FormBuilder) {
+export class RecipeInputComponent implements OnInit {
+  recipe?: Recipe;
+  dataSource: MatTableDataSource<Ingredients> = new MatTableDataSource<Ingredients>();
+
+
+  constructor(
+    private fb: FormBuilder,
+    private recipeService: RecipeService,
+    private router: Router,
+    private route: ActivatedRoute,
+  )
+  {
+    //get recipe Ingredients
+    this.dataSource = new MatTableDataSource<Ingredients>();
+    //Category Filter for Chips Autocomplete
+
+  }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const recipeId = params.get('id');
+      console.log(params);
+
+      if (recipeId) {
+        this.recipeService.getRecipeById(recipeId).subscribe(data => {
+          this.recipe = data;
+          console.log(data);
+
+          this.dataSource.data = this.recipe.ingredients.map(ingredient => {
+            return {
+              amount: ingredient.amount,
+              unit: ingredient.unit,
+              name: ingredient.name
+            };
+          });
+        });
+      } else {
+        console.error('No recipe ID found in route');
+      }
+    });
   }
 
   recipeForm = this.fb.group({
     id: [''],
-    title: [''],
-    readyInMinutes: [''],
-    readyInHoures: [''], //must be multiplied by 60 and added to the Minutes
-    servings: [''],
+    title: [this.recipe?.title],
+    readyInMinutes: ['300'],
+    readyInHours: [''], //must be multiplied by 60 and added to the Minutes
+    servings: ['4'],
     image: [''],
     imageType: [''],
-    summary: [''],
-    instructions: [''],
+    summary: ['blablablabal'],
+    instructions: ['zuerst das dann das und dann das'],
 
     categories: this.fb.group({
       vegetarian: [''],
@@ -38,26 +74,27 @@ export class RecipeInputComponent {
     }),
 
     extendedIngredients: this.fb.group({
-      id: [''],
-      name: [''],
-      amount: [''],
-      unit: ['']
-    })
-});
+        id: ['1'],
+        name: ['Karotte'],
+        amount: ['5'],
+        unit: ['stück']
+      },
+    )
+  })
+  ;
 
-recipe = new FormControl('');
 
-// for testing the values
-amount = new FormControl('');
-ingredient = new FormControl('');
-instructions = new FormControl('');
+  updateRecipe() {
+    return 0;
+  }
 
-updateRecipe()
-{
-  return 0;
-}
-addIngredient(){
-  return 0;
-}
+  addIngredient() {
+    return 0;
+  }
+
+  onSubmit(){
+    return;
+  }
+
 
 }

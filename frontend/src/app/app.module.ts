@@ -32,7 +32,8 @@ import {SettingsComponent} from "./settings/settings.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {RecipeInputComponent} from './recipe-input/recipe-input.component';
-
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {RecipeInputComponent} from './recipe-input/recipe-input.component';
     SettingsComponent,
     RecipeInformationComponent,
     ThemeToggleComponent,
-    RecipeBookComponent
+    RecipeBookComponent,
+    RecipeInputComponent
   ],
   imports: [
     // External modules
@@ -73,6 +75,7 @@ import {RecipeInputComponent} from './recipe-input/recipe-input.component';
     MatInputModule,
     MatSnackBarModule,
     MatTableModule,
+    MatFormFieldModule,
     // Routing module
     AppRoutingModule,
     MatTabsModule,
@@ -83,8 +86,9 @@ import {RecipeInputComponent} from './recipe-input/recipe-input.component';
     NgxSkeletonLoaderModule,
     CdkDrag,
     NgOptimizedImage,
-    RecipeInputComponent,
     ReactiveFormsModule,
+    MatTabsModule,
+    MatSelectModule,
   ],
   providers: [
     httpInterceptorProviders,
