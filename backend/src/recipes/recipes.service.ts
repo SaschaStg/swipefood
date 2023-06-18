@@ -37,6 +37,15 @@ export class RecipesService {
     await this.swipeRepo.save(swipe);
   }
 
+  async getLikedRecipeIds(user: User): Promise<string[]> {
+    const likedSwipes = await this.swipeRepo
+      .createQueryBuilder('swipe')
+      .where('swipe.userId = :userId', { userId: user.id })
+      .andWhere('swipe.isLiked = true')
+      .getMany();
+    return likedSwipes.map((swipe) => swipe.recipeId);
+  }
+
   async isRecipeIdValid(taggedId: string): Promise<boolean> {
     const [collection, id] = taggedId.split('-');
     switch (collection) {
