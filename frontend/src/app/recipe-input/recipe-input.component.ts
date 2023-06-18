@@ -5,6 +5,8 @@ import {Recipe} from "../models/recipe";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatTableDataSource} from "@angular/material/table";
 import {Ingredients} from "../models/ingredients";
+import {Diet} from "../services/diet";
+import {MatChipSelectionChange} from "@angular/material/chips";
 
 
 @Component({
@@ -15,6 +17,28 @@ import {Ingredients} from "../models/ingredients";
 
 export class RecipeInputComponent implements OnInit {
   recipe?: Recipe;
+  updatedRecipe : Recipe ={
+    id: '',
+    title: '',
+    readyInMinutes: 0,
+    servings: 0,
+    image: '',
+    imageType: '',
+    summary: '',
+    instructions: '',
+    categories: {
+      vegetarian: false,
+      vegan: false,
+      glutenFree: false,
+      dairyFree: false,
+    },
+    ingredients: [{
+      id: 0,
+      name: '',
+      amount: 0,
+      unit: '',
+    }],
+  };
   dataSource: MatTableDataSource<Ingredients> = new MatTableDataSource<Ingredients>();
 
 
@@ -23,8 +47,7 @@ export class RecipeInputComponent implements OnInit {
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
-  )
-  {
+  ) {
     //get recipe Ingredients
     this.dataSource = new MatTableDataSource<Ingredients>();
     //Category Filter for Chips Autocomplete
@@ -92,50 +115,54 @@ export class RecipeInputComponent implements OnInit {
     return 0;
   }
 
-  onSubmit(){
+  onSubmit() {
     return;
   }
 
 /*
-  updateRecipeData() {
-    if (this.recipe?.categories.vegetarian == this.user.vegetarian &&
-      this.recipe?.categories.vegan == this.user.vegan &&
-      this.recipe?.categories.glutenFree == this.user.glutenFree &&
-      this.recipe?.categories.dairyFree == this.user.dairyFree) {
+    updateRecipeData() {
+      if (this.updatedRecipe.categories.vegetarian == this.recipe?.categories.vegetarian &&
+        this.updatedRecipe.categories.vegan == this.recipe?.categories.vegan &&
+        this.updatedRecipe.categories.glutenFree == this.recipe?.categories.glutenFree &&
+        this.updatedRecipe.categories.dairyFree == this.recipe?.categories.dairyFree) {
 
-      return;
-    }
-    const recipeDiet: any = {  //diet importieren und any durch Diet ersetzen
-      vegan: this.updatedRecipe.vegan,
-      vegetarian: this.updatedRecipe.vegetarian,
-      glutenFree: this.updatedRecipe.glutenFree,
-      dairyFree: this.updatedRecipe.dairyFree
-    }
-    this.userService.patchRecipeData(this.recipe).subscribe(data => {
-      this.recipe.categories.vegetarian = data.vegetarian;
-      this.recipe?.categories.vegan = data.vegan;
-      this.recipe?.categories.glutenFree = data.glutenFree;
-      this.recipe?.categories.dairyFree = data.dairyFree;
-      this.openSnackBar("Saved Changes!");
-    });
-  }
+        return;
+      }
 
-//get the checkbox value
-  updateDiet(diet: MatChipSelectionChange, dietName: string) {
-    switch (dietName) {
-      case 'vegetarian':
-        this.recipe.vegetarian = diet.selected;
-        break;
-      case 'vegan':
-        this.recipe.vegan = diet.selected;
-        break;
-      case 'glutenFree':
-        this.recipe.glutenFree = diet.selected;
-        break;
-      case 'dairyFree':
-        this.recipe.dairyFree = diet.selected;
-        break;
+      const recipeDiet: Diet = {
+        vegan: this.updatedRecipe.categories.vegan,
+        vegetarian: this.updatedRecipe.categories.vegetarian,
+        glutenFree: this.updatedRecipe.categories.glutenFree,
+        dairyFree: this.updatedRecipe.categories.dairyFree
+      }
+      this.recipeService.patchRecipeData(this.recipe).subscribe(data => {
+        this.recipe?.categories.vegetarian = data.vegetarian;
+        this.recipe?.categories.vegan = data.vegan;
+        this.recipe?.categories.glutenFree = data.glutenFree;
+        this.recipe?.categories.dairyFree = data.dairyFree;
+
+      });
+    }*/
+
+  //get the checkbox value
+    updateDiet(diet: MatChipSelectionChange, dietName: string) {
+    if(this.recipe){ //if weil recipe nicht optional sein darf
+      switch (dietName) {
+        case 'vegetarian':
+          this.recipe.categories.vegetarian = diet.selected;
+          break;
+        case 'vegan':
+          this.recipe.categories.vegan = diet.selected;
+          break;
+        case 'glutenFree':
+          this.recipe.categories.glutenFree = diet.selected;
+          break;
+        case 'dairyFree':
+          this.recipe.categories.dairyFree = diet.selected;
+          break;
     }
-  }*/
+
+      }
+    }
 
 }
