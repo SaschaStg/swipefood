@@ -96,5 +96,46 @@ export class RecipeInputComponent implements OnInit {
     return;
   }
 
+/*
+  updateRecipeData() {
+    if (this.recipe?.categories.vegetarian == this.user.vegetarian &&
+      this.recipe?.categories.vegan == this.user.vegan &&
+      this.recipe?.categories.glutenFree == this.user.glutenFree &&
+      this.recipe?.categories.dairyFree == this.user.dairyFree) {
+
+      return;
+    }
+    const recipeDiet: any = {  //diet importieren und any durch Diet ersetzen
+      vegan: this.updatedRecipe.vegan,
+      vegetarian: this.updatedRecipe.vegetarian,
+      glutenFree: this.updatedRecipe.glutenFree,
+      dairyFree: this.updatedRecipe.dairyFree
+    }
+    this.userService.patchRecipeData(this.recipe).subscribe(data => {
+      this.recipe.categories.vegetarian = data.vegetarian;
+      this.recipe?.categories.vegan = data.vegan;
+      this.recipe?.categories.glutenFree = data.glutenFree;
+      this.recipe?.categories.dairyFree = data.dairyFree;
+      this.openSnackBar("Saved Changes!");
+    });
+  }
+
+//get the checkbox value
+  updateDiet(diet: MatChipSelectionChange, dietName: string) {
+    switch (dietName) {
+      case 'vegetarian':
+        this.recipe.vegetarian = diet.selected;
+        break;
+      case 'vegan':
+        this.recipe.vegan = diet.selected;
+        break;
+      case 'glutenFree':
+        this.recipe.glutenFree = diet.selected;
+        break;
+      case 'dairyFree':
+        this.recipe.dairyFree = diet.selected;
+        break;
+    }
+  }*/
 
 }

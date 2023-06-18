@@ -77,16 +77,19 @@
               <mat-card>
                 <mat-card-content formGroupName="categories">
                   <mat-form-field>
+                    <input matInput>
                     <mat-label>Categories</mat-label>
-                    <input matInput type="number">
-                   <!-- <mat-chip-grid>
-                      <mat-chip-row>
-                        <button>
-                          <mat-icon>cancel</mat-icon>
-                        </button>
-                      </mat-chip-row>
-                    </mat-chip-grid>
-                    -->
+                    <mat-chip-listbox mat-input aria-label="Diary selection" multiple>
+                      <!--<mat-chip-option [selected]="recipe.categories.vegetarian" (selectionChange)="updateDiet($event,'vegetarian')">vegetarian
+                      </mat-chip-option>
+                      <mat-chip-option [selected]="recipe.categories.vegan" (selectionChange)="updateDiet($event,'vegan')">vegan
+                      </mat-chip-option>
+                      <mat-chip-option [selected]="recipe.categories.glutenFree" (selectionChange)="updateDiet($event,'glutenFree')">glutenFree
+                      </mat-chip-option>
+                      <mat-chip-option [selected]="recipe.categories.dairyFree" (selectionChange)="updateDiet($event,'dairyFree')">dairyFree
+                      </mat-chip-option>-->
+                    </mat-chip-listbox>
+
 
                   </mat-form-field>
                 </mat-card-content>
