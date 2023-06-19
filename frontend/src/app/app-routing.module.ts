@@ -11,7 +11,12 @@ import {RecipeInputComponent} from "./recipe-input/recipe-input.component";
 
 const routes: Routes = [
   {
-    // Top level route to handle auth
+    // Route for the landing page (no auth required)
+    path: 'home',
+    component: WelcomeComponent,
+  },
+  {
+    // Top level route to handle auth -- used for the actual app after login
     path: '',
     canActivateChild: [authGuard], // Disable auth requirement by commenting out this line
     children: [
@@ -31,10 +36,6 @@ const routes: Routes = [
       },
       {path: 'recipes/:id', component: RecipeInformationComponent},
     ],
-  },
-  {
-    path: 'home',
-    component: WelcomeComponent,
   },
   {
     path: 'auth',
