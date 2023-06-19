@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { DietUpdateDto } from './dto';
+import { DietUpdateDto, UserUpdateDto } from './dto';
 import { SwipefoodRecipe } from '../recipes/recipe.entity';
 
 @Injectable()
@@ -36,6 +36,16 @@ export class UsersService {
     await this.usersRepo.save(user);
 
     return user;
+  }
+
+  async update(id: number, userUpdate: UserUpdateDto) {
+    const result = await this.usersRepo.update({ id }, userUpdate);
+
+    if (result.affected === 0) {
+      throw new BadRequestException('User not found');
+    }
+
+    return this.findOne(id);
   }
 
   async getCustomRecipes(user: User): Promise<SwipefoodRecipe[]> {

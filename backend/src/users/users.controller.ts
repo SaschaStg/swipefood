@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Patch, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { DietUpdateDto } from './dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { DietUpdateDto, UserUpdateDto } from './dto';
 import { User } from './user.entity';
 import { ReqUser } from '../auth/user.decorator';
 import { RecipeDto } from '../recipes/dto';
@@ -17,6 +17,14 @@ export class UsersController {
     return this.usersService.findOne(req.user.id);
   }
 
+  @Patch('me')
+  async updateCurrentUser(
+    @Body() userUpdate: UserUpdateDto,
+    @ReqUser() user: User,
+  ): Promise<User> {
+    return this.usersService.update(user.id, userUpdate);
+  }
+
   @Get('me/recipes')
   async getCustomRecipes(
     @Request() req,
@@ -26,7 +34,13 @@ export class UsersController {
     return recipes.map((recipe) => RecipeDto.fromSwipefoodRecipe(recipe));
   }
 
+  /**
+   * @deprecated
+   * @param dietUpdate
+   * @param req
+   */
   @Patch('me/diet')
+  @ApiOperation({ deprecated: true })
   async updateDiet(
     @Body() dietUpdate: DietUpdateDto,
     @Request() req,
