@@ -11,6 +11,13 @@ import {MatIconModule} from "@angular/material/icon";
 import {HttpClientModule} from "@angular/common/http";
 import {CdkDrag} from "@angular/cdk/drag-drop";
 import {httpInterceptorProviders} from "./http-interceptors";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatButtonModule} from "@angular/material/button";
+import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
+import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
+import {MatTabsModule} from "@angular/material/tabs";
 import {MatTableModule} from "@angular/material/table";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {SwipeCardComponent} from './swipe/swipe-card/swipe-card.component';
@@ -18,11 +25,6 @@ import {HeaderComponent} from "./layout/header/header.component";
 import {FooterComponent} from "./layout/footer/footer.component";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {NgOptimizedImage} from "@angular/common";
-import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatButtonModule} from "@angular/material/button";
-import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
@@ -41,6 +43,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     FooterComponent,
     LayoutComponent,
     SettingsComponent,
+    RecipeInformationComponent,
+    ThemeToggleComponent,
+    RecipeBookComponent
   ],
   imports: [
     // External modules
@@ -54,17 +59,21 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     NgOptimizedImage,
     ReactiveFormsModule,
     // Material modules
+    MatButtonModule,
+    MatButtonToggleModule,
     MatButtonToggleModule,
     MatCardModule,
     MatButtonModule,
     MatChipsModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatSlideToggleModule,
     MatInputModule,
     MatSnackBarModule,
     MatTableModule,
     // Routing module
     AppRoutingModule,
+    MatTabsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
