@@ -42,8 +42,8 @@ a {
 
 .container {
   position: relative;
-  z-index: 1;
   padding-top: 45px;
+  z-index: 999;
 }
 
 .sidenav {
