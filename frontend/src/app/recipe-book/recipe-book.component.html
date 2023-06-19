@@ -1,0 +1,62 @@
+<mat-tab-group>
+  <mat-tab class="label-container" label="SAVED RECIPES">
+    <div class="book-card-container">
+      <mat-card *ngFor="let likedRecipe of likedRecipes" class="book-card">
+        <div class="book-image-container">
+          <img mat-card-image class="book-image" [src]="likedRecipe.image" alt="{{likedRecipe.title}}">
+        </div>
+        <div class="book-information-container">
+          <mat-card-header class="information-header">
+            <mat-card-title>{{likedRecipe.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="book-content-container">
+            <div class="book-prepare">
+              <mat-icon class="book-icon">access_time</mat-icon>
+              <span>{{likedRecipe.readyInMinutes}}</span>
+            </div>
+            <button [routerLink]="['/recipes/' + likedRecipe.id]" mat-flat-button color="primary">
+              more information
+            </button>
+          </mat-card-content>
+        </div>
+      </mat-card>
+
+
+    </div>
+
+
+  </mat-tab>
+  <mat-tab label="MY RECIPES">
+    <div class="book-card-container">
+  <mat-card *ngFor="let customRecipe of customRecipes" class="book-card">
+    <div class="book-image-container">
+      <img mat-card-image class="book-image" [src]="customRecipe.image" alt="{{customRecipe.title}}">
+    </div>
+    <div class="book-information-container">
+      <mat-card-header class="information-header">
+        <mat-card-title>{{customRecipe.title}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="book-content-container">
+        <div class="book-prepare">
+        <mat-icon class="book-icon">access_time</mat-icon>
+        <span>{{customRecipe.readyInMinutes}}</span>
+        </div>
+        <button mat-flat-button [routerLink]="['/recipe-input/' + customRecipe.id]" color="primary">
+          <mat-icon class="material-icons">edit</mat-icon>
+          Edit
+        </button>
+
+      </mat-card-content>
+
+    </div>
+  </mat-card>
+    </div>
+
+    <div style="text-align: center">
+      <button mat-flat-button color="primary">
+        <mat-icon class="material-icons">add</mat-icon>
+        Add recipes
+      </button>
+    </div>
+  </mat-tab>
+</mat-tab-group>

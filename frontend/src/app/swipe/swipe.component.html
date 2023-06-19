@@ -7,7 +7,7 @@
     <mat-card id="card1" class="swipe-card" *ngIf="recipe" cdkDrag [cdkDragDisabled]="cardsDisabled" (cdkDragMoved)="onSwipe($event)"
               (cdkDragEnded)="onSwipeEnd($event)">
       <div id="color-container1">
-      <app-swipe-card [loading]="loadingCard1" [recipe]="recipe"></app-swipe-card>
+    <app-swipe-card [loading]="loadingCard1" [recipe]="recipe"></app-swipe-card>
       </div>
     </mat-card>
 

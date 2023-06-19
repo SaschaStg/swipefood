@@ -15,9 +15,17 @@ export class RecipeService {
     return this.httpClient.get<Recipe>(`api/recipes/${recipeId}`);
   }
 
+  getLikedRecipes(): Observable<Recipe[]> {
+    return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
+  }
+
   addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
     const body = {isLiked: isLiked};
     return this.httpClient.post<Recipe>(`api/recipes/${recipeId}/swipe`, body);
+  }
+
+  getCustomUserRecipes(): Observable<Recipe[]> {
+    return this.httpClient.get<Recipe[]>(`api/users/me/recipes`);
   }
 
   getRandomRecipe(): Observable<Recipe> {

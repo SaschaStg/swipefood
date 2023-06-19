@@ -5,6 +5,7 @@ import {RecipeInformationComponent} from "./recipe-details/recipe-information.co
 import {authGuard} from "./auth/auth.guards";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {SettingsComponent} from "./settings/settings.component";
+import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
           {path: '', component: SwipeComponent},
           {path: 'settings', component: SettingsComponent},
           {path: 'recipes/:id', component: RecipeInformationComponent},
+          {path: 'cookbook', component: RecipeBookComponent},
           {path: ':id', component: SwipeComponent}
         ]
       }
@@ -29,6 +31,7 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
