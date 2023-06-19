@@ -44,13 +44,6 @@
                   </div>
                   <mat-card-content>
                     <mat-form-field class="ThirtyWidth">
-                      <mat-label>h</mat-label>
-                      <input matInput type="number" formControlName="readyInHours">
-                      <!-- https://material.angular.io/components/select/examples -->
-
-                    </mat-form-field>
-
-                    <mat-form-field class="ThirtyWidth">
                       <mat-label>min</mat-label>
                       <input matInput type="number" formControlName="readyInMinutes">
                     </mat-form-field>
@@ -118,12 +111,7 @@
                     <mat-form-field class="ThirtyWidth">
                       <mat-label>unit</mat-label>
                       <mat-icon matSuffix>edit</mat-icon>
-                      <mat-select formControlName="unit">
-                        <mat-option>ml</mat-option>
-                        <mat-option>l</mat-option>
-                        <mat-option>g</mat-option>
-                        <mat-option>kg</mat-option>
-                      </mat-select>
+                      <input matInput formControlName="unit">
                     </mat-form-field>
                   </div>
 

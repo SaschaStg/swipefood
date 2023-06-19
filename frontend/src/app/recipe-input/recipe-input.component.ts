@@ -50,6 +50,7 @@ export class RecipeInputComponent implements OnInit {
   ) {
     //get recipe Ingredients
     this.dataSource = new MatTableDataSource<Ingredients>();
+
     //Category Filter for Chips Autocomplete
 
   }
@@ -67,16 +68,18 @@ export class RecipeInputComponent implements OnInit {
           console.log(data);
 
 
-          this.dataSource.data = this.recipe.ingredients.map(ingredient => {
+          /*this.dataSource.data = this.recipe.ingredients.map(ingredient => {
             return {
               amount: ingredient.amount,
               unit: ingredient.unit,
               name: ingredient.name
             };
-          });
+          });*/
+
 
           console.log(this.dataSource);
           console.log(this.recipe?.title);
+
 
           //get hours from minutes
           let hours = this.recipe?.readyInMinutes / 60;
@@ -84,32 +87,35 @@ export class RecipeInputComponent implements OnInit {
 
           this.recipeForm =
             this.fb.group({
-            id: [''],
-            title: [this.recipe?.title],
-            readyInMinutes: [this.recipe?.readyInMinutes % 60],
-            readyInHours: [hours],
-            servings: [this.recipe?.servings],
-            image: [this.recipe?.image],
-            imageType: [this.recipe?.imageType],
-            summary: [this.recipe?.summary],
-            instructions: [this.recipe?.instructions],
+              id: [''],
+              title: [''],
+              readyInMinutes: [0],
+              //readyInHours: [hours],
+              servings: [0],
+              //image: [this.recipe?.image],
+              //imageType: [this.recipe?.imageType],
+              summary: [''],
+              instructions: [''],
 
-            categories: this.fb.group({
-              vegetarian: [this.recipe?.categories.vegetarian],
-              vegan: [this.recipe?.categories.vegan],
-              glutenFree: [this.recipe?.categories.glutenFree],
-              dairyFree: [this.recipe?.categories.dairyFree],
-            }),
-            ingredients: this.fb.array([
-              this.fb.group({
-                id: [''],
-                name: [''],
-                amount: [0],
-                unit: ['']
+              categories: this.fb.group({
+                vegetarian: [false],
+                vegan: [false],
+                glutenFree: [false],
+                dairyFree: [false],
               }),
+              ingredients: this.fb.array([
+                this.fb.group({
+                  id: [''],
+                  name: [''],
+                  amount: [''],
+                  unit: ['']
+                }),
 
-            ])
-          });
+              ])
+            });
+          //this.loadIngredient();
+          this.recipeForm.patchValue(this.recipe);
+          this.loadIngredient();
 
 
         });
@@ -119,25 +125,45 @@ export class RecipeInputComponent implements OnInit {
     });
 
   }
+
 // helper for the form
 
 
-  newIngredient(): FormGroup{
+  newIngredient(): FormGroup {
     return this.fb.group({
       id: [''],
       name: [''],
-      amount: [0],
+      amount: [''],
       unit: ['']
     })
+
   }
 
-  addIngredient(){
+  mapIngredients() {
+    return 0;
+  }
+
+  addIngredient() {
     this.getIngredients().push(this.newIngredient());
   }
 
-removeIngredient(index:number){
+  loadIngredient() {
+
+        this.recipeForm.setControl('ingredients', this.fb.array(this.recipe?.ingredients?.map((ingredient) =>
+        this.fb.group({
+          id: [ingredient.id],
+          name: [ingredient.name],
+          amount: [ingredient.amount],
+          unit: [ingredient.unit]
+        }),
+      ) ?? [])
+    )
+  }
+
+  removeIngredient(index: number) {
     this.getIngredients().removeAt(index);
-}
+  }
+
   updateRecipe() {
     return 0;
   }
