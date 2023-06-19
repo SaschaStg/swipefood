@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {RecipeService} from "../services/recipe.service";
 import {Recipe} from "../models/recipe";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -7,6 +7,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Ingredients} from "../models/ingredients";
 import {Diet} from "../services/diet";
 import {MatChipSelectionChange} from "@angular/material/chips";
+
 
 
 @Component({
@@ -53,7 +54,7 @@ export class RecipeInputComponent implements OnInit {
     //Category Filter for Chips Autocomplete
 
   }
-
+recipeForm!: FormGroup;
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const recipeId = params.get('id');
@@ -64,6 +65,8 @@ export class RecipeInputComponent implements OnInit {
           this.recipe = data;
           console.log(data);
 
+
+
           this.dataSource.data = this.recipe.ingredients.map(ingredient => {
             return {
               amount: ingredient.amount,
@@ -71,40 +74,48 @@ export class RecipeInputComponent implements OnInit {
               name: ingredient.name
             };
           });
+          console.log(this.recipe?.title);
+
+          //get hours from minutes
+          let hours = this.recipe?.readyInMinutes/60;
+          hours = Math.round(hours);
+
+          this.recipeForm = this.fb.group({
+            id: [''],
+            title: [this.recipe?.title],
+            readyInMinutes: [this.recipe?.readyInMinutes%60],
+            readyInHours: [hours],
+            servings: [this.recipe?.servings],
+            image: [this.recipe?.image],
+            imageType: [this.recipe?.imageType],
+            summary: [this.recipe?.summary],
+            instructions: [this.recipe?.instructions],
+
+            categories: this.fb.group({
+              vegetarian: [this.recipe?.categories.vegetarian],
+              vegan: [this.recipe?.categories.vegan],
+              glutenFree: [this.recipe?.categories.glutenFree],
+              dairyFree: [this.recipe?.categories.dairyFree],
+            }),
+
+            extendedIngredients: this.fb.group({
+                id: ['1'],
+                name: ['Karotte'],
+                amount: ['5'],
+                unit: ['stück']
+              },
+            )
+          })
+          ;
         });
       } else {
         console.error('No recipe ID found in route');
       }
     });
+
   }
 
-  recipeForm = this.fb.group({
-    id: [''],
-    title: [this.recipe?.title],
-    readyInMinutes: ['300'],
-    readyInHours: [''], //must be multiplied by 60 and added to the Minutes
-    servings: ['4'],
-    image: [''],
-    imageType: [''],
-    summary: ['blablablabal'],
-    instructions: ['zuerst das dann das und dann das'],
 
-    categories: this.fb.group({
-      vegetarian: [''],
-      vegan: [''],
-      glutenFree: [''],
-      dairyFree: [''],
-    }),
-
-    extendedIngredients: this.fb.group({
-        id: ['1'],
-        name: ['Karotte'],
-        amount: ['5'],
-        unit: ['stück']
-      },
-    )
-  })
-  ;
 
 
   updateRecipe() {

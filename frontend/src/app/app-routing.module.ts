@@ -19,27 +19,13 @@ const routes: Routes = [
         component: LayoutComponent,
         children: [
           {path: '', component: SwipeComponent},
-          {path:'recipe-input/:id',component: RecipeInputComponent,
-          }]
-      },
-      {
-        path: 'recipes/:id',
-        component: LayoutComponent,
-        children: [
-          {path: '', component: RecipeInformationComponent},]
-      },
-      {
-        path: ':id',
-        component: LayoutComponent,
-        children: [
-          {path: '', component: SwipeComponent},
           {path: 'settings', component: SettingsComponent},
+          {path: 'recipe-input/:id', component: RecipeInputComponent},
           {path: 'recipes/:id', component: RecipeInformationComponent},
           {path: 'cookbook', component: RecipeBookComponent},
           {path: ':id', component: SwipeComponent}
         ]
-      },
-
+      }
     ],
   },
   {
