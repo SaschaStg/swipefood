@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {RecipeService} from "../services/recipe.service";
 import {Recipe} from "../models/recipe";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -7,7 +7,6 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Ingredients} from "../models/ingredients";
 import {Diet} from "../services/diet";
 import {MatChipSelectionChange} from "@angular/material/chips";
-
 
 
 @Component({
@@ -18,7 +17,7 @@ import {MatChipSelectionChange} from "@angular/material/chips";
 
 export class RecipeInputComponent implements OnInit {
   recipe?: Recipe;
-  updatedRecipe : Recipe ={
+  updatedRecipe: Recipe = {
     id: '',
     title: '',
     readyInMinutes: 0,
@@ -54,7 +53,9 @@ export class RecipeInputComponent implements OnInit {
     //Category Filter for Chips Autocomplete
 
   }
-recipeForm!: FormGroup;
+
+  recipeForm!: FormGroup;
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const recipeId = params.get('id');
@@ -66,7 +67,6 @@ recipeForm!: FormGroup;
           console.log(data);
 
 
-
           this.dataSource.data = this.recipe.ingredients.map(ingredient => {
             return {
               amount: ingredient.amount,
@@ -74,16 +74,19 @@ recipeForm!: FormGroup;
               name: ingredient.name
             };
           });
+
+          console.log(this.dataSource);
           console.log(this.recipe?.title);
 
           //get hours from minutes
-          let hours = this.recipe?.readyInMinutes/60;
+          let hours = this.recipe?.readyInMinutes / 60;
           hours = Math.round(hours);
 
-          this.recipeForm = this.fb.group({
+          this.recipeForm =
+            this.fb.group({
             id: [''],
             title: [this.recipe?.title],
-            readyInMinutes: [this.recipe?.readyInMinutes%60],
+            readyInMinutes: [this.recipe?.readyInMinutes % 60],
             readyInHours: [hours],
             servings: [this.recipe?.servings],
             image: [this.recipe?.image],
@@ -97,16 +100,18 @@ recipeForm!: FormGroup;
               glutenFree: [this.recipe?.categories.glutenFree],
               dairyFree: [this.recipe?.categories.dairyFree],
             }),
+            ingredients: this.fb.array([
+              this.fb.group({
+                id: [''],
+                name: [''],
+                amount: [0],
+                unit: ['']
+              }),
 
-            extendedIngredients: this.fb.group({
-                id: ['1'],
-                name: ['Karotte'],
-                amount: ['5'],
-                unit: ['stück']
-              },
-            )
-          })
-          ;
+            ])
+          });
+
+
         });
       } else {
         console.error('No recipe ID found in route');
@@ -114,50 +119,66 @@ recipeForm!: FormGroup;
     });
 
   }
+// helper for the form
 
 
+  newIngredient(): FormGroup{
+    return this.fb.group({
+      id: [''],
+      name: [''],
+      amount: [0],
+      unit: ['']
+    })
+  }
 
+  addIngredient(){
+    this.getIngredients().push(this.newIngredient());
+  }
 
+removeIngredient(index:number){
+    this.getIngredients().removeAt(index);
+}
   updateRecipe() {
     return 0;
   }
 
-  addIngredient() {
-    return 0;
+
+  getIngredients() {
+    return this.recipeForm.get('ingredients') as FormArray;
   }
 
   onSubmit() {
     return;
   }
 
-/*
-    updateRecipeData() {
-      if (this.updatedRecipe.categories.vegetarian == this.recipe?.categories.vegetarian &&
-        this.updatedRecipe.categories.vegan == this.recipe?.categories.vegan &&
-        this.updatedRecipe.categories.glutenFree == this.recipe?.categories.glutenFree &&
-        this.updatedRecipe.categories.dairyFree == this.recipe?.categories.dairyFree) {
+  /*
+      updateRecipeData() {
+        if (this.updatedRecipe.categories.vegetarian == this.recipe?.categories.vegetarian &&
+          this.updatedRecipe.categories.vegan == this.recipe?.categories.vegan &&
+          this.updatedRecipe.categories.glutenFree == this.recipe?.categories.glutenFree &&
+          this.updatedRecipe.categories.dairyFree == this.recipe?.categories.dairyFree) {
 
-        return;
-      }
+          return;
+        }
 
-      const recipeDiet: Diet = {
-        vegan: this.updatedRecipe.categories.vegan,
-        vegetarian: this.updatedRecipe.categories.vegetarian,
-        glutenFree: this.updatedRecipe.categories.glutenFree,
-        dairyFree: this.updatedRecipe.categories.dairyFree
-      }
-      this.recipeService.patchRecipeData(this.recipe).subscribe(data => {
-        this.recipe?.categories.vegetarian = data.vegetarian;
-        this.recipe?.categories.vegan = data.vegan;
-        this.recipe?.categories.glutenFree = data.glutenFree;
-        this.recipe?.categories.dairyFree = data.dairyFree;
+        const recipeDiet: Diet = {
+          vegan: this.updatedRecipe.categories.vegan,
+          vegetarian: this.updatedRecipe.categories.vegetarian,
+          glutenFree: this.updatedRecipe.categories.glutenFree,
+          dairyFree: this.updatedRecipe.categories.dairyFree
+        }
+        this.recipeService.patchRecipeData(this.recipe).subscribe(data => {
+          this.recipe?.categories.vegetarian = data.vegetarian;
+          this.recipe?.categories.vegan = data.vegan;
+          this.recipe?.categories.glutenFree = data.glutenFree;
+          this.recipe?.categories.dairyFree = data.dairyFree;
 
-      });
-    }*/
+        });
+      }*/
 
   //get the checkbox value
-    updateDiet(diet: MatChipSelectionChange, dietName: string) {
-    if(this.recipe){ //if weil recipe nicht optional sein darf
+  updateDiet(diet: MatChipSelectionChange, dietName: string) {
+    if (this.recipe) { //if weil recipe nicht optional sein darf
       switch (dietName) {
         case 'vegetarian':
           this.recipe.categories.vegetarian = diet.selected;
@@ -171,9 +192,9 @@ recipeForm!: FormGroup;
         case 'dairyFree':
           this.recipe.categories.dairyFree = diet.selected;
           break;
-    }
-
       }
+
     }
+  }
 
 }
