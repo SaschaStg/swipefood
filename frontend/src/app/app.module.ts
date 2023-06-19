@@ -34,7 +34,7 @@ import {MatListModule} from "@angular/material/list";
 import {RecipeInputComponent} from './recipe-input/recipe-input.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
-import {WelcomeComponent} from './auth/welcome/welcome.component';
+import {WelcomeComponent} from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
