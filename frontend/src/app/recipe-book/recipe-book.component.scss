@@ -63,6 +63,15 @@
   width: 18px;
 }
 
+.book-add-recipe {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.mat-mdc-card-content {
+  padding-top: 10px;
+}
+
 @media (max-width: 600px) {
   .book-card {
     width: 100%;

@@ -12,10 +12,10 @@
           <mat-card-content class="book-content-container">
             <div class="book-prepare">
               <mat-icon class="book-icon">access_time</mat-icon>
-              <span>{{likedRecipe.readyInMinutes}}</span>
+              <span>{{likedRecipe.readyInMinutes}} minutes</span>
             </div>
             <button [routerLink]="['/recipes/' + likedRecipe.id]" mat-flat-button color="primary">
-              more information
+              more info
             </button>
           </mat-card-content>
         </div>
@@ -39,8 +39,11 @@
       <mat-card-content class="book-content-container">
         <div class="book-prepare">
         <mat-icon class="book-icon">access_time</mat-icon>
-        <span>{{customRecipe.readyInMinutes}}</span>
+        <span>{{customRecipe.readyInMinutes}} minutes</span>
         </div>
+        <button [routerLink]="['/recipes/' + customRecipe.id]" mat-flat-button color="primary">
+          more info
+        </button>
         <button mat-flat-button [routerLink]="['/recipe-input/' + customRecipe.id]" color="primary">
           <mat-icon class="material-icons">edit</mat-icon>
           Edit
@@ -52,8 +55,8 @@
   </mat-card>
     </div>
 
-    <div style="text-align: center">
-      <button mat-flat-button color="primary">
+    <div class="book-add-recipe">
+      <button  mat-flat-button [routerLink]="['/recipe-input']" color="primary" >
         <mat-icon class="material-icons">add</mat-icon>
         Add recipes
       </button>
