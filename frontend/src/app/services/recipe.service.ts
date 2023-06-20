@@ -19,6 +19,14 @@ export class RecipeService {
     return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
   }
 
+  patchRecipeWithId(recipe: Recipe): Observable<Recipe>{
+    return this.httpClient.post<Recipe>(`api/recipes/{recipeId}`, recipe)
+  }
+
+  postRecipe(recipe: Recipe): Observable<Recipe>{
+      return this.httpClient.post<Recipe>(`api/recipes`, recipe)
+  }
+
   addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
     const body = {isLiked: isLiked};
     return this.httpClient.post<Recipe>(`api/recipes/${recipeId}/swipe`, body);
@@ -31,5 +39,7 @@ export class RecipeService {
   getRandomRecipe(): Observable<Recipe> {
     return this.httpClient.get<Recipe>(`api/recipes/random`);
   }
+
+
 
 }

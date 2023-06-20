@@ -6,6 +6,7 @@ import {authGuard} from "./auth/auth.guards";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {SettingsComponent} from "./settings/settings.component";
 import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
+import {RecipeInputComponent} from "./recipe-input/recipe-input.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,8 @@ const routes: Routes = [
         children: [
           {path: '', component: SwipeComponent},
           {path: 'settings', component: SettingsComponent},
+          {path: 'recipe-input', component: RecipeInputComponent},
+          {path: 'recipe-input/:id', component: RecipeInputComponent},
           {path: 'recipes/:id', component: RecipeInformationComponent},
           {path: 'cookbook', component: RecipeBookComponent},
           {path: ':id', component: SwipeComponent}
