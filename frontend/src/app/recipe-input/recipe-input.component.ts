@@ -19,19 +19,12 @@ export class RecipeInputComponent implements OnInit {
   recipe?: Recipe;
 
 
-
-
   constructor(
     private fb: FormBuilder,
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
   ) {
-    //get recipe Ingredients
-
-
-    //Category Filter for Chips Autocomplete
-
   }
 
   recipeForm!: FormGroup;
@@ -71,7 +64,7 @@ export class RecipeInputComponent implements OnInit {
         });
 
       if (recipeId) {
-        this.newRecipe=false;
+        this.newRecipe = false;
         this.recipeService.getRecipeById(recipeId).subscribe(data => {
           this.recipe = data;
           this.recipeForm.patchValue(this.recipe);
@@ -122,9 +115,6 @@ export class RecipeInputComponent implements OnInit {
 
   }
 
-  mapIngredients() {
-    return 0;
-  }
 
   addIngredient() {
     this.getIngredients().push(this.newIngredient());
@@ -132,7 +122,7 @@ export class RecipeInputComponent implements OnInit {
 
   loadIngredient() {
 
-        this.recipeForm.setControl('ingredients', this.fb.array(this.recipe?.ingredients?.map((ingredient) =>
+    this.recipeForm.setControl('ingredients', this.fb.array(this.recipe?.ingredients?.map((ingredient) =>
         this.fb.group({
           id: [ingredient.id],
           name: [ingredient.name],
@@ -157,40 +147,19 @@ export class RecipeInputComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.newRecipe){
+    console.log(this.newRecipe);
+    if (this.newRecipe) {
       this.recipeService.postRecipe(this.recipeForm.value);
+      console.info('new recipe post');
+      //route to cookbook
     }
-    if(!this.newRecipe){
+    if (!this.newRecipe) {
       this.recipeService.patchRecipeWithId(this.recipeForm.value);
+      console.info('recipe patched');
     }
-    console.log(this.recipeForm.value);
+
     return;
   }
-
-  /*
-      updateRecipeData() {
-        if (this.updatedRecipe.categories.vegetarian == this.recipe?.categories.vegetarian &&
-          this.updatedRecipe.categories.vegan == this.recipe?.categories.vegan &&
-          this.updatedRecipe.categories.glutenFree == this.recipe?.categories.glutenFree &&
-          this.updatedRecipe.categories.dairyFree == this.recipe?.categories.dairyFree) {
-
-          return;
-        }
-
-        const recipeDiet: Diet = {
-          vegan: this.updatedRecipe.categories.vegan,
-          vegetarian: this.updatedRecipe.categories.vegetarian,
-          glutenFree: this.updatedRecipe.categories.glutenFree,
-          dairyFree: this.updatedRecipe.categories.dairyFree
-        }
-        this.recipeService.patchRecipeData(this.recipe).subscribe(data => {
-          this.recipe?.categories.vegetarian = data.vegetarian;
-          this.recipe?.categories.vegan = data.vegan;
-          this.recipe?.categories.glutenFree = data.glutenFree;
-          this.recipe?.categories.dairyFree = data.dairyFree;
-
-        });
-      }*/
 
   //get the checkbox value
   updateDiet(diet: MatChipSelectionChange, dietName: string) {
@@ -209,8 +178,6 @@ export class RecipeInputComponent implements OnInit {
           this.recipe.categories.dairyFree = diet.selected;
           break;
       }
-
     }
   }
-
 }
