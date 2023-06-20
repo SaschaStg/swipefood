@@ -20,6 +20,7 @@ const routes: Routes = [
         children: [
           {path: '', component: SwipeComponent},
           {path: 'settings', component: SettingsComponent},
+          {path: 'recipe-input', component: RecipeInputComponent},
           {path: 'recipe-input/:id', component: RecipeInputComponent},
           {path: 'recipes/:id', component: RecipeInformationComponent},
           {path: 'cookbook', component: RecipeBookComponent},

@@ -141,7 +141,7 @@
           </mat-card>
 
 
-          <button mat-button (click)="updateRecipe()" type="submit">
+          <button mat-button (click)="updateRecipe()" [disabled]="!recipeForm.valid" type="submit">
             <mat-icon matSuffix>save</mat-icon>
             <mat-label>Save Recipe</mat-label>
           </button>

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
+import {catchError, Observable} from "rxjs";
 import {Recipe} from "../models/recipe";
 import {HttpClient} from "@angular/common/http";
 
@@ -18,6 +18,13 @@ export class RecipeService {
   getLikedRecipes(): Observable<Recipe[]> {
     return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
   }
+  patchRecipeWithId(recipe: Recipe): Observable<Recipe>{
+    return this.httpClient.post<Recipe>(`api/recipes/{recipeId}`, recipe)
+  }
+
+  postRecipe(recipe: Recipe): Observable<Recipe>{
+      return this.httpClient.post<Recipe>(`api/recipes`, recipe)
+  }
 
   addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
     const body = {isLiked: isLiked};
@@ -31,5 +38,7 @@ export class RecipeService {
   getRandomRecipe(): Observable<Recipe> {
     return this.httpClient.get<Recipe>(`api/recipes/random`);
   }
+
+
 
 }
