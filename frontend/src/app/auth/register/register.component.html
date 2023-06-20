@@ -18,7 +18,7 @@
         <input matInput formControlName="password" type="password">
       </mat-form-field>
       <h4>Choose your preferences</h4>
-      <mat-chip-listbox aria-label="Food selection">
+      <mat-chip-listbox aria-label="Food selection" multiple>
         <mat-chip-option (selectionChange)="setDiet($event,'vegan')">Vegan</mat-chip-option>
         <mat-chip-option (selectionChange)="setDiet($event,'vegetarian')">Vegetarian</mat-chip-option>
         <mat-chip-option (selectionChange)="setDiet($event,'glutenFree')">Gluten free</mat-chip-option>
