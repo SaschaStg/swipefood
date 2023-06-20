@@ -16,14 +16,13 @@ h2 {
 
 .swipe-more-information > button {
   color: unset;
-  padding: 0 10px 0 10px !important;
   width: 150px;
 }
 
 .swipe-img {
   height: 180px;
   width: 100%;
-  border-radius: 20px 20px 0 0 !important;
+  border-radius: 20px 20px 0 0;
   position: relative;
   display: flex;
 
@@ -48,7 +47,7 @@ h2 {
 }
 
 .swipe-chips {
-  background-color: #4CAF50 !important;
+  background-color: #4CAF50 !important; //need to override the default color because the normal color isn´t "primary" ist background-color: var(--mdc-chip-elevated-container-color, transparent); --mdc-chip-elevated-container-color: #595959; (grey)
 }
 
 .swipe-text, .swipe-recipe-information {
@@ -87,7 +86,7 @@ h2 {
 }
 
 .padding-null {
-  padding: 0 !important;
+  padding: 0 !important; //overwrite the padding from the mdc-card of padding: 0 16px;
 }
 
 .padding-top {

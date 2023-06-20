@@ -16,6 +16,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+
         component: LayoutComponent,
         children: [
           {path: '', component: SwipeComponent},
@@ -25,8 +26,9 @@ const routes: Routes = [
           {path: 'recipes/:id', component: RecipeInformationComponent},
           {path: 'cookbook', component: RecipeBookComponent},
           {path: ':id', component: SwipeComponent}
-        ]
-      }
+        ],
+      },
+      {path: 'recipes/:id', component: RecipeInformationComponent},
     ],
   },
   {

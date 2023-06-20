@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthResult} from "../auth-result";
 import {MatChipSelectionChange} from "@angular/material/chips";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {SnackBarService} from "../../services/snackbar.service";
 
 @Component({
   selector: 'app-register',
@@ -16,7 +16,7 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
   ) {
   }
 
@@ -48,18 +48,18 @@ export class RegisterComponent {
     }).subscribe(result => {
       switch (result) {
         case AuthResult.Ok:
-          this.openSnackBar('Registration successful!');
+          this.snackBarService.openSnackBar('Registration successful!');
           this.router.navigate(['']);
           return;
         case AuthResult.WrongCredentials:
           // Username is already taken
           console.error('Username is already taken.');
-          this.openSnackBar('Username is already taken.', 'warn');
+          this.snackBarService.openSnackBar('Username is already taken.', 'warn');
           break;
         case AuthResult.ServerError:
         case AuthResult.NetworkError:
           console.error(`Could not register: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`);
-          this.openSnackBar(`Could not register: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`, 'warn');
+          this.snackBarService.openSnackBar(`Could not register: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`, 'warn');
           break;
       }
       this.registerForm.enable();
@@ -84,18 +84,6 @@ export class RegisterComponent {
         this.registerForm.patchValue({dairyFree: diet.selected});
         break;
     }
-  }
-
-  openSnackBar(message: string, style?: string) {
-    const snackbarStyle = style == "warn" ? "snackbarWarn" : "snackbarPrimary";
-    const sbRef = this.snackBar.open(
-      message, 'Close', {
-        duration: 4000,
-        panelClass: [snackbarStyle],
-      })
-    sbRef.onAction().subscribe(() => {
-      sbRef.dismiss();
-    });
   }
 
 }

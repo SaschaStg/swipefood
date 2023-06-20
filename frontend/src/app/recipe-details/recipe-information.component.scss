@@ -1,13 +1,31 @@
 $default-spacing: 20px;
 $smaller-spacing: 10px;
 $border-radius: 20px;
-$placeholder-background-color: #5A8154;
 
 .information-container {
-  margin: 20px;
-  max-width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
 }
+
+/* smartphone */
+@media (max-width: 767px) {
+  .information-container {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+/* tablet and pc */
+@media (min-width: 768px) {
+  .information-container {
+    margin: auto;
+  }
+}
+
 
 .information-image {
   object-fit: cover;
@@ -15,14 +33,33 @@ $placeholder-background-color: #5A8154;
   border-radius: 5px;
 }
 
+.information-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.information-button {
+  position: fixed;
+  z-index: 100;
+  color: unset;
+}
+
 .information-card {
   margin-top: $default-spacing;
   margin-bottom: $default-spacing;
   padding: $smaller-spacing;
+  width: 100%;
+}
+
+.mat-elevation-z8 {
+  box-shadow: unset;
 }
 
 .mat-mdc-standard-chip {
-  background-color: $placeholder-background-color !important;
+  background-color: #4CAF50 !important; //need to override the default color because the normal color isn´t "primary" ist background-color: var(--mdc-chip-elevated-container-color, transparent); --mdc-chip-elevated-container-color: #595959; (grey)
 }
 
 .information-chipbox {
@@ -52,6 +89,7 @@ $placeholder-background-color: #5A8154;
 .information-ingredients {
   margin-top: $default-spacing;
   text-align: center;
+  overflow: hidden;
 
   hr {
     border-top: 1px solid var(--mat-background);
@@ -60,5 +98,11 @@ $placeholder-background-color: #5A8154;
   .information-ingredients-single {
     padding-bottom: $smaller-spacing;
     padding-top: $smaller-spacing;
+  }
+}
+
+@media (max-width: 400px) {
+  .table-container {
+    overflow-x: scroll;
   }
 }
