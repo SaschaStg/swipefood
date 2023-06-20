@@ -4,6 +4,7 @@ import {Recipe} from "../models/recipe";
 import {CdkDrag, CdkDragEnd, CdkDragMove} from '@angular/cdk/drag-drop';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SwipeContainerColor} from "./swipe-container-color";
+import {SnackBarService} from "../services/snackbar.service";
 
 @Component({
   selector: 'app-swipe',
@@ -28,29 +29,55 @@ export class SwipeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public renderer: Renderer2,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private snackBarService: SnackBarService,
   ) {
   }
 
   //load both recipes for card1 and card2 on start
   ngOnInit(): void {
+    const errormessage = "can´t load recipe!"
+    const style = "warn"
     this.route.paramMap.subscribe(params => {
       const recipeId = params.get('id');
       if (recipeId) {
-        this.recipeService.getRecipeById(recipeId).subscribe(data => {
-          this.recipe = data;
-        });
-        this.recipeService.getRandomRecipe().subscribe((data) => {
-          this.nextRecipe = data;
+        this.recipeService.getRecipeById(recipeId).subscribe({
+          next: (data) => {
+            this.recipe = data;
+            this.recipeService.getRandomRecipe().subscribe({
+              next: (data) => {
+                this.nextRecipe = data;
+              },
+              error: (err) => {
+                this.snackBarService.openSnackBar(errormessage, style);
+                console.log(err)
+              }
+            });
+          },
+          error: (err) => {
+            this.snackBarService.openSnackBar(errormessage, style);
+            console.log(err)
+          }
         });
       } else {
-        this.recipeService.getRandomRecipe().subscribe((data) => {
-          this.recipe = data;
-          this.recipeService.getRandomRecipe().subscribe((data) => {
-            this.nextRecipe = data;
-          });
+        this.recipeService.getRandomRecipe().subscribe({
+          next: (data) => {
+            this.recipe = data;
+            this.recipeService.getRandomRecipe().subscribe({
+              next: (data) => {
+                this.nextRecipe = data;
+              },
+              error: (err) => {
+                this.snackBarService.openSnackBar(errormessage, style);
+                console.log(err)
+              }
+            });
+          },
+          error: (err) => {
+            this.snackBarService.openSnackBar(errormessage, style);
+            console.log(err)
+          }
         });
-
       }
     })
   }

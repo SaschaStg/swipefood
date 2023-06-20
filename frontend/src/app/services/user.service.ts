@@ -15,11 +15,11 @@ export class UserService {
   ) {
   }
 
-  getUserName():Observable<User> {
+  getUserName(): Observable<User> {
     return this.http.get<User>(`${this.authRoot}/me`);
   }
 
-  patchUserDiet(diet:Diet):Observable<Diet>{
+  patchUserDiet(diet: Diet): Observable<Diet> {
     return this.http.patch<Diet>(`${this.authRoot}/me/diet`, diet);
   }
 }

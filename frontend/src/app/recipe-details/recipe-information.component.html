@@ -1,5 +1,13 @@
 <div *ngIf="recipe" class="information-container">
-  <img mat-card-image class="information-image" [src]="recipe.image" alt="{{recipe.title}}">
+  <img mat-card-image [src]="recipe.image" alt="{{recipe.title}}" class="information-image">
+  <div class="information-button-container">
+    <button mat-raised-button class="information-button" color="primary" [routerLink]="'../../' + recipe.id">
+      <mat-icon fontIcon="arrow_back"></mat-icon>
+      Back
+    </button>
+  </div>
+
+
   <mat-card class="information-card">
     <mat-card-header>
       <h1>
@@ -27,30 +35,30 @@
     <mat-card-header class="information-header">
       <h2>Ingredients</h2>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content class="table-container">
 
 
-        <ng-container class="information-ingredients">
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef>Amount</th>
-              <td mat-cell *matCellDef="let ingredient">{{ ingredient.amount }}</td>
-            </ng-container>
+      <ng-container class="information-ingredients">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td mat-cell *matCellDef="let ingredient">{{ ingredient.amount }}</td>
+          </ng-container>
 
-            <ng-container matColumnDef="unit">
-              <th mat-header-cell *matHeaderCellDef>Unit</th>
-              <td mat-cell *matCellDef="let ingredient">{{ ingredient.unit }}</td>
-            </ng-container>
+          <ng-container matColumnDef="unit">
+            <th mat-header-cell *matHeaderCellDef>Unit</th>
+            <td mat-cell *matCellDef="let ingredient">{{ ingredient.unit }}</td>
+          </ng-container>
 
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Name</th>
-              <td mat-cell *matCellDef="let ingredient">{{ ingredient.name }}</td>
-            </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let ingredient">{{ ingredient.name }}</td>
+          </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let ingredient; columns: displayedColumns;"></tr>
-          </table>
-        </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let ingredient; columns: displayedColumns;"></tr>
+        </table>
+      </ng-container>
     </mat-card-content>
   </mat-card>
 
@@ -59,9 +67,14 @@
     <mat-card-header class="information-header">
       <h2>Instructions</h2>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content *ngIf="recipe.instructions && recipe.instructions !== '';else elseBlock">
       <div [innerHTML]="recipe.instructions" class="information-text"></div>
     </mat-card-content>
+    <ng-template #elseBlock>
+      <mat-card-content>
+        <div class="information-text">No instructions available</div>
+      </mat-card-content>
+    </ng-template>
   </mat-card>
 
 </div>

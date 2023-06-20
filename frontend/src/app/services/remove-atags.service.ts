@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +19,11 @@ export class RemoveATagsService {
       anchorElement.parentNode?.replaceChild(spanElement, anchorElement);
     }
 
-    if(cut > 0) {
+    if (cut > 0) {
       const words = tempDiv.innerHTML.split(' ').slice(0, cut);
       return words.join(' ') + " ...";
     }
 
     return tempDiv.innerHTML;
-}
+  }
 }

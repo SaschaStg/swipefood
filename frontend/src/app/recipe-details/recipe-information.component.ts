@@ -5,6 +5,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Ingredients} from "../models/ingredients";
 import {ActivatedRoute} from "@angular/router";
 import {RemoveATagsService} from "../services/remove-atags.service";
+import {SnackBarService} from "../services/snackbar.service";
 
 @Component({
   selector: 'app-recipe-details',
@@ -18,7 +19,12 @@ export class RecipeInformationComponent implements OnInit {
   displayedColumns: string[] = ['amount', 'unit', 'name'];
   dataSource: MatTableDataSource<Ingredients> = new MatTableDataSource<Ingredients>();
 
-  constructor(private recipeService: RecipeService, private route: ActivatedRoute, public removeATagsService: RemoveATagsService) {
+  constructor(
+    private recipeService: RecipeService,
+    private route: ActivatedRoute,
+    public removeATagsService: RemoveATagsService,
+    private snackBarService: SnackBarService,
+  ) {
     this.dataSource = new MatTableDataSource<Ingredients>();
   }
 
@@ -28,20 +34,28 @@ export class RecipeInformationComponent implements OnInit {
       const recipeId = params.get('id');
 
       if (recipeId) {
-        this.recipeService.getRecipeById(recipeId).subscribe(data => {
-          this.recipe = data;
-          this.dataSource.data = this.recipe.ingredients.map(ingredient => {
-            return {
-              amount: ingredient.amount,
-              unit: ingredient.unit,
-              name: ingredient.name
-            };
-          });
+        this.recipeService.getRecipeById(recipeId).subscribe({
+          next: (data) => {
+            this.recipe = data;
+            this.dataSource.data = this.recipe.ingredients.map(ingredient => {
+              return {
+                amount: ingredient.amount,
+                unit: ingredient.unit,
+                name: ingredient.name
+              };
+            });
+          },
+          error: (err) => {
+            console.error(err);
+            this.snackBarService.openSnackBar('No recipe ID found in route', "warn");
+          }
         });
       } else {
         console.error('No recipe ID found in route');
+        this.snackBarService.openSnackBar('No recipe ID found in route', "warn");
       }
-    });
+    })
   }
+
 
 }

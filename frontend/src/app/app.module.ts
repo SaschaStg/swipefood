@@ -17,7 +17,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
 import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
-import {MatTabsModule} from "@angular/material/tabs";
 import {MatTableModule} from "@angular/material/table";
 import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {SwipeCardComponent} from './swipe/swipe-card/swipe-card.component';
@@ -26,11 +25,12 @@ import {FooterComponent} from "./layout/footer/footer.component";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {NgOptimizedImage} from "@angular/common";
 import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatListModule} from "@angular/material/list";
-import {SettingsComponent} from "./settings/settings.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {SettingsComponent} from "./settings/settings.component";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatListModule} from "@angular/material/list";
 import {RecipeInputComponent} from './recipe-input/recipe-input.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -38,57 +38,48 @@ import {MatSelectModule} from "@angular/material/select";
 @NgModule({
   declarations: [
     AppComponent,
-    SwipeComponent,
-    SwipeCardComponent,
-    ThemeToggleComponent,
-    RecipeInformationComponent,
-    HeaderComponent,
     FooterComponent,
+    HeaderComponent,
     LayoutComponent,
-    SettingsComponent,
-    RecipeInformationComponent,
-    ThemeToggleComponent,
     RecipeBookComponent,
-    RecipeInputComponent
+    RecipeInformationComponent,
+    RecipeInformationComponent,
+    RecipeInputComponent,
+    SettingsComponent,
+    SwipeCardComponent,
+    SwipeComponent,
+    ThemeToggleComponent,
+    ThemeToggleComponent,
   ],
   imports: [
     // External modules
-    BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,
-    HammerModule,
-    NgxSkeletonLoaderModule,
+    BrowserModule,
     CdkDrag,
+    FormsModule,
+    HammerModule,
+    HttpClientModule,
     NgOptimizedImage,
+    NgxSkeletonLoaderModule,
     ReactiveFormsModule,
     // Material modules
     MatButtonModule,
     MatButtonToggleModule,
-    MatButtonToggleModule,
     MatCardModule,
-    MatButtonModule,
     MatChipsModule,
+    MatFormFieldModule,
     MatIconModule,
-    MatSlideToggleModule,
-    MatSlideToggleModule,
     MatInputModule,
+    MatListModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatTableModule,
-    MatFormFieldModule,
-    // Routing module
-    AppRoutingModule,
     MatTabsModule,
     MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatTableModule,
-    NgxSkeletonLoaderModule,
-    CdkDrag,
-    NgOptimizedImage,
-    ReactiveFormsModule,
-    MatTabsModule,
-    MatSelectModule,
+    // Routing module
+    AppRoutingModule,
   ],
   providers: [
     httpInterceptorProviders,
