@@ -1,3 +1,7 @@
+$default-spacing: 20px;
+$smaller-spacing: 10px;
+$border-radius: 20px;
+$placeholder-background-color: #5A8154;
 
   .material-symbols-outlined {
     font-variation-settings:
@@ -6,21 +10,59 @@
       'GRAD' 0,
       'opsz' 48
   }
+
+.card {
+  max-width: 700px;
+  margin-top: $default-spacing;
+  margin-bottom: $default-spacing;
+  padding: $smaller-spacing;
+}
+
   .beneath{
     display: flex;
     flex-direction: row;
+    gap: 25px;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+  .beneath mat-form-field{
+    width: 150px;
   }
   .ThirtyWidth{
     width: 30%;
   }
-
+  .inputFullWidth{
+    width: 100%;
+  }
   mat-tab-group {
-
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     gap: 25px;
   }
   mat-tab {
     width:70%
+
   }
+.information-chipbox {
+  margin-top: $default-spacing;
+}
+
+.information-container {
+  margin: 20px;
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.primaryButtonStyle{
+  color: $placeholder-background-color ;
+}
+
+.iconText{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}

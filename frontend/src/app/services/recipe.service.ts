@@ -18,6 +18,7 @@ export class RecipeService {
   getLikedRecipes(): Observable<Recipe[]> {
     return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
   }
+
   patchRecipeWithId(recipe: Recipe): Observable<Recipe>{
     return this.httpClient.post<Recipe>(`api/recipes/{recipeId}`, recipe)
   }

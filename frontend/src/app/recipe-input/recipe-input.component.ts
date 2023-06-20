@@ -41,7 +41,7 @@ export class RecipeInputComponent implements OnInit {
           title: [''],
           readyInMinutes: [0],
           //readyInHours: [hours],
-          servings: [0],
+          servings: [1],
           //image: [this.recipe?.image],
           //imageType: [this.recipe?.imageType],
           summary: [''],
@@ -57,7 +57,7 @@ export class RecipeInputComponent implements OnInit {
             this.fb.group({
               id: [''],
               name: [''],
-              amount: [''],
+              amount: ['1'],
               unit: ['']
             }),
           ])
@@ -77,7 +77,7 @@ export class RecipeInputComponent implements OnInit {
           id: '',
           title: '',
           readyInMinutes: 0,
-          servings: 0,
+          servings: 1,
           image: '',
           imageType: '',
           summary: '',
@@ -91,7 +91,7 @@ export class RecipeInputComponent implements OnInit {
           ingredients: [{
             id: 0,
             name: '',
-            amount: 0,
+            amount: 1,
             unit: '',
           },]
         }
@@ -149,12 +149,16 @@ export class RecipeInputComponent implements OnInit {
   onSubmit() {
     console.log(this.newRecipe);
     if (this.newRecipe) {
-      this.recipeService.postRecipe(this.recipeForm.value);
+      this.recipeService.postRecipe(this.recipeForm.value as Recipe).subscribe(data => {
+        console.log(data)
+      });
       console.info('new recipe post');
       //route to cookbook
     }
     if (!this.newRecipe) {
-      this.recipeService.patchRecipeWithId(this.recipeForm.value);
+      this.recipeService.patchRecipeWithId(this.recipeForm.value as Recipe).subscribe(data => {
+        console.log(data)
+      });
       console.info('recipe patched');
     }
 
