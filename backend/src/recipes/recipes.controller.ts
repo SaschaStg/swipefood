@@ -14,14 +14,13 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SpoonacularService } from './spoonacular.service';
-import { forkJoin, map, switchMap, tap } from 'rxjs';
+import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { CreateRecipeDto, RecipeDto, SwipeDto, UpdateRecipeDto } from './dto';
 import { RecipesService } from './recipes.service';
 import { Request } from 'express';
 import { User } from '../users/user.entity';
 import { ReqUser } from '../auth/user.decorator';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
-import { SwipefoodRecipe } from './recipe.entity';
 
 @ApiTags('recipes')
 @ApiBearerAuth()
@@ -51,29 +50,90 @@ export class RecipesController {
   }
 
   @Get('liked')
-  async getLikedRecipes(@ReqUser() user: User): Promise<any> {
+  getLikedRecipes(@ReqUser() user: User): Observable<RecipeDto[]> {
+    // 1. Get all liked recipe ids (unified) and timestamps from the database
     return fromPromise(this.recipeService.getLikedRecipeIds(user)).pipe(
-      switchMap((recipeIds) => {
-        return forkJoin(
-          recipeIds.map((unifiedId) => {
-            const [collection, id] = unifiedId.split('-');
+      // 2. Split the recipe ids and timestamps according to their collection (SWipefood or SPoonacular)
+      map((recipes) =>
+        recipes.reduce<{
+          swRecipes: { id: number; timestamp: Date }[];
+          spRecipes: { id: number; timestamp: Date }[];
+        }>(
+          (acc, recipe) => {
+            const [collection, id] = recipe.id.split('-');
             switch (collection) {
               case 'sw':
-                return this.recipeService.getSwipefoodRecipeById(+id, user);
+                acc.swRecipes.push({ id: +id, timestamp: recipe.timestamp });
+                return acc;
               case 'sp':
-                return this.spoonacularService.getSpoonacularRecipeById(+id);
+                acc.spRecipes.push({ id: +id, timestamp: recipe.timestamp });
+                return acc;
+              default:
+                // Ignore invalid recipe ids
+                return acc;
             }
-          }),
-        );
+          },
+          { swRecipes: [], spRecipes: [] },
+        ),
+      ),
+      // 3. Get the recipes from the respective services
+      switchMap((recipes) => {
+        // This code heavily uses forkJoin to resolve nested observables
+        return forkJoin({
+          swRecipes:
+            // If there are no recipes, return an empty array
+            recipes.swRecipes.length === 0
+              ? of([])
+              : forkJoin(
+                  // Create an array of observables; one for each recipe
+                  recipes.swRecipes.map((recipe) =>
+                    fromPromise(
+                      this.recipeService.getSwipefoodRecipeById(
+                        recipe.id,
+                        user,
+                      ),
+                    ).pipe(
+                      // Combine the recipe with its timestamp, transforming it into a RecipeDto while we're at it
+                      map((swipefoodRecipe) => ({
+                        recipe: RecipeDto.fromSwipefoodRecipe(swipefoodRecipe),
+                        timestamp: recipe.timestamp,
+                      })),
+                    ),
+                  ) as Observable<{ recipe: RecipeDto; timestamp: Date }>[],
+                ),
+          spRecipes:
+            // If there are no recipes, return an empty array
+            recipes.spRecipes.length === 0
+              ? of([])
+              : this.spoonacularService
+                  // Get the recipes from spoonacular using the bulk endpoint
+                  .getSpoonacularRecipesBulk(
+                    recipes.spRecipes.map((recipe) => recipe.id),
+                  )
+                  .pipe(
+                    map((spoonacularRecipes) => {
+                      // Combine the recipes with their timestamps, transforming them into a RecipeDto while we're at it
+                      return spoonacularRecipes.map((spoonacularRecipe, i) => ({
+                        // This assumes spoonacular returns the recipes in the same order as requested
+                        recipe:
+                          RecipeDto.fromSpoonacularRecipe(spoonacularRecipe),
+                        timestamp: recipes.spRecipes[i].timestamp,
+                      }));
+                    }),
+                  ),
+        });
       }),
+      // 4. Finally, combine the recipes from both services and sort them by timestamp
       map((recipes) =>
-        recipes.map((recipe) => {
-          if (recipe instanceof SwipefoodRecipe) {
-            return RecipeDto.fromSwipefoodRecipe(recipe);
-          } else {
-            return RecipeDto.fromSpoonacularRecipe(recipe);
-          }
-        }),
+        recipes.swRecipes
+          // Combine the recipes from both services
+          .concat(recipes.spRecipes)
+          // Sort by timestamp (newest first)
+          .sort((a, b) => {
+            return b.timestamp.getTime() - a.timestamp.getTime();
+          })
+          // Remove the timestamp, returning only the recipe
+          .map((recipe) => recipe.recipe),
       ),
     );
   }

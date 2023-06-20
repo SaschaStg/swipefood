@@ -66,4 +66,16 @@ export class SpoonacularService {
       )
       .pipe(map((response) => response.data.recipes[0]));
   }
+
+  getSpoonacularRecipesBulk(ids: number[]): Observable<SpoonacularRecipe[]> {
+    const url = `${this.spoonacularApiEndpoint}/recipes/informationBulk`;
+    return this.httpService
+      .get<SpoonacularRecipe[]>(url, {
+        ...this.requestConfig,
+        params: {
+          ids: ids.join(','),
+        },
+      })
+      .pipe(map((response) => response.data));
+  }
 }
