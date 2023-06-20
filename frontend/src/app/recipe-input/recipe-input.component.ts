@@ -167,7 +167,7 @@ export class RecipeInputComponent implements OnInit {
 
   //get the checkbox value
   updateDiet(diet: MatChipSelectionChange, dietName: string) {
-    if (this.recipe) { //if weil recipe nicht optional sein darf
+    if (this.recipe) { 
       switch (dietName) {
         case 'vegetarian':
           this.recipe.categories.vegetarian = diet.selected;
