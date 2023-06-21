@@ -35,11 +35,11 @@ export class LoginComponent {
           this.router.navigate(['']);
           return;
         case AuthResult.WrongCredentials:
-          this.snackBarService.openSnackBar('Wrong username or password.')
+          this.snackBarService.openSnackBar('Wrong username or password.', 'warn')
           break;
         case AuthResult.ServerError:
         case AuthResult.NetworkError:
-          this.snackBarService.openSnackBar(`Could not log in: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`);
+          this.snackBarService.openSnackBar(`Could not log in: ${result === AuthResult.NetworkError ? 'network error' : 'server error'}`, 'warn');
           break;
       }
       this.loginForm.enable();
