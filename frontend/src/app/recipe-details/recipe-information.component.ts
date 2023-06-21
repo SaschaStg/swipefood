@@ -3,9 +3,10 @@ import {Recipe} from "../models/recipe";
 import {RecipeService} from "../services/recipe.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {Ingredients} from "../models/ingredients";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {RemoveATagsService} from "../services/remove-atags.service";
 import {SnackBarService} from "../services/snackbar.service";
+import {NavigateService} from "../services/navigate.service";
 
 @Component({
   selector: 'app-recipe-details',
@@ -24,6 +25,8 @@ export class RecipeInformationComponent implements OnInit {
     private route: ActivatedRoute,
     public removeATagsService: RemoveATagsService,
     private snackBarService: SnackBarService,
+    private navigateService: NavigateService,
+    private router: Router,
   ) {
     this.dataSource = new MatTableDataSource<Ingredients>();
   }
@@ -57,5 +60,8 @@ export class RecipeInformationComponent implements OnInit {
     })
   }
 
+  back(): void {
+    this.navigateService.navigateTo(this.router.url, '../../' + this.recipe?.id);
+  }
 
 }
