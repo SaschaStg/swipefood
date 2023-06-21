@@ -21,7 +21,7 @@ export class UserService {
     return this.http.get<User>(`${this.authRoot}/me`);
   }
 
-  patchUserDiet(updateUser: UpdateUser): Observable<UpdateUser> {
+  updateUserInfo(updateUser: UpdateUser): Observable<UpdateUser> {
     return this.http.patch<Diet>(`${this.authRoot}/me`, updateUser);
   }
 }
