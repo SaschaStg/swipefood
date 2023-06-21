@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {SwipeComponent} from "./swipe/swipe.component";
 import {RecipeInformationComponent} from "./recipe-details/recipe-information.component";
+import {WelcomeComponent} from './welcome/welcome.component';
 import {authGuard} from "./auth/auth.guards";
 import {LayoutComponent} from "./layout/layout/layout.component";
 import {SettingsComponent} from "./settings/settings.component";
@@ -10,7 +11,12 @@ import {RecipeInputComponent} from "./recipe-input/recipe-input.component";
 
 const routes: Routes = [
   {
-    // Top level route to handle auth
+    // Route for the landing page (no auth required)
+    path: 'home',
+    component: WelcomeComponent,
+  },
+  {
+    // Top level route to handle auth -- used for the actual app after login
     path: '',
     canActivateChild: [authGuard], // Disable auth requirement by commenting out this line
     children: [

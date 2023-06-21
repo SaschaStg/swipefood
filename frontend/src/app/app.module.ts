@@ -34,6 +34,7 @@ import {MatListModule} from "@angular/material/list";
 import {RecipeInputComponent} from './recipe-input/recipe-input.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import {WelcomeComponent} from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -43,13 +44,12 @@ import {MatSelectModule} from "@angular/material/select";
     LayoutComponent,
     RecipeBookComponent,
     RecipeInformationComponent,
-    RecipeInformationComponent,
     RecipeInputComponent,
     SettingsComponent,
     SwipeCardComponent,
     SwipeComponent,
     ThemeToggleComponent,
-    ThemeToggleComponent,
+    WelcomeComponent,
   ],
   imports: [
     // External modules
