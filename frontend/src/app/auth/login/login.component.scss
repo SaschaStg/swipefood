@@ -1,9 +1,10 @@
 :host {
 
+  color:white;
+  
   .headline {
     display: flex;
     justify-content: center;
-    align-items: bottom;
   }
 
   .container {
@@ -28,7 +29,6 @@
 
   .login-form {
     display: flex;
-    align-items: bottom;
     flex-direction: column;
     margin: 2em 0;
   }
@@ -52,7 +52,7 @@
     width: 200px;
 
     &__content {
-      background-color: green;
+      background-color:#399B2A;
       width: 187px;
       border-radius: 4px;
       color: white;

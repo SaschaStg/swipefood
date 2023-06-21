@@ -1,9 +1,12 @@
 :host {
 
+  color:white;
+
   .login-btn-container {
     display: flex;
     justify-content: center;
     width: 187px;
+    padding-top:10px;
 
     &__content {
       background-color: #399B2A;
@@ -16,16 +19,14 @@
   .container {
     display: flex;
     height: 100%;
+    padding-left:20px;
+    padding-right:20px;
     align-items: center;
     justify-content: center;
     background-color: white;
     background-position: left top;
     background-size: cover;
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.549)), url("/assets/img/hintergrund.jpg");
-  }
-
-  .inner-container {
-    margin-top: 50px;
   }
 
   .img {
@@ -40,14 +41,14 @@
   }
 
   .register-form {
-    display: flex;
-    flex-direction: column;
-    width: 75vw;
-    margin: 2em 0;
+      display: flex;
+      flex-direction: column;
+      margin: 2em 0;
   }
 
   .login-container {
     display: flex;
+    justify-content: center;
     flex-direction: column;
     text-align: center;
     gap: 0.5em;
@@ -98,7 +99,7 @@
 ::ng-deep .white-form-field input::selection,
 ::ng-deep .white-form-field input::-moz-selection {
   color: white !important;
-  background: rgb(18, 140, 185) !important;
+   background: rgb(18, 140, 185) !important; 
 }
 
 ::ng-deep .white-form-field .mat-focused,
@@ -111,3 +112,26 @@
 ::ng-deep .white-form-field .mdc-notched-outline__trailing {
   border-color: white !important;
 }
+
+::ng-deep .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: white !important;
+}
+
+.mat-chip{
+  color:white;
+}
+
+::ng-deep .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color:white !important;
+}
+
+.mat-mdc-standard-chip.mat-primary.mat-mdc-chip-selected {
+  --mdc-chip-with-icon-selected-icon-color: #fff;
+  background-color:#4CAF50;
+  outline-style: none;
+}
+
+.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: transparent;
+  outline-style: solid;
+} 

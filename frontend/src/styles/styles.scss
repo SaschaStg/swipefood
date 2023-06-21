@@ -6,6 +6,8 @@
 html, body {
   height: 100%;
   overflow-x: hidden;
+  /* color:white !important; */
+
 }
 
 body {
@@ -45,6 +47,14 @@ body {
   border-radius: 4px;
   color: #fff !important;
   padding-right: 0;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-color: white;
+}
+
+.mat-button{
+  color:white;
 }
 
 
