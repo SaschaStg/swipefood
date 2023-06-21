@@ -1,9 +1,12 @@
 :host {
 
+  color:white;
+
   .login-btn-container {
     display: flex;
     justify-content: center;
     width: 187px;
+    padding-top:10px;
 
     &__content {
       background-color: #399B2A;
@@ -38,18 +41,10 @@
   }
 
   .register-form {
-    /* display: flex;
-    justify-content: center;
-    width:200px;
-    flex-direction: column;
-    width: 75vw;
-    margin: 2em 0; */
-    
       display: flex;
       align-items: bottom;
       flex-direction: column;
       margin: 2em 0;
-    
   }
 
   .login-container {
