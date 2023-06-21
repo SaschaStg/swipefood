@@ -15,8 +15,8 @@
             User Data
           </h3>
         </mat-card-subtitle>
-        <mat-form-field class="settings-input" aria-label="Change Username">
-          <mat-label>Change Username</mat-label>
+        <mat-form-field class="settings-input" aria-label="Change Displayname">
+          <mat-label>Change Displayname</mat-label>
           <input matInput placeholder="Username" formControlName="displayName">
           <mat-icon matSuffix>edit</mat-icon>
         </mat-form-field>
@@ -48,7 +48,13 @@
     </form>
   </mat-card>
   <div class="settings-button">
-    <button mat-raised-button (click)="updateUserData()" color="primary">
+    <button mat-raised-button (click)="updateUserData()" color="primary"
+            [disabled]="UserData.get('displayName')?.value === user.displayName &&
+      updatedUser.vegetarian === user.vegetarian &&
+      updatedUser.vegan === user.vegan &&
+      updatedUser.glutenFree === user.glutenFree &&
+      updatedUser.dairyFree === user.dairyFree"
+    >
       <mat-icon>save</mat-icon>
       Save Changes
     </button>

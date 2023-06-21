@@ -3,8 +3,8 @@ import {UserService} from "../services/user.service";
 import {User} from "../services/user";
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatChipSelectionChange} from "@angular/material/chips";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {UpdateUser} from "../services/updateUser";
+import {SnackBarService} from "../services/snackbar.service";
 
 @Component({
   selector: 'app-settings',
@@ -26,7 +26,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
   ) {
 
   }
@@ -45,16 +45,6 @@ export class SettingsComponent implements OnInit {
   }
 
   updateUserData() {
-    if (
-      this.UserData.get('displayName')?.value == this.user.displayName &&
-      this.updatedUser.vegetarian == this.user.vegetarian &&
-      this.updatedUser.vegan == this.user.vegan &&
-      this.updatedUser.glutenFree == this.user.glutenFree &&
-      this.updatedUser.dairyFree == this.user.dairyFree
-    ) {
-      this.openSnackBar("No changes detected", "warn");
-      return;
-    }
     const updateUser: UpdateUser = {
       displayName: this.UserData.get('displayName')?.value,
       vegan: this.updatedUser.vegan,
@@ -62,13 +52,16 @@ export class SettingsComponent implements OnInit {
       glutenFree: this.updatedUser.glutenFree,
       dairyFree: this.updatedUser.dairyFree
     }
-    this.userService.patchUserDiet(updateUser).subscribe(data => {
-      this.user.displayName = data.displayName;
+    this.userService.updateUserInfo(updateUser).subscribe(data => {
+      if (data.displayName != null) {
+        this.user.displayName = data.displayName;
+      }
+      console.log(data.displayName, this.user.displayName)
       this.user.vegetarian = data.vegetarian;
       this.user.vegan = data.vegan;
       this.user.glutenFree = data.glutenFree;
       this.user.dairyFree = data.dairyFree;
-      this.openSnackBar("Saved Changes!");
+      this.snackBarService.openSnackBar("Saved Changes!");
     });
   }
 
@@ -88,17 +81,5 @@ export class SettingsComponent implements OnInit {
         this.updatedUser.dairyFree = diet.selected;
         break;
     }
-  }
-
-  openSnackBar(message: string, style?: string) {
-    const snackbarStyle = style == "warn" ? "snackbarWarn" : "snackbarPrimary";
-    const sbRef = this.snackBar.open(
-      message, 'Close', {
-        duration: 4000,
-        panelClass: [snackbarStyle],
-      })
-    sbRef.onAction().subscribe(() => {
-      sbRef.dismiss();
-    });
   }
 }
