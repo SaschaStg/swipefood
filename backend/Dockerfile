@@ -24,6 +24,7 @@ RUN --mount=source=package.json,target=package.json --mount=source=package-lock.
 FROM prod_base AS final
 
 WORKDIR /app
+COPY --link assets assets
 COPY --from=build --link /build/dist ./dist
 COPY --from=dependencies --link /deps/node_modules ./node_modules
 
