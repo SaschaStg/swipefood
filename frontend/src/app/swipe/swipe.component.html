@@ -1,8 +1,8 @@
 <div style="margin: auto; width: 100%; padding-top: 10px">
   <div class="swipe-container">
 
-    <div id="like" class="popup-container like-container">LIKE!</div>
-    <div id="dislike" class="popup-container dislike-container">DISLIKE!</div>
+    <mat-card  id="like" class="popup-container like-container">LIKE!</mat-card>
+    <mat-card id="dislike" class="popup-container dislike-container">DISLIKE!</mat-card>
 
     <mat-card id="card1" class="swipe-card" *ngIf="recipe" cdkDrag [cdkDragDisabled]="cardsDisabled" (cdkDragMoved)="onSwipe($event)"
               (cdkDragEnded)="onSwipeEnd($event)">
