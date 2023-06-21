@@ -72,7 +72,7 @@ export class RecipeDto {
       recipe.title,
       recipe.readyInMinutes,
       recipe.servings,
-      null,
+      'api/images/generic',
       recipe.summary,
       recipe.instructions,
       {

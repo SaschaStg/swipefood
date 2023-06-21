@@ -11,6 +11,7 @@ import { RecipesModule } from './recipes/recipes.module';
 import { Swipe } from './recipes/swipe.entity';
 import { SwipefoodRecipe } from './recipes/recipe.entity';
 import { SwipefoodIngredient } from './recipes/ingredient.entity';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { SwipefoodIngredient } from './recipes/ingredient.entity';
     UsersModule,
     AuthModule,
     RecipesModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
