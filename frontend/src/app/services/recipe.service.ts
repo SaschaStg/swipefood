@@ -20,7 +20,7 @@ export class RecipeService {
   }
 
   patchRecipeWithId(recipe: Recipe): Observable<Recipe>{
-    return this.httpClient.post<Recipe>(`api/recipes/{recipeId}`, recipe)
+    return this.httpClient.patch<Recipe>(`api/recipes/${recipe.id}`, recipe);
   }
 
   postRecipe(recipe: Recipe): Observable<Recipe>{
