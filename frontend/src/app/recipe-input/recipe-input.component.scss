@@ -12,7 +12,7 @@ $placeholder-background-color: #5A8154;
   }
 
 .card {
-  max-width: 700px;
+  width: 100%;
   margin-top: $default-spacing;
   margin-bottom: $default-spacing;
   padding: $smaller-spacing;
@@ -34,9 +34,10 @@ $placeholder-background-color: #5A8154;
     width: 100%;
   }
   mat-tab-group {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    //align-items: center;
 
     gap: 25px;
   }
@@ -54,13 +55,48 @@ $placeholder-background-color: #5A8154;
   border-radius: 5px;
 }
 
-.primaryButtonStyle{
-  color: $placeholder-background-color ;
-}
 
 .iconText{
   display: flex;
   gap: 5px;
   align-items: center;
   justify-content: center;
+}
+
+.picture{
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.mdc-button{
+  color: unset;
+}
+button{
+  text-align: center;
+}
+
+mat-icon{
+  color: unset;
+}
+
+@media (min-width: 700px) {
+  .card {
+    width: 100%;
+    max-width: 700px;
+    justify-content: center;
+
+  }
+
+  .information-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+
 }

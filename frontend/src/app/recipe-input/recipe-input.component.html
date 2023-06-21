@@ -7,7 +7,7 @@
         <mat-tab label="Overview">
           <div class="information-container">
             <mat-card class="card">
-              <mat-card-content>
+              <mat-card-content class="picture">
                 <mat-icon>publish</mat-icon>
                 <p>Upload a picture</p>
 
@@ -34,7 +34,7 @@
                 </mat-form-field>
               </mat-card-content>
             </mat-card>
-            <div>
+
 
               <mat-card class="card">
 
@@ -67,9 +67,9 @@
                 </mat-card-content>
 
               </mat-card>
-            </div>
 
-            <div>
+
+
               <mat-card class="card">
                 <mat-card-content formGroupName="categories">
                   <!--<mat-form-field class="inputFullWidth">-->
@@ -95,13 +95,13 @@
                 </mat-card-content>
               </mat-card>
             </div>
-          </div>
+
         </mat-tab>
 
         <mat-tab label="Ingredients">
           <div formArrayName="ingredients" class="information-container">
-            <div *ngFor="let ingredient of getIngredients().controls; let i= index" [formGroupName]="i">
-              <mat-card class="card">
+            <div *ngFor="let ingredient of getIngredients().controls; let i= index" [formGroupName]="i" class="card">
+              <mat-card >
                 <mat-card-content>
                   <div class="beneath">
                     <mat-form-field>
@@ -130,9 +130,10 @@
 
               </mat-card>
             </div>
-          </div>
-          <button mat-raised-button type="button" (click)="addIngredient()" class="primaryButtonStyle">+ Add Ingredient
+            <button mat-flat-button color="primary" type="button" (click)="addIngredient()" >+ Add Ingredient
           </button>
+          </div>
+
         </mat-tab>
 
         <mat-tab label="Instructions">
@@ -148,7 +149,7 @@
             </mat-card>
 
 
-            <button mat-raised-button (click)="updateRecipe()" [disabled]="!recipeForm.valid" type="submit">
+            <button mat-raised-button color="primary" (click)="updateRecipe()" [disabled]="!recipeForm.valid" type="submit">
               <mat-icon matSuffix>save</mat-icon>
               <mat-label>Save Recipe</mat-label>
             </button>
