@@ -1,7 +1,6 @@
-export interface User
-{
+export interface User {
   id: number,
-  displayName: string,
+  displayName?: string,
   vegetarian: boolean,
   vegan: boolean,
   glutenFree: boolean,

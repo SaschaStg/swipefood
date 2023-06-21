@@ -4,12 +4,14 @@ import {HttpClient} from "@angular/common/http";
 import {Diet} from "./diet";
 import {Observable} from "rxjs";
 import {User} from "./user";
+import {UpdateUser} from "./updateUser";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private readonly authRoot = `${apiRoot}/users`
+
   constructor(
     private http: HttpClient,
   ) {
@@ -19,7 +21,7 @@ export class UserService {
     return this.http.get<User>(`${this.authRoot}/me`);
   }
 
-  patchUserDiet(diet: Diet): Observable<Diet> {
-    return this.http.patch<Diet>(`${this.authRoot}/me/diet`, diet);
+  patchUserDiet(updateUser: UpdateUser): Observable<UpdateUser> {
+    return this.http.patch<Diet>(`${this.authRoot}/me`, updateUser);
   }
 }
