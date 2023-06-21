@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {Recipe} from "../../models/recipe";
 import {Router} from "@angular/router";
 import {RemoveATagsService} from "../../services/remove-atags.service";
+import {NavigateService} from "../../services/navigate.service";
 
 @Component({
   selector: 'app-swipe-card',
@@ -17,11 +18,12 @@ export class SwipeCardComponent {
 
   constructor(private router: Router,
               public removeATagsService: RemoveATagsService,
+              private navigateService: NavigateService,
   ) {
   }
 
   openRecipe(recipeId: string): void {
     const endpoint = `/recipes/${recipeId}`;
-    this.router.navigate([endpoint]);
+    this.navigateService.navigateTo(this.router.url, endpoint);
   }
 }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Recipe} from "../models/recipe";
 import {RecipeService} from "../services/recipe.service";
 import {SnackBarService} from "../services/snackbar.service";
+import {NavigateService} from "../services/navigate.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-recipe-book',
@@ -16,6 +18,8 @@ export class RecipeBookComponent implements OnInit {
   constructor(
     private recipeService: RecipeService,
     private snackBarService: SnackBarService,
+    private navigateService: NavigateService,
+    private router: Router
   ) {
 
   }
@@ -40,5 +44,10 @@ export class RecipeBookComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  openRecipe(recipeId: string): void {
+    const endpoint = `/recipes/${recipeId}`;
+    this.navigateService.navigateTo(this.router.url, endpoint);
   }
 }
