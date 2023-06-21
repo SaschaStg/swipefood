@@ -189,10 +189,18 @@ export class SwipeComponent implements OnInit {
       const elementId = likeOrDislikeElement.id;
 
       if (elementId === 'like') {
-        this.recipeService.addRecipeToUser(this.recipe.id, true).subscribe();
+        if (this.card1) {
+          this.recipeService.addRecipeToUser(this.recipe.id, true).subscribe();
+        } else {
+          this.recipeService.addRecipeToUser(this.nextRecipe!.id, true).subscribe();
+        }
       }
       if (elementId === 'dislike') {
-        this.recipeService.addRecipeToUser(this.recipe.id, false).subscribe();
+        if (this.card1) {
+          this.recipeService.addRecipeToUser(this.recipe.id, false).subscribe();
+        } else {
+          this.recipeService.addRecipeToUser(this.nextRecipe!.id, false).subscribe();
+        }
       }
     }
   }
