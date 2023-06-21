@@ -72,7 +72,21 @@
   padding-top: 10px;
 }
 
-@media (max-width: 600px) {
+.book-more-info-custom {
+  margin-right: 15px;
+}
+
+@media (max-width: 500px) {
+  .book-prepare {
+  display: none;
+}
+}
+
+.mdc-button {
+  color: unset;
+}
+
+@media (max-width: 1072px) { // 1072px instead of 767 because content is too big for smaller breakpoint
   .book-card {
     width: 100%;
   }
