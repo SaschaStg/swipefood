@@ -6,7 +6,7 @@
 |-------------------|---------------|----------------------|
 | Kienhöfer Raphael | rk085         | 41501                |
 | Hein Nikola       | nh096         | 41507                |
-| Nohl Lisa-Marie   | ln034         |                      |
+| Nohl Lisa-Marie   | ln034         | 41499                |
 | Schmidt Sascha    | ss532         | 41492                |
 | Herold Franziska  | fh112         | 41498                |
 
