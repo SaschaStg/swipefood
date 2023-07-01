@@ -41,7 +41,7 @@ import { DemoModule } from './demo/demo.module';
     AuthModule,
     RecipesModule,
     ImagesModule,
-    DemoModule,
+    DemoModule.register(),
   ],
   controllers: [AppController],
   providers: [AppService],

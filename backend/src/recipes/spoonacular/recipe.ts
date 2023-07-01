@@ -7,13 +7,13 @@ export class SpoonacularRecipe {
   imageType: string;
   servings: number;
   readyInMinutes: number;
-  license: string;
+  license?: string;
   sourceName: string;
   sourceUrl: string;
   spoonacularSourceUrl: string;
   aggregateLikes: number;
   healthScore: number;
-  spoonacularScore: number;
+  spoonacularScore?: number;
   pricePerServing: number;
   analyzedInstructions: any[];
   cheap: boolean;
@@ -24,7 +24,7 @@ export class SpoonacularRecipe {
   gaps: string;
   glutenFree: boolean;
   instructions: string;
-  ketogenic: boolean;
+  ketogenic?: boolean;
   lowFodmap: boolean;
   occasions: string[];
   sustainable: boolean;
@@ -32,10 +32,22 @@ export class SpoonacularRecipe {
   vegetarian: boolean;
   veryHealthy: boolean;
   veryPopular: boolean;
-  whole30: boolean;
+  whole30?: boolean;
   weightWatcherSmartPoints: number;
   dishTypes: string[];
   extendedIngredients: SpoonacularIngredient[];
   summary: string;
   winePairing: any; // not needed right now
+  // update added new fields
+  preparationMinutes: number;
+  cookingMinutes: number;
+  report: any;
+  tips: any;
+  openLicense: number;
+  suspiciousDataScore: number;
+  approved: number;
+  unknownIngredients: any;
+  userTags: any;
+  originalId: any;
+  author?: string;
 }

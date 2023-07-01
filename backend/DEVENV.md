@@ -26,6 +26,9 @@ JWT_SECRET_FILE=./jwt.secret
 # Can use either (direct key will override file)
 SPOONACULAR_API_KEY=<API KEY>
 SPOONACULAR_API_KEY_FILE=./spoonacular_api_key.secret
+
+# Enable Demo Endpoint (unset/set to empty string to disable)
+DEMO_ENABLED=true
 ```
 
 ## Create local `jwt.secret` file
