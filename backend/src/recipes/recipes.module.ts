@@ -19,5 +19,6 @@ import { UsersModule } from '../users/users.module';
   ],
   controllers: [RecipesController],
   providers: [RecipesService, SpoonacularService],
+  exports: [RecipesService],
 })
 export class RecipesModule {}

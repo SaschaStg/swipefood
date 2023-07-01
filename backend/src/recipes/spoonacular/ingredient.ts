@@ -18,8 +18,8 @@ export class SpoonacularIngredient {
   };
   meta: string[];
   name: string;
+  nameClean: string;
   original: string;
   originalName: string;
-  originalString: string;
   unit: string;
 }

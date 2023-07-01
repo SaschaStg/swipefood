@@ -12,6 +12,7 @@ import { Swipe } from './recipes/swipe.entity';
 import { SwipefoodRecipe } from './recipes/recipe.entity';
 import { SwipefoodIngredient } from './recipes/ingredient.entity';
 import { ImagesModule } from './images/images.module';
+import { DemoModule } from './demo/demo.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ImagesModule } from './images/images.module';
     AuthModule,
     RecipesModule,
     ImagesModule,
+    DemoModule.register(),
   ],
   controllers: [AppController],
   providers: [AppService],
