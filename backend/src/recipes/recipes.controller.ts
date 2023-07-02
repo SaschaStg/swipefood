@@ -21,6 +21,7 @@ import { Request } from 'express';
 import { User } from '../users/user.entity';
 import { ReqUser } from '../auth/user.decorator';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
+import { UsersService } from '../users/users.service';
 
 @ApiTags('recipes')
 @ApiBearerAuth()
@@ -29,12 +30,21 @@ export class RecipesController {
   constructor(
     private readonly spoonacularService: SpoonacularService,
     private readonly recipeService: RecipesService,
+    private readonly userService: UsersService,
   ) {}
 
   @Get('random')
-  async getRandomRecipe() {
+  async getRandomRecipe(@ReqUser() user: User) {
+    // Enrich user with data from the database
+    user = await this.userService.findOne(user.id);
+
     return this.spoonacularService
-      .getRandomSpoonacularRecipe()
+      .getRandomSpoonacularRecipe({
+        vegan: user.vegan,
+        vegetarian: user.vegetarian,
+        glutenFree: user.glutenFree,
+        dairyFree: user.dairyFree,
+      })
       .pipe(
         map((spoonacularRecipe) =>
           RecipeDto.fromSpoonacularRecipe(spoonacularRecipe),

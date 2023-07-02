@@ -2,7 +2,14 @@ import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { SpoonacularRecipe } from './spoonacular';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { catchError, firstValueFrom, map, Observable, tap } from 'rxjs';
+import {
+  catchError,
+  firstValueFrom,
+  map,
+  Observable,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 
@@ -58,13 +65,47 @@ export class SpoonacularService {
     return recipe !== undefined;
   }
 
-  getRandomSpoonacularRecipe(): Observable<SpoonacularRecipe> {
+  getRandomSpoonacularRecipe(diet?: {
+    vegan?: boolean;
+    vegetarian?: boolean;
+    glutenFree?: boolean;
+    dairyFree?: boolean;
+  }): Observable<SpoonacularRecipe> {
+    const diets = [];
+    const intolerances = [];
+    if (diet?.vegan) {
+      diets.push('vegan');
+    }
+    if (diet?.vegetarian) {
+      diets.push('vegetarian');
+    }
+    if (diet?.glutenFree) {
+      intolerances.push('gluten');
+    }
+    if (diet?.dairyFree) {
+      intolerances.push('dairy');
+    }
+
     return this.httpService
-      .get<{ recipes: SpoonacularRecipe[] }>(
-        `${this.spoonacularApiEndpoint}/recipes/random?number=1`,
-        this.requestConfig,
+      .get<{ results: { id: number }[] }>(
+        `${this.spoonacularApiEndpoint}/recipes/complexSearch`,
+        {
+          ...this.requestConfig,
+          params: {
+            number: 1,
+            sort: 'random',
+            diet: diets.length > 0 ? diets.join(',') : undefined,
+            intolerances:
+              intolerances.length > 0 ? intolerances.join(',') : undefined,
+          },
+        },
       )
-      .pipe(map((response) => response.data.recipes[0]));
+      .pipe(
+        switchMap((response) => {
+          const recipeId = response.data.results[0].id;
+          return this.getSpoonacularRecipeById(recipeId);
+        }),
+      );
   }
 
   getSpoonacularRecipesBulk(ids: number[]): Observable<SpoonacularRecipe[]> {
