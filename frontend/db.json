@@ -1,0 +1,87 @@
+{
+    "recipe" : [
+        {
+            "id": "sp-639588",
+            "title": "Classic Creamy Coleslaw",
+            "readyInMinutes": 45,
+            "servings": 1,
+            "image": "https://spoonacular.com/recipeImages/639588-556x370.jpg",
+            "summary": "Need a <b>gluten free, dairy free, and lacto ovo vegetarian side dish</b>? Classic Creamy Coleslaw could be a spectacular recipe to try. One serving contains <b>724 calories</b>, <b>14g of protein</b>, and <b>44g of fat</b>. This recipe serves 1 and costs $2.62 per serving. It is perfect for <b>The Fourth Of July</b>. This recipe from Foodista requires caraway seeds, cabbage, carrot, and mayonnaise. 2 people have made this recipe and would make it again. From preparation to the plate, this recipe takes roughly <b>45 minutes</b>. Overall, this recipe earns a <b>pretty good spoonacular score of 80%</b>. If you like this recipe, you might also like recipes such as <a href=\"https://spoonacular.com/recipes/classic-coleslaw-1127953\">Classic Coleslaw</a>, <a href=\"https://spoonacular.com/recipes/classic-coleslaw-11636\">Classic Coleslaw</a>, and <a href=\"https://spoonacular.com/recipes/classic-coleslaw-1064596\">Classic Coleslaw</a>.",
+            "instructions": "Using a mandoline or a sharp knife, thinly slice the cabbage, carrot and onion or scallions and place in a medium-sized bowl.\nMix the remaining ingredients (vinegar, mayo, mustard, caraway, sugar, salt and pepper) together and stir well to make a smooth dressing - you'll want to mix it until you're sure that the sugar and salt are fully dissolved. Toss the veggies with dressing, making sure everything is well-coated, and serve.",
+            "categories": {
+                "dairyFree": true,
+                "glutenFree": true,
+                "vegan": false,
+                "vegetarian": true
+            }
+        }
+    ],
+    "ingredients": [
+        {
+            "id": "sp-11112",
+            "name": "cabbage",
+            "amount": 0.5,
+            "unit": "head"
+        },
+        {
+            "id": "sp-11109",
+            "name": "cabbage",
+            "amount": 0.5,
+            "unit": "head"
+        },
+        {
+            "id": "sp-11124",
+            "name": "carrot",
+            "amount": 1,
+            "unit": "large"
+        },
+        {
+            "id": "sp-11291",
+            "name": "onion",
+            "amount": 1,
+            "unit": "small"
+        },
+        {
+            "id": "sp-2048",
+            "name": "apple cider vinegar",
+            "amount": 59.147,
+            "unit": "ml"
+        },
+        {
+            "id": "sp-4025",
+            "name": "mayonnaise",
+            "amount": 59.147,
+            "unit": "ml"
+        },
+        {
+            "id": "sp-1032046",
+            "name": "dijon mustard",
+            "amount": 1,
+            "unit": "tsp"
+        },
+        {
+            "id": "sp-2005",
+            "name": "caraway seeds",
+            "amount": 1,
+            "unit": "tsp"
+        },
+        {
+            "id": "sp-19335",
+            "name": "sugar",
+            "amount": 1,
+            "unit": "Tbsp"
+        },
+        {
+            "id": "sp-1012047",
+            "name": "sea salt",
+            "amount": 0.5,
+            "unit": "tsps"
+        },
+        {
+            "id": "sp-1002030",
+            "name": "several grinds of pepper",
+            "amount": 1,
+            "unit": "serving"
+        }
+    ]
+}
