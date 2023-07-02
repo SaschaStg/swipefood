@@ -15,6 +15,8 @@ export class RecipeBookComponent implements OnInit {
   likedRecipes?: Recipe[];
   customRecipes?: Recipe[];
 
+  imgError = false;
+
   constructor(
     private recipeService: RecipeService,
     private snackBarService: SnackBarService,

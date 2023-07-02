@@ -29,6 +29,8 @@ h2 {
   img {
     object-fit: cover;
     position: absolute;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -97,11 +99,11 @@ h2 {
   color: white;
 }
 
-.img-error {
+/*.img-error {
   display: none;
   width: 100%;
   color: red;
   justify-content: center;
   align-items: center;
 
-}
+}*/

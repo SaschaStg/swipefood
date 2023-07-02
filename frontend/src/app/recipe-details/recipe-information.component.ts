@@ -20,6 +20,8 @@ export class RecipeInformationComponent implements OnInit {
   displayedColumns: string[] = ['amount', 'unit', 'name'];
   dataSource: MatTableDataSource<Ingredients> = new MatTableDataSource<Ingredients>();
 
+  imgError = false;
+
   constructor(
     private recipeService: RecipeService,
     private route: ActivatedRoute,
