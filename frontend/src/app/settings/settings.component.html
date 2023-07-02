@@ -20,17 +20,11 @@
             User Data
           </h3>
         </mat-card-subtitle>
-        <mat-form-field class="settings-input" aria-label="Change Displayname">
+        <mat-form-field class="settings-input" aria-label="Change Display-name">
           <mat-label>Change Displayname</mat-label>
           <input matInput placeholder="Username" formControlName="displayName">
           <mat-icon matSuffix>edit</mat-icon>
         </mat-form-field>
-        <mat-form-field class="settings-input" disabled="true">
-          <mat-label>Change Password !WIP!</mat-label>
-          <input matInput placeholder="Password !WIP!" disabled>
-          <!-- <mat-icon matSuffix>edit</mat-icon> -->
-        </mat-form-field>
-
         <mat-card-subtitle>
           <h3>
             User Preferences
@@ -38,7 +32,7 @@
         </mat-card-subtitle>
 
         <mat-chip-listbox aria-label="Diary selection" multiple>
-          <mat-chip-option [selected]="user.vegetarian" (selectionChange)="updateDiet($event,'vegetarian')">vegetarian
+          <mat-chip-option [selected]="user.vegetarian" (selectionChange)="updateDiet($event,'vegetarian')" color="primary">vegetarian
           </mat-chip-option>
           <mat-chip-option [selected]="user.vegan" (selectionChange)="updateDiet($event,'vegan')">vegan
           </mat-chip-option>
@@ -64,5 +58,39 @@
       Save Changes
     </button>
   </div>
-
+</div>
+<div class="settings-container">
+  <mat-card>
+    <form [formGroup]="UserCredentials">
+      <mat-card-content>
+        <mat-card-subtitle>
+          <h3>
+            Change Password and Username
+          </h3>
+        </mat-card-subtitle>
+        <mat-form-field class="settings-input">
+          <mat-label>Current Password</mat-label>
+          <input matInput placeholder="Current Password" formControlName="currentPassword" type="password">
+          <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="settings-input">
+          <mat-label>New Password</mat-label>
+          <input matInput placeholder="New Password" formControlName="newPassword" type="password">
+          <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="settings-input">
+          <mat-label>Change Username</mat-label>
+          <input matInput placeholder="change Username" formControlName="username">
+          <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+      </mat-card-content>
+    </form>
+  </mat-card>
+  <div class="settings-button">
+    <button mat-raised-button color="primary"
+    [disabled]="UserCredentials.invalid" (click)="updateCredentials()">
+      <mat-icon>save</mat-icon>
+      Save Changes
+    </button>
+  </div>
 </div>

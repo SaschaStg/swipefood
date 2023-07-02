@@ -1,6 +1,5 @@
 .settings-container {
   max-width: 450px;
-  height: 600px;
   border-radius: 5px;
   position: relative;
   margin: auto;
@@ -42,6 +41,7 @@ h3 {
   display: flex;
   justify-content: center;
   padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 .settings-button > button {
@@ -55,4 +55,28 @@ h3 {
 
 .logout-btn-container > button {
   color: unset;
+}
+
+
+::ng-deep .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: unset !important;
+}
+
+.mat-chip {
+  color: white;
+}
+
+::ng-deep .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: unset !important;
+}
+
+.mat-mdc-standard-chip.mat-primary.mat-mdc-chip-selected {
+  --mdc-chip-with-icon-selected-icon-color: #fff;
+  background-color: #4CAF50;
+  outline-style: none;
+}
+
+.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: transparent;
+  outline-style: solid;
 }
