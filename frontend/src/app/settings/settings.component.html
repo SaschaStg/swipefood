@@ -1,5 +1,10 @@
 <div class="settings-container" *ngIf="user">
-
+  <div class="logout-btn-container">
+    <button mat-flat-button type="button" color="primary" [disabled]="!authService.isLoggedIn()" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </div>
   <mat-card>
     <form [formGroup]="UserData">
       <mat-card-header>
