@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {User} from "../services/user";
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatChipSelectionChange} from "@angular/material/chips";
 import {UpdateUser} from "../services/updateUser";
 import {SnackBarService} from "../services/snackbar.service";
-import {AuthService} from "../auth/auth.service";
 import {Router} from "@angular/router";
+import {AuthService, UpdateCredentialsDto} from "../auth/auth.service";
+import {AuthResult} from "../auth/auth-result";
 
 @Component({
   selector: 'app-settings',
@@ -19,11 +20,16 @@ export class SettingsComponent implements OnInit {
 
   UserData = new FormGroup({
     displayName: new FormControl('', {nonNullable: true}),
-    password: new FormControl('fooBar', {nonNullable: true}),
     vegetarian: new FormControl(),
     vegan: new FormControl(),
     glutenFree: new FormControl(),
     dairyFree: new FormControl(),
+  });
+
+  UserCredentials = new FormGroup({
+    currentPassword: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    newPassword: new FormControl('', {nonNullable: true}),
+    username: new FormControl('', {nonNullable: true}),
   });
 
   constructor(
@@ -66,6 +72,34 @@ export class SettingsComponent implements OnInit {
       this.user.glutenFree = data.glutenFree;
       this.user.dairyFree = data.dairyFree;
       this.snackBarService.openSnackBar("Saved Changes!");
+    });
+  }
+
+  updateCredentials() {
+    const updateCredentials: UpdateCredentialsDto = {
+      currentPassword: this.UserCredentials.get('currentPassword')?.value || "",
+      newPassword: this.UserCredentials.get('newPassword')?.value,
+      newUsername: this.UserCredentials.get('username')?.value,
+    }
+    if (updateCredentials.newPassword == updateCredentials.currentPassword) {
+      this.snackBarService.openSnackBar("New password cannot be the same as the old one!", 'warn');
+      return;
+    }
+    this.authService.updateCredentials(updateCredentials).subscribe(result => {
+      switch (result) {
+        case AuthResult.Ok:
+          this.snackBarService.openSnackBar("Saved Changes!");
+          break;
+        case AuthResult.WrongCredentials:
+          this.snackBarService.openSnackBar("Wrong Credentials!", 'warn');
+          break;
+        case AuthResult.ServerError:
+          this.snackBarService.openSnackBar("Server Error!", 'warn');
+          break;
+        case  AuthResult.NetworkError:
+          this.snackBarService.openSnackBar("Network Error!", 'warn');
+          break;
+      }
     });
   }
 

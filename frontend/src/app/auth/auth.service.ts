@@ -26,6 +26,12 @@ interface JwtPayload {
   exp: number;
 }
 
+export interface UpdateCredentialsDto {
+  currentPassword: string;
+  newPassword?: string;
+  newUsername?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -120,5 +126,24 @@ export class AuthService {
     this.localStorage.removeItem('token');
     this.token = null;
     this.tokenPayload = null;
+  }
+
+  updateCredentials(updateCredentialsDto: UpdateCredentialsDto): Observable<AuthResult> {
+    return this.http.post<AccessTokenDto>(`${this.authRoot}/update`, updateCredentialsDto).pipe(
+      map(response => {
+        this.updateToken(response.access_token)
+        return AuthResult.Ok;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        switch (err.status) {
+          case HttpStatusCode.Unauthorized:
+            return of(AuthResult.WrongCredentials);
+          case HttpStatusCode.InternalServerError:
+            return of(AuthResult.ServerError);
+          default:
+            return of(AuthResult.NetworkError);
+        }
+      })
+    )
   }
 }
