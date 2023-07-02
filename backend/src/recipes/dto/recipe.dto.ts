@@ -1,21 +1,51 @@
 import { IngredientDto } from './ingredient.dto';
 import { SpoonacularRecipe } from '../spoonacular';
 import { SwipefoodRecipe } from '../recipe.entity';
+import { RecipeCategoriesDto } from './recipe-categories.dto';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+  IsUrl,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class RecipeDto {
+  @IsString()
+  @IsNotEmpty()
   id: string;
+
+  @IsString()
+  @IsNotEmpty()
   title: string;
+
+  @IsNumber()
+  @IsPositive()
   readyInMinutes: number;
+
+  @IsNumber()
+  @IsPositive()
   servings: number;
+
+  @IsUrl()
   image: string;
+
+  @IsString()
+  @IsNotEmpty()
   summary: string;
+
+  @IsString()
+  @IsNotEmpty()
   instructions: string;
-  categories: {
-    vegetarian: boolean;
-    vegan: boolean;
-    glutenFree: boolean;
-    dairyFree: boolean;
-  };
+
+  @ValidateNested()
+  @Type(() => RecipeCategoriesDto)
+  categories: RecipeCategoriesDto;
+
+  @ValidateNested({ each: true })
+  @Type(() => IngredientDto)
   ingredients: IngredientDto[];
 
   constructor(
@@ -26,12 +56,7 @@ export class RecipeDto {
     image: string,
     summary: string,
     instructions: string,
-    categories: {
-      vegetarian: boolean;
-      vegan: boolean;
-      glutenFree: boolean;
-      dairyFree: boolean;
-    },
+    categories: RecipeCategoriesDto,
     ingredients: IngredientDto[],
   ) {
     this.id = id;

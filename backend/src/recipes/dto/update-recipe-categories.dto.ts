@@ -1,22 +1,19 @@
 import { IsBoolean, IsOptional } from 'class-validator';
 
-/**
- * @deprecated
- */
-export class DietUpdateDto {
+export class UpdateRecipeCategoriesDto {
   @IsOptional()
   @IsBoolean()
-  readonly vegetarian?: boolean;
+  vegetarian?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly vegan?: boolean;
+  vegan?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly glutenFree?: boolean;
+  glutenFree?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  readonly dairyFree?: boolean;
+  dairyFree?: boolean;
 }
