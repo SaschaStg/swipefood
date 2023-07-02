@@ -5,6 +5,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MatChipSelectionChange} from "@angular/material/chips";
 import {UpdateUser} from "../services/updateUser";
 import {SnackBarService} from "../services/snackbar.service";
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -27,6 +29,8 @@ export class SettingsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private snackBarService: SnackBarService,
+    public authService: AuthService,
+    private router: Router
   ) {
 
   }
@@ -81,5 +85,10 @@ export class SettingsComponent implements OnInit {
         this.updatedUser.dairyFree = diet.selected;
         break;
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
