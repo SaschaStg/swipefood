@@ -7,7 +7,9 @@ export class Image {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => SwipefoodRecipe, (recipe) => recipe.image)
+  @OneToOne(() => SwipefoodRecipe, (recipe) => recipe.image, {
+    onDelete: 'CASCADE',
+  })
   recipe: SwipefoodRecipe;
 
   @ManyToOne(() => User, { nullable: false })

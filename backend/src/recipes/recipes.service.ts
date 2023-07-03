@@ -9,6 +9,8 @@ import { SwipefoodIngredient } from './ingredient.entity';
 import { CreateRecipeDto, UpdateRecipeDto } from './dto';
 import { User } from '../users/user.entity';
 import { assignDefined } from '../util';
+import { Image } from '../images/image.entity';
+import { ImagesService } from '../images/images.service';
 
 @Injectable()
 export class RecipesService {
@@ -21,6 +23,7 @@ export class RecipesService {
     private swRecipeRepo: Repository<SwipefoodRecipe>,
     @InjectRepository(SwipefoodIngredient)
     private swIngredientRepo: Repository<SwipefoodIngredient>,
+    private imagesService: ImagesService,
   ) {}
 
   async swipeRecipe(recipeId: string, isLiked: boolean, userId: number) {
@@ -81,6 +84,10 @@ export class RecipesService {
     swRecipe.glutenFree = recipe.categories.glutenFree;
     swRecipe.dairyFree = recipe.categories.dairyFree;
 
+    if (recipe.image) {
+      swRecipe.image = await this.getImageOrFail(recipe.image, user);
+    }
+
     swRecipe.ingredients = recipe.ingredients.map((ingredient) => {
       const swIngredient = new SwipefoodIngredient();
       swIngredient.name = ingredient.name;
@@ -117,6 +124,11 @@ export class RecipesService {
       throw new BadRequestException('Recipe not found');
     }
 
+    let image: Image | undefined;
+    if (recipe.image) {
+      image = await this.getImageOrFail(recipe.image, user);
+    }
+
     // Update basic recipe info
     const basicUpdate = {
       title: recipe.title,
@@ -128,6 +140,7 @@ export class RecipesService {
       vegan: recipe.categories?.vegan,
       glutenFree: recipe.categories?.glutenFree,
       dairyFree: recipe.categories?.dairyFree,
+      image: image,
     };
     assignDefined(dbRecipe, basicUpdate);
 
@@ -181,6 +194,18 @@ export class RecipesService {
       throw new BadRequestException('Recipe not found');
     }
 
+    if (dbRecipe.image) {
+      await this.imagesService.deleteImage(dbRecipe.image.id, user);
+    }
+
     await this.swRecipeRepo.remove(dbRecipe);
+  }
+
+  private async getImageOrFail(id: number, user: User) {
+    const image = this.imagesService.getImageFromDb(id, user);
+    if (!image) {
+      throw new BadRequestException('Invalid image');
+    }
+    return image;
   }
 }

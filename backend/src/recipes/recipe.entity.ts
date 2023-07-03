@@ -25,9 +25,13 @@ export class SwipefoodRecipe {
   @Column()
   servings: number;
 
-  @OneToOne(() => Image, (image) => image.recipe, { nullable: true })
+  @OneToOne(() => Image, (image) => image.recipe, {
+    nullable: true,
+    eager: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn()
-  image: Image;
+  image?: Image;
 
   @Column()
   summary: string;

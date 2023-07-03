@@ -70,7 +70,7 @@ export class ImagesService {
     }
   }
 
-  private getImageFromDb(id: number, user: User): Promise<Image | null> {
+  getImageFromDb(id: number, user: User): Promise<Image | null> {
     return this.imageRepository.findOne({
       where: {
         id: id,
@@ -86,5 +86,21 @@ export class ImagesService {
     await sharp(buffer)
       .webp()
       .toFile(path.join(this.storageDir, `${id}.webp`));
+  }
+
+  async deleteImage(id: number, user: User) {
+    const image = await this.getImageFromDb(id, user);
+    if (image) {
+      await this.imageRepository.remove(image);
+    }
+
+    try {
+      await fs.promises.unlink(path.join(this.storageDir, `${id}.webp`));
+    } catch (e) {
+      if (e.code !== 'ENOENT') {
+        // The file exists but could not be deleted
+        throw e;
+      }
+    }
   }
 }

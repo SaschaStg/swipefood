@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SpoonacularService } from './spoonacular.service';
 import { Swipe } from './swipe.entity';
 import { UsersModule } from '../users/users.module';
+import { ImagesModule } from '../images/images.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from '../users/users.module';
     HttpModule,
     ConfigModule,
     UsersModule,
+    ImagesModule,
   ],
   controllers: [RecipesController],
   providers: [RecipesService, SpoonacularService],
