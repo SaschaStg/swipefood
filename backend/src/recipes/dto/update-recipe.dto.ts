@@ -1,18 +1,55 @@
 import { UpdateIngredientDto } from './update-ingredient.dto';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { UpdateRecipeCategoriesDto } from './update-recipe-categories.dto';
+import { Type } from 'class-transformer';
 
 export class UpdateRecipeDto {
+  @IsString()
+  @IsNotEmpty()
   id: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
   title?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
   readyInMinutes?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
   servings?: number;
-  image?: string;
+
+  // TODO
+  //image?: number;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
   summary?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
   instructions?: string;
-  categories?: {
-    vegetarian?: boolean;
-    vegan?: boolean;
-    glutenFree?: boolean;
-    dairyFree?: boolean;
-  };
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateRecipeCategoriesDto)
+  categories?: UpdateRecipeCategoriesDto;
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => UpdateIngredientDto)
   ingredients?: UpdateIngredientDto[];
 }

@@ -5,3 +5,5 @@ export { CreateRecipeDto } from './create-recipe.dto';
 export { CreateIngredientDto } from './create-ingredient.dto';
 export { UpdateRecipeDto } from './update-recipe.dto';
 export { UpdateIngredientDto } from './update-ingredient.dto';
+export { RecipeCategoriesDto } from './recipe-categories.dto';
+export { UpdateRecipeCategoriesDto } from './update-recipe-categories.dto';

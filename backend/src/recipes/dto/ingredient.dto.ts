@@ -1,10 +1,21 @@
 import { SpoonacularIngredient } from '../spoonacular';
 import { SwipefoodIngredient } from '../ingredient.entity';
+import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 
 export class IngredientDto {
+  @IsString()
+  @IsNotEmpty()
   id: string;
+
+  @IsString()
+  @IsNotEmpty()
   name: string;
+
+  @IsNumber()
+  @Min(0)
   amount: number;
+
+  @IsString()
   unit: string;
 
   constructor(id: string, name: string, amount: number, unit: string) {
