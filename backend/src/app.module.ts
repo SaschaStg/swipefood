@@ -13,6 +13,7 @@ import { SwipefoodRecipe } from './recipes/recipe.entity';
 import { SwipefoodIngredient } from './recipes/ingredient.entity';
 import { ImagesModule } from './images/images.module';
 import { DemoModule } from './demo/demo.module';
+import { Image } from './images/image.entity';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { DemoModule } from './demo/demo.module';
           Swipe,
           SwipefoodRecipe,
           SwipefoodIngredient,
+          Image,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),

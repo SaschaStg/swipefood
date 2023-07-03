@@ -1,12 +1,15 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { SwipefoodIngredient } from './ingredient.entity';
 import { User } from '../users/user.entity';
+import { Image } from '../images/image.entity';
 
 @Entity('recipe')
 export class SwipefoodRecipe {
@@ -22,8 +25,9 @@ export class SwipefoodRecipe {
   @Column()
   servings: number;
 
-  // TODO
-  //image: Image;
+  @OneToOne(() => Image, (image) => image.recipe, { nullable: true })
+  @JoinColumn()
+  image: Image;
 
   @Column()
   summary: string;
