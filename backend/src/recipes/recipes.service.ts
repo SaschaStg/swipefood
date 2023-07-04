@@ -119,14 +119,22 @@ export class RecipesService {
   async updateRecipe(recipe: UpdateRecipeDto, user: User) {
     const recipeId = +recipe.id.split('-')[1]; // Remove the 'sw-' prefix
 
-    const dbRecipe = await this.getSwipefoodRecipeById(recipeId, user);
+    let dbRecipe = await this.getSwipefoodRecipeById(recipeId, user);
     if (!dbRecipe) {
       throw new BadRequestException('Recipe not found');
     }
 
+    // Only initialize image if the user provided one;
+    // this automatically removes the image from the recipe if no image was provided
     let image: Image | undefined;
+    let oldImageId: number | undefined;
     if (recipe.image) {
       image = await this.getImageOrFail(recipe.image, user);
+    } else if (dbRecipe.imageId && recipe.image === null) {
+      // Schedule deletion of the image if the user removed it
+      // Defer actual deletion until the recipe change went through without errors
+      oldImageId = dbRecipe.imageId;
+      image = null;
     }
 
     // Update basic recipe info
@@ -183,7 +191,14 @@ export class RecipesService {
       }
     }
 
-    return this.swRecipeRepo.save(dbRecipe);
+    dbRecipe = await this.swRecipeRepo.save(dbRecipe);
+
+    if (oldImageId && dbRecipe.imageId === null) {
+      // Run deferred image deletion if the image was removed
+      await this.imagesService.deleteImage(oldImageId, user);
+    }
+
+    return dbRecipe;
   }
 
   async deleteRecipe(taggedId: string, user: User) {
@@ -202,7 +217,7 @@ export class RecipesService {
   }
 
   private async getImageOrFail(id: number, user: User) {
-    const image = this.imagesService.getImageFromDb(id, user);
+    const image = await this.imagesService.getImageFromDb(id, user);
     if (!image) {
       throw new BadRequestException('Invalid image');
     }
