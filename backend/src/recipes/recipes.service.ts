@@ -194,8 +194,8 @@ export class RecipesService {
       throw new BadRequestException('Recipe not found');
     }
 
-    if (dbRecipe.image) {
-      await this.imagesService.deleteImage(dbRecipe.image.id, user);
+    if (dbRecipe.imageId) {
+      await this.imagesService.deleteImage(dbRecipe.imageId, user);
     }
 
     await this.swRecipeRepo.remove(dbRecipe);
