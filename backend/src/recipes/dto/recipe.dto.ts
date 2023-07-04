@@ -97,7 +97,7 @@ export class RecipeDto {
       recipe.title,
       recipe.readyInMinutes,
       recipe.servings,
-      `api/images/${recipe.image?.id}`,
+      recipe.image ? `api/images/${recipe.image.id}` : undefined,
       recipe.summary,
       recipe.instructions,
       {
