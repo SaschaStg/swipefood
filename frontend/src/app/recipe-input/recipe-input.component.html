@@ -8,8 +8,18 @@
           <div class="information-container">
             <mat-card class="card">
               <mat-card-content class="picture">
-                <mat-icon>publish</mat-icon>
-                <p>Upload a picture</p>
+                <div *ngIf="recipe.imageType">
+                  <img mat-card-image *ngIf="recipe.image" [ngSrc]="recipe.image" fill priority alt="Photo of a the recipe">
+                </div>
+                  <mat-icon>publish</mat-icon>
+                  <p>Upload a picture</p>
+
+
+
+
+                <!--<form (ngSubmit)="onSubmit()" method="post" enctype="multipart/form-data">-->
+                  <input type="file" accept="image/*" >
+                <!--</form>(change)="onFileSelected($event)"-->
 
               </mat-card-content>
             </mat-card>

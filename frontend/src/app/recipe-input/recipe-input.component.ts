@@ -24,11 +24,13 @@ export class RecipeInputComponent implements OnInit {
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
+
   ) {
   }
 
   recipeForm!: FormGroup;
   newRecipe?: boolean;
+
 
   ngOnInit() {
     console.log(this.recipe);
@@ -98,11 +100,13 @@ export class RecipeInputComponent implements OnInit {
         this.recipeForm.patchValue(this.recipe);
         console.error('No recipe ID found in route');
       }
+
     });
 
   }
 
 // helper for the form
+
 
 
   newIngredient(): FormGroup {
@@ -167,7 +171,7 @@ export class RecipeInputComponent implements OnInit {
 
   //get the checkbox value
   updateDiet(diet: MatChipSelectionChange, dietName: string) {
-    if (this.recipe) { 
+    if (this.recipe) {
       switch (dietName) {
         case 'vegetarian':
           this.recipe.categories.vegetarian = diet.selected;
@@ -183,5 +187,10 @@ export class RecipeInputComponent implements OnInit {
           break;
       }
     }
+  }
+
+  onFileSelected(event: any){
+    console.log(event);
+
   }
 }
