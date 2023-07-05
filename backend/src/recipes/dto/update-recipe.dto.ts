@@ -1,5 +1,6 @@
 import { UpdateIngredientDto } from './update-ingredient.dto';
 import {
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -30,8 +31,10 @@ export class UpdateRecipeDto {
   @IsPositive()
   servings?: number;
 
-  // TODO
-  //image?: number;
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  image?: number;
 
   @IsOptional()
   @IsString()

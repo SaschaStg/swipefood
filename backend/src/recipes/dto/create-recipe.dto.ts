@@ -2,6 +2,7 @@ import { CreateIngredientDto } from './create-ingredient.dto';
 import {
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsPositive,
   IsString,
   ValidateNested,
@@ -22,8 +23,10 @@ export class CreateRecipeDto {
   @IsPositive()
   servings: number;
 
-  // TODO
-  //image: string;
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  image?: number;
 
   @IsString()
   @IsNotEmpty()
