@@ -5,7 +5,7 @@
         <div class="book-image-container">
           <img mat-card-image [src]="likedRecipe.image" alt="{{likedRecipe.title}}" class="book-image"
                (error)="imgError=true" *ngIf="!imgError">
-          <img [ngStyle]="{'display':imgError ? 'flex': 'none'}" mat-card-image src="/api/images/generic" alt="Placeholder"
+          <img *ngIf="imgError" mat-card-image src="/api/images/generic" alt="Placeholder"
                class="book-image">
         </div>
         <div class="book-information-container">

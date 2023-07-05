@@ -2,7 +2,7 @@
 
   <img mat-card-image [src]="recipe.image" alt="{{recipe.title}}" class="information-image"
        (error)="imgError=true" *ngIf="!imgError">
-  <img [ngStyle]="{'display':imgError ? 'flex': 'none'}" mat-card-image src="/api/images/generic" alt="Placeholder"
+  <img *ngIf="imgError" mat-card-image src="/api/images/generic" alt="Placeholder"
        class="information-image">
 
   <div class="information-button-container">
