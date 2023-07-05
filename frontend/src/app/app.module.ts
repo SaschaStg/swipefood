@@ -77,9 +77,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     // Routing module
     AppRoutingModule,
-    MatProgressSpinnerModule,
   ],
   providers: [
     httpInterceptorProviders,
