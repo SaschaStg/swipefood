@@ -17,8 +17,6 @@ import {MatChipSelectionChange} from "@angular/material/chips";
 
 export class RecipeInputComponent implements OnInit {
   recipe?: Recipe;
-  fileName?: string = "";
-  formData = new FormData();
 
 
   constructor(
@@ -26,6 +24,7 @@ export class RecipeInputComponent implements OnInit {
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
+
   ) {
   }
 
@@ -109,6 +108,7 @@ export class RecipeInputComponent implements OnInit {
 // helper for the form
 
 
+
   newIngredient(): FormGroup {
     return this.fb.group({
       id: [''],
@@ -151,33 +151,15 @@ export class RecipeInputComponent implements OnInit {
   }
 
   onSubmit() {
-    this.recipeService.postCustomRecipeImage(this.formData).subscribe(data => {
-      console.log(data);
-    });
-
-
     console.log(this.newRecipe);
     if (this.newRecipe) {
-
-      //post image, get id and send it with postrecipe
-
-      this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
-        console.log(imageId);
+      this.recipeService.postRecipe(this.recipeForm.value as Recipe).subscribe(data => {
+        console.log(data)
       });
-      /*this.recipeService.postRecipe(this.recipeForm.value as Recipe).subscribe(data => {
-                console.log(data)
-              });*/
-
       console.info('new recipe post');
       //route to cookbook
     }
     if (!this.newRecipe) {
-
-      //Put new image
-     /* this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(imageId => {
-        console.log(imageId);
-      })
-*/
       this.recipeService.patchRecipeWithId(this.recipeForm.value as Recipe).subscribe(data => {
         console.log(data)
       });
@@ -188,7 +170,6 @@ export class RecipeInputComponent implements OnInit {
   }
 
   //get the checkbox value
-
   updateDiet(diet: MatChipSelectionChange, dietName: string) {
     if (this.recipe) {
       switch (dietName) {
@@ -208,30 +189,8 @@ export class RecipeInputComponent implements OnInit {
     }
   }
 
-  /*onFileSelected(event: any){
+  onFileSelected(event: any){
     console.log(event);
 
-  }*/
-
-
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.fileName = file.name;
-
-
-      this.formData.append("image", file);
-
-      // Aufruf nach submit verschieben
-
-      /*this.recipeService.postCustomRecipeImage(this.formData).subscribe(data => {
-        console.log(data);
-      });*/
-
-      //const upload$ = this.recipeService.postCustomRecipeImage(formData);
-      //upload$.subscribe();
-      //console.log(upload$);
-    }
   }
-
 }

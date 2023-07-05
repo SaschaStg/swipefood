@@ -8,29 +8,18 @@
           <div class="information-container">
             <mat-card class="card">
               <mat-card-content class="picture">
-                <div *ngIf="recipe.imageType" class="z-index-behind">
-                  <img mat-card-image *ngIf="recipe.image" src="recipe.image" fill priority alt="Photo of a the recipe" id="recipePicture">
+                <div *ngIf="recipe.imageType">
+                  <img mat-card-image *ngIf="recipe.image" [ngSrc]="recipe.image" fill priority alt="Photo of a the recipe">
                 </div>
-                <div style="background-image: url('assets/img/hintergrund.jpg')">
-
-                </div>
-
+                  <mat-icon>publish</mat-icon>
+                  <p>Upload a picture</p>
 
 
 
 
-                <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
-                <div class="file-upload, z-index-front">
-
-
-                  <button mat-button type="button" class="upload-btn" (click)="fileUpload.click()">
-                    <div class="column">
-                      <mat-icon>publish</mat-icon>
-                      <p>Upload a picture</p>
-                    </div>
-                  </button>
-                </div>
-                <p>{{fileName ||recipe.image + "." + recipe.imageType || "No file uploaded yet."}}</p>
+                <!--<form (ngSubmit)="onSubmit()" method="post" enctype="multipart/form-data">-->
+                  <input type="file" accept="image/*" >
+                <!--</form>(change)="onFileSelected($event)"-->
 
               </mat-card-content>
             </mat-card>
@@ -170,7 +159,7 @@
             </mat-card>
 
 
-            <button mat-raised-button color="primary"  [disabled]="!recipeForm.valid" type="submit">
+            <button mat-raised-button color="primary" (click)="updateRecipe()" [disabled]="!recipeForm.valid" type="submit">
               <mat-icon matSuffix>save</mat-icon>
               <mat-label>Save Recipe</mat-label>
             </button>
