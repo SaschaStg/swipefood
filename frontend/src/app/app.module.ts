@@ -18,7 +18,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
 import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
 import {MatTableModule} from "@angular/material/table";
-import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {SwipeCardComponent} from './swipe/swipe-card/swipe-card.component';
 import {HeaderComponent} from "./layout/header/header.component";
 import {FooterComponent} from "./layout/footer/footer.component";
@@ -61,7 +60,6 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     HammerModule,
     HttpClientModule,
     NgOptimizedImage,
-    NgxSkeletonLoaderModule,
     ReactiveFormsModule,
     // Material modules
     MatButtonModule,

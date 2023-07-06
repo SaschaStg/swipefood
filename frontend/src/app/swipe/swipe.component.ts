@@ -164,6 +164,8 @@ export class SwipeComponent implements OnInit {
     this.renderer.setStyle(cardElement, 'transform', `translateX(${deltaX}px) rotate(${rotation}deg)`);
   }
 
+  //this function handles the visibility for the card when swiped and calls the needed functions
+  //it also calls the function addRecipeToUser to add the recipe to the database
   hideCard(likeOrDislikeElement: HTMLElement) {
     const swipeContainerColor = new SwipeContainerColor(this.card1);
     const currentCardId = this.card1 ? 'card1' : 'card2';
@@ -184,6 +186,7 @@ export class SwipeComponent implements OnInit {
   }
 
 
+  //this function calls the endpoints to add the recipe to the database
   addRecipeToUser(likeOrDislikeElement: HTMLElement) {
     if (this.recipe) {
       const elementId = likeOrDislikeElement.id;
@@ -205,7 +208,7 @@ export class SwipeComponent implements OnInit {
     }
   }
 
-  swipeLeft() {
+  dislikeButton() {
     const dislikeElement = this.elementRef.nativeElement.querySelector('#dislike');
     const swipeContainerColor = new SwipeContainerColor(this.card1);
     swipeContainerColor.updateColor(-200);
@@ -215,7 +218,7 @@ export class SwipeComponent implements OnInit {
     this.buttonTimeout(dislikeElement);
   }
 
-  swipeRight() {
+  likeButton() {
     const likeElement = this.elementRef.nativeElement.querySelector('#like');
     const swipeContainerColor = new SwipeContainerColor(this.card1);
     swipeContainerColor.updateColor(200);
