@@ -3,6 +3,7 @@ export interface Recipe {
   title: string;
   readyInMinutes: number;
   servings: number;
+  imageId?: number; // Only present for custom recipes if they have an image
   image: string;
   imageType: string;
   summary: string;
