@@ -48,7 +48,7 @@ export class RecipeBookComponent implements OnInit {
         this.customRecipesLoading = false;
       },
       error: (err) => {
-        this.snackBarService.openSnackBar("can´t load liked recipes!", "warn");
+        this.snackBarService.openSnackBar("can´t load custom recipes!", "warn");
         console.log(err);
       }
     });
