@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {Recipe} from "../models/recipe";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpEvent} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class RecipeService {
   }
 
   postRecipe(recipe: Recipe): Observable<Recipe>{
-      return this.httpClient.post<Recipe>(`api/recipes`, recipe)
+      return this.httpClient.post<Recipe>(`api/recipes`, recipe);
   }
 
   addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
@@ -39,6 +39,20 @@ export class RecipeService {
   getRandomRecipe(): Observable<Recipe> {
     return this.httpClient.get<Recipe>(`api/recipes/random`);
   }
+
+
+  postCustomRecipeImage(formData: any){
+    return this.httpClient.post<{id: string}>(`api/images`, formData);
+
+  }
+
+  putCustomRecipeImage(formData:any, imageId: string){
+    return this.httpClient.put(`api/images/${imageId}`, formData);
+  }
+
+
+  // um zu überschreiben
+
 
 
 
