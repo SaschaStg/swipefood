@@ -9,6 +9,7 @@ import {Diet} from "../services/diet";
 import {MatChipSelectionChange} from "@angular/material/chips";
 
 
+
 @Component({
   selector: 'app-recipe-input',
   templateUrl: './recipe-input.component.html',
@@ -45,8 +46,9 @@ export class RecipeInputComponent implements OnInit {
           readyInMinutes: [0],
           //readyInHours: [hours],
           servings: [1],
-          //image: [this.recipe?.image],
+          image: [''],
           //imageType: [this.recipe?.imageType],
+          imageId: [0],
           summary: [''],
           instructions: [''],
 
@@ -82,7 +84,7 @@ export class RecipeInputComponent implements OnInit {
           readyInMinutes: 0,
           servings: 1,
           image: '',
-          imageType: '',
+          imageId: 0,
           summary: '',
           instructions: '',
           categories: {
@@ -141,50 +143,67 @@ export class RecipeInputComponent implements OnInit {
     this.getIngredients().removeAt(index);
   }
 
-  updateRecipe() {
-    return 0;
-  }
-
 
   getIngredients() {
     return this.recipeForm.get('ingredients') as FormArray;
   }
 
   onSubmit() {
-    this.recipeService.postCustomRecipeImage(this.formData).subscribe(data => {
-      console.log(data);
-    });
-
-
     console.log(this.newRecipe);
     if (this.newRecipe) {
+      console.log('new recipe');
 
-      //post image, get id and send it with postrecipe
+      //get imageid
 
       this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
-        console.log(imageId);
+        console.log(`create a new ImageId for an new Image `+imageId);
+        if (imageId.id >= 0) {
+          console.log("image id greater 0");
+          // set imageid manually
+          this.recipeForm.controls['image'].setValue(imageId.id);  // later set image to image id. backend has to change the parameters
+            console.log(`set recipeForm image to imageid` + this.recipeForm.controls['image'].value);
+        }
+        this.recipeService.postRecipe(this.recipeForm.value as Recipe).subscribe(data => {
+          console.log(`posted new recipe with this data` + data);
+        });
       });
-      /*this.recipeService.postRecipe(this.recipeForm.value as Recipe).subscribe(data => {
-                console.log(data)
-              });*/
+
 
       console.info('new recipe post');
       //route to cookbook
     }
     if (!this.newRecipe) {
+      console.log('update a recipe');
+      console.log(this.recipe);
 
-      //Put new image
-     /* this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(imageId => {
-        console.log(imageId);
-      })
-*/
-      this.recipeService.patchRecipeWithId(this.recipeForm.value as Recipe).subscribe(data => {
-        console.log(data)
-      });
-      console.info('recipe patched');
+      if (!(this.recipe!.imageId == undefined) || (this.recipe!.imageId == 0)) {
+        this.recipeService.putCustomRecipeImage(this.formData, this.recipe!.imageId!).subscribe(data => { //this.recipeForm.controls['imageId'].value
+          console.log(`Put Image with`+ this.formData +`and getting back`+ data);
+          this.recipeService.patchRecipeWithId(this.recipeForm.value as Recipe).subscribe(data => {
+            console.log(data);
+            console.info('recipe patched');
+          });
+        });
+
+      } else {
+        this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
+          console.log(`Posted Image and get imageId back`+imageId.id);
+          if (imageId.id >= 0) {
+            console.log("image id greater 0");
+            // set imageid manually
+            this.recipeForm.controls['image'].setValue(imageId.id);  // later set image to image id. backend has to change the parameters
+            console.log(`set image value to`+ this.recipeForm.controls['image'].value );
+          }
+          this.recipeService.patchRecipeWithId(this.recipeForm.value as Recipe).subscribe(data => {
+            console.log(data);
+            console.info('recipe patched');
+          });
+        });
+      }
+
+
+      return;
     }
-
-    return;
   }
 
   //get the checkbox value
