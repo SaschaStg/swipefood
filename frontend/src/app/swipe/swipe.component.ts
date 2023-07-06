@@ -16,8 +16,8 @@ import {SnackBarService} from "../services/snackbar.service";
 export class SwipeComponent implements OnInit {
   @ViewChild(CdkDrag) dragElement!: CdkDrag;
 
-  recipe?: Recipe;
-  nextRecipe?: Recipe;
+  recipe!: Recipe;
+  nextRecipe!: Recipe;
   isDragging = false;
   card1 = true;
   loadingCard1 = false;
@@ -195,14 +195,14 @@ export class SwipeComponent implements OnInit {
         if (this.card1) {
           this.recipeService.addRecipeToUser(this.recipe.id, true).subscribe();
         } else {
-          this.recipeService.addRecipeToUser(this.nextRecipe!.id, true).subscribe();
+          this.recipeService.addRecipeToUser(this.nextRecipe?.id, true).subscribe();
         }
       }
       if (elementId === 'dislike') {
         if (this.card1) {
           this.recipeService.addRecipeToUser(this.recipe.id, false).subscribe();
         } else {
-          this.recipeService.addRecipeToUser(this.nextRecipe!.id, false).subscribe();
+          this.recipeService.addRecipeToUser(this.nextRecipe.id, false).subscribe();
         }
       }
     }
