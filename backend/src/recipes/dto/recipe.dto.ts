@@ -3,8 +3,10 @@ import { SpoonacularRecipe } from '../spoonacular';
 import { SwipefoodRecipe } from '../recipe.entity';
 import { RecipeCategoriesDto } from './recipe-categories.dto';
 import {
+  IsInt,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   IsUrl,
@@ -28,6 +30,11 @@ export class RecipeDto {
   @IsNumber()
   @IsPositive()
   servings: number;
+
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  imageId?: number;
 
   @IsUrl()
   image: string;
@@ -53,6 +60,7 @@ export class RecipeDto {
     title: string,
     readyInMinutes: number,
     servings: number,
+    imageId: number | undefined,
     image: string,
     summary: string,
     instructions: string,
@@ -63,6 +71,7 @@ export class RecipeDto {
     this.title = title;
     this.readyInMinutes = readyInMinutes;
     this.servings = servings;
+    this.imageId = imageId;
     this.image = image;
     this.summary = summary;
     this.instructions = instructions;
@@ -76,6 +85,7 @@ export class RecipeDto {
       recipe.title,
       recipe.readyInMinutes,
       recipe.servings,
+      undefined,
       recipe.image,
       recipe.summary,
       recipe.instructions,
@@ -97,6 +107,7 @@ export class RecipeDto {
       recipe.title,
       recipe.readyInMinutes,
       recipe.servings,
+      recipe.imageId ?? undefined,
       `api/images/${recipe.imageId ?? 'generic'}`,
       recipe.summary,
       recipe.instructions,
