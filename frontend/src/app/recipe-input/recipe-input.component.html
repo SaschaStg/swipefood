@@ -8,9 +8,9 @@
           <div class="information-container">
             <mat-card class="card">
               <mat-card-content class="picture">
-                <div *ngIf="recipe.imageType" class="z-index-behind">
+                <!--<div *ngIf="recipe.image" class="z-index-behind">
                   <img mat-card-image *ngIf="recipe.image" src="recipe.image" fill priority alt="Photo of a the recipe" id="recipePicture">
-                </div>
+                </div>-->
                 <div style="background-image: url('assets/img/hintergrund.jpg')">
 
                 </div>
@@ -30,7 +30,7 @@
                     </div>
                   </button>
                 </div>
-                <p>{{fileName ||recipe.image + "." + recipe.imageType || "No file uploaded yet."}}</p>
+                <p>{{fileName ||recipe.image || "No file uploaded yet."}}</p>
 
               </mat-card-content>
             </mat-card>

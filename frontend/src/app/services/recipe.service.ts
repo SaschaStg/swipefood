@@ -42,11 +42,11 @@ export class RecipeService {
 
 
   postCustomRecipeImage(formData: any){
-    return this.httpClient.post<{id: string}>(`api/images`, formData);
+    return this.httpClient.post<{id: number}>(`api/images`, formData);
 
   }
 
-  putCustomRecipeImage(formData:any, imageId: string){
+  putCustomRecipeImage(formData:any, imageId: number){
     return this.httpClient.put(`api/images/${imageId}`, formData);
   }
 
