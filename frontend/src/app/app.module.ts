@@ -35,6 +35,7 @@ import {RecipeInputComponent} from './recipe-input/recipe-input.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {WelcomeComponent} from './welcome/welcome.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import {WelcomeComponent} from './welcome/welcome.component';
     MatToolbarModule,
     // Routing module
     AppRoutingModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     httpInterceptorProviders,
