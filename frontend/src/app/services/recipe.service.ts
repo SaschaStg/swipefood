@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {Recipe} from "../models/recipe";
-import {HttpClient} from "@angular/common/http";
-import {CreateRecipe} from "../models/create-recipe";
+import {HttpClient, HttpEvent} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +19,12 @@ export class RecipeService {
     return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
   }
 
-  patchRecipeWithId(recipe: CreateRecipe): Observable<Recipe> {
+  patchRecipeWithId(recipe: Recipe): Observable<Recipe>{
     return this.httpClient.patch<Recipe>(`api/recipes/${recipe.id}`, recipe);
   }
 
-  postRecipe(recipe: CreateRecipe): Observable<Recipe> {
-    return this.httpClient.post<Recipe>(`api/recipes`, recipe);
+  postRecipe(recipe: Recipe): Observable<Recipe>{
+      return this.httpClient.post<Recipe>(`api/recipes`, recipe);
   }
 
   addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
@@ -42,13 +41,19 @@ export class RecipeService {
   }
 
 
-  postCustomRecipeImage(formData: FormData): Observable<{ id: number }> {
-    return this.httpClient.post<{ id: number }>(`api/images`, formData);
+  postCustomRecipeImage(formData: any){
+    return this.httpClient.post<{id: string}>(`api/images`, formData);
 
   }
 
-
-  putCustomRecipeImage(formData: FormData, imageId: number): Observable<void> {
-    return this.httpClient.put<void>(`api/images/${imageId}`, formData);
+  putCustomRecipeImage(formData:any, imageId: string){
+    return this.httpClient.put(`api/images/${imageId}`, formData);
   }
+
+
+  // um zu überschreiben
+
+
+
+
 }
