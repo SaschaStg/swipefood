@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SwipeComponent} from './swipe/swipe.component';
 import {MatCardModule} from "@angular/material/card";
-import {RecipeInformationComponent} from './recipe-details/recipe-information.component';
+import {RecipeInformationComponent} from './recipe-information/recipe-information.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";

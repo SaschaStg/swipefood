@@ -9,7 +9,7 @@ import {SnackBarService} from "../services/snackbar.service";
 import {NavigateService} from "../services/navigate.service";
 
 @Component({
-  selector: 'app-recipe-details',
+  selector: 'app-recipe-information',
   templateUrl: './recipe-information.component.html',
   styleUrls: ['./recipe-information.component.scss']
 })
