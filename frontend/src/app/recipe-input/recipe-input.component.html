@@ -8,16 +8,6 @@
           <div class="information-container">
             <mat-card class="card">
               <mat-card-content class="picture">
-                <!--<div *ngIf="recipe.image" class="z-index-behind">
-                  <img mat-card-image *ngIf="recipe.image" src="recipe.image" fill priority alt="Photo of a the recipe" id="recipePicture">
-                </div>-->
-                <div style="background-image: url('assets/img/hintergrund.jpg')">
-
-                </div>
-
-
-
-
 
                 <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
                 <div class="file-upload, z-index-front">
@@ -31,6 +21,7 @@
                   </button>
                 </div>
                 <p>{{fileName ||recipe.image || "No file uploaded yet."}}</p>
+                <button type="button" (click)="deleteImage()"><mat-icon>delete</mat-icon></button>
 
               </mat-card-content>
             </mat-card>
@@ -94,7 +85,7 @@
               <mat-card class="card">
                 <mat-card-content formGroupName="categories">
                   <!--<mat-form-field class="inputFullWidth">-->
-                  <input matInput hidden="true" readonly>
+                  <input matInput hidden readonly>
                   <mat-label>Categories</mat-label>
                   <mat-chip-listbox aria-label="Diary selection" multiple class="information-chipbox">
                     <mat-chip-option [selected]="recipe.categories.vegetarian"
