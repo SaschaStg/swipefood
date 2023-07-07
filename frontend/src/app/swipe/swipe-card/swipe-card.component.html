@@ -21,11 +21,11 @@
 <div class="swipe-container" *ngIf="!loading">
   <mat-card-content class="swipe-content padding-null">
     <div class="swipe-img">
-      <img mat-card-image *ngIf="recipe.image" [ngSrc]="recipe.image"
+      <img mat-card-image *ngIf="!imgError" [ngSrc]="recipe.image"
            (error)="imgError=true"
-           fill priority alt="Photo of a the recipe">
-      <div [ngStyle]="{'display':imgError ? 'flex': 'none'}" class="img-error">
-        Image could not be loaded
+           fill priority alt="{{recipe.title}}">
+      <div *ngIf="imgError" class="swipe-img">
+        <img mat-card-image src="/api/images/generic" alt="Placeholder">
       </div>
 
     </div>

@@ -1,5 +1,10 @@
 <div *ngIf="recipe" class="information-container">
-  <img mat-card-image [src]="recipe.image" alt="{{recipe.title}}" class="information-image">
+
+  <img mat-card-image [src]="recipe.image" alt="{{recipe.title}}" class="information-image"
+       (error)="imgError=true" *ngIf="!imgError">
+  <img *ngIf="imgError" mat-card-image src="/api/images/generic" alt="Placeholder"
+       class="information-image">
+
   <div class="information-button-container">
     <button mat-raised-button class="information-button" color="primary" (click)="back()">
       <mat-icon fontIcon="arrow_back"></mat-icon>
