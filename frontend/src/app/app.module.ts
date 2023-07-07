@@ -18,7 +18,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {ThemeToggleComponent} from './theme-toggle/theme-toggle.component';
 import {RecipeBookComponent} from "./recipe-book/recipe-book.component";
 import {MatTableModule} from "@angular/material/table";
-import {NgxSkeletonLoaderModule} from "ngx-skeleton-loader";
 import {SwipeCardComponent} from './swipe/swipe-card/swipe-card.component';
 import {HeaderComponent} from "./layout/header/header.component";
 import {FooterComponent} from "./layout/footer/footer.component";
@@ -35,6 +34,7 @@ import {RecipeInputComponent} from './recipe-input/recipe-input.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {WelcomeComponent} from './welcome/welcome.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -60,7 +60,6 @@ import {WelcomeComponent} from './welcome/welcome.component';
     HammerModule,
     HttpClientModule,
     NgOptimizedImage,
-    NgxSkeletonLoaderModule,
     ReactiveFormsModule,
     // Material modules
     MatButtonModule,
@@ -80,6 +79,7 @@ import {WelcomeComponent} from './welcome/welcome.component';
     MatToolbarModule,
     // Routing module
     AppRoutingModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     httpInterceptorProviders,

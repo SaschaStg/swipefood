@@ -1,21 +1,5 @@
-<div style="text-align: center" *ngIf="loading">
-
-  <ngx-skeleton-loader count="1" animation="progress-dark" [theme]="{
-      'border-radius': '5px',
-      width: '90%',
-      height: '250px',
-            background: '#656565'
-      }" appearance="circle"></ngx-skeleton-loader>
-  <ngx-skeleton-loader count="1" animation="progress-dark" [theme]="{
-      width: '90%',
-      height: '50px',
-      background: '#656565'
-      }" appearance="line"
-  ></ngx-skeleton-loader>
-  <ngx-skeleton-loader count="4" animation="progress-dark" [theme]="{
-      width: '90%',
-              background: '#656565'}"
-                       appearance="line"></ngx-skeleton-loader>
+<div *ngIf="loading" class="swipe-spinner-container">
+  <mat-spinner></mat-spinner>
 </div>
 
 <div class="swipe-container" *ngIf="!loading">

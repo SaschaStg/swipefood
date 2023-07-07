@@ -82,7 +82,7 @@ export class SwipeComponent implements OnInit {
     })
   }
 
-  // this function is called when the user swiped a recipe
+  // called when the user swiped a recipe
   // it will load a new recipe for the card that is not currently visible
   // it will also change the z-index of the cards so that the card that is not visible is on top
   nextCard(): boolean {
@@ -110,7 +110,7 @@ export class SwipeComponent implements OnInit {
     return currentCard;
   }
 
-  // this function is called when the user is dragging a card
+  // called when the user is dragging a card
   // it will rotate the card based on the distance the user dragged the card
   onSwipe(event: CdkDragMove) {
     if (!this.isDragging) {
@@ -130,7 +130,7 @@ export class SwipeComponent implements OnInit {
     swipeContainerColor.updateColor(deltaX);
   }
 
-  // this function is called when the user stopped dragging a card
+  // called when the user stopped dragging a card
   // it will check if the user dragged the card far enough (tolerance) to the left or right
   // if the user dragged the card far enough to the left, the nextCard() function will be called
   onSwipeEnd(event: CdkDragEnd) {
@@ -164,6 +164,7 @@ export class SwipeComponent implements OnInit {
     this.renderer.setStyle(cardElement, 'transform', `translateX(${deltaX}px) rotate(${rotation}deg)`);
   }
 
+  // handles the visibility for the card when swiped and calls the needed functions
   hideCard(likeOrDislikeElement: HTMLElement) {
     const swipeContainerColor = new SwipeContainerColor(this.card1);
     const currentCardId = this.card1 ? 'card1' : 'card2';
@@ -185,27 +186,27 @@ export class SwipeComponent implements OnInit {
 
 
   addRecipeToUser(likeOrDislikeElement: HTMLElement) {
-    if (this.recipe) {
+    if (this.recipe && this.nextRecipe) {
       const elementId = likeOrDislikeElement.id;
 
       if (elementId === 'like') {
         if (this.card1) {
           this.recipeService.addRecipeToUser(this.recipe.id, true).subscribe();
         } else {
-          this.recipeService.addRecipeToUser(this.nextRecipe!.id, true).subscribe();
+          this.recipeService.addRecipeToUser(this.nextRecipe.id, true).subscribe();
         }
       }
       if (elementId === 'dislike') {
         if (this.card1) {
           this.recipeService.addRecipeToUser(this.recipe.id, false).subscribe();
         } else {
-          this.recipeService.addRecipeToUser(this.nextRecipe!.id, false).subscribe();
+          this.recipeService.addRecipeToUser(this.nextRecipe.id, false).subscribe();
         }
       }
     }
   }
 
-  swipeLeft() {
+  dislikeButton() {
     const dislikeElement = this.elementRef.nativeElement.querySelector('#dislike');
     const swipeContainerColor = new SwipeContainerColor(this.card1);
     swipeContainerColor.updateColor(-200);
@@ -215,7 +216,7 @@ export class SwipeComponent implements OnInit {
     this.buttonTimeout(dislikeElement);
   }
 
-  swipeRight() {
+  likeButton() {
     const likeElement = this.elementRef.nativeElement.querySelector('#like');
     const swipeContainerColor = new SwipeContainerColor(this.card1);
     swipeContainerColor.updateColor(200);

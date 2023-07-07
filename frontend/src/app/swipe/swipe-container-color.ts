@@ -1,8 +1,8 @@
 export class SwipeContainerColor {
   private swipeContainer: HTMLElement;
-  private maxSwipeDistance: number;
-  private intensity: number;
-  private tolerance: number;
+  private readonly maxSwipeDistance: number;
+  private readonly intensity: number;
+  private readonly tolerance: number;
 
   constructor(card1: boolean) {
     const swipeContainerId = card1 ? 'color-container1' : 'color-container2';
