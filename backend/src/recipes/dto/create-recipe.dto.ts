@@ -26,7 +26,7 @@ export class CreateRecipeDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  image?: number;
+  imageId?: number;
 
   @IsString()
   @IsNotEmpty()

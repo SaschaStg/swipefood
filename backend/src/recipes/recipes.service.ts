@@ -84,8 +84,8 @@ export class RecipesService {
     swRecipe.glutenFree = recipe.categories.glutenFree;
     swRecipe.dairyFree = recipe.categories.dairyFree;
 
-    if (recipe.image) {
-      swRecipe.image = await this.getImageOrFail(recipe.image, user);
+    if (recipe.imageId) {
+      swRecipe.image = await this.getImageOrFail(recipe.imageId, user);
     }
 
     swRecipe.ingredients = recipe.ingredients.map((ingredient) => {
@@ -128,9 +128,10 @@ export class RecipesService {
     // this automatically removes the image from the recipe if no image was provided
     let image: Image | undefined;
     let oldImageId: number | undefined;
-    if (recipe.image) {
-      image = await this.getImageOrFail(recipe.image, user);
-    } else if (dbRecipe.imageId && recipe.image === null) {
+    if (recipe.imageId && dbRecipe.imageId !== recipe.imageId) {
+      // Image was changed
+      image = await this.getImageOrFail(recipe.imageId, user);
+    } else if (dbRecipe.imageId && recipe.imageId === null) {
       // Schedule deletion of the image if the user removed it
       // Defer actual deletion until the recipe change went through without errors
       oldImageId = dbRecipe.imageId;
