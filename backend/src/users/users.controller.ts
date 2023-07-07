@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Patch, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DietUpdateDto, UserUpdateDto } from './dto';
 import { User } from './user.entity';
 import { ReqUser } from '../auth/user.decorator';
 import { RecipeDto } from '../recipes/dto';
 
 @ApiTags('users')
-@ApiBearerAuth()
+@ApiCookieAuth()
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}

@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,7 +13,7 @@ async function bootstrap() {
     .setTitle('SwipeFood API')
     .setDescription('Backend API for the SwipeFood App')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addCookieAuth('jwt')
     .build();
   const oaDoc = SwaggerModule.createDocument(app, oaConfig);
   SwaggerModule.setup('swagger', app, oaDoc);
@@ -23,6 +24,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  // Add cookie-parser
+  app.use(cookieParser());
 
   await app.listen(3000);
 }

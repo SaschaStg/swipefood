@@ -12,7 +12,7 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { SpoonacularService } from './spoonacular.service';
 import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { CreateRecipeDto, RecipeDto, SwipeDto, UpdateRecipeDto } from './dto';
@@ -24,7 +24,7 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { UsersService } from '../users/users.service';
 
 @ApiTags('recipes')
-@ApiBearerAuth()
+@ApiCookieAuth()
 @Controller('recipes')
 export class RecipesController {
   constructor(

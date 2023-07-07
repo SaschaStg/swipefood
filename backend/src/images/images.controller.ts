@@ -13,9 +13,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import {
-  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiCookieAuth,
   ApiProperty,
   ApiTags,
 } from '@nestjs/swagger';
@@ -38,12 +38,11 @@ class ImageUploadDto {
 
 @Controller('images')
 @ApiTags('images')
-@ApiBearerAuth()
+@ApiCookieAuth()
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
   @Get('generic')
-  @Public()
   @Header('Content-Type', 'image/jpeg')
   @Header('Content-Disposition', 'inline')
   async getGenericImage() {
