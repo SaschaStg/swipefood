@@ -14,6 +14,8 @@ export class RecipeBookComponent implements OnInit {
 
   likedRecipes?: Recipe[];
   customRecipes?: Recipe[];
+  likedRecipesLoading = false;
+  customRecipesLoading = false;
 
   imgError = false;
 
@@ -27,9 +29,12 @@ export class RecipeBookComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.likedRecipesLoading = true;
+    this.customRecipesLoading = true;
     this.recipeService.getLikedRecipes().subscribe({
       next: (data) => {
         this.likedRecipes = data;
+        this.likedRecipesLoading = false;
       },
       error: (err) => {
         this.snackBarService.openSnackBar("can´t load liked recipes!", "warn");
@@ -40,9 +45,10 @@ export class RecipeBookComponent implements OnInit {
     this.recipeService.getCustomUserRecipes().subscribe({
       next: (data) => {
         this.customRecipes = data;
+        this.customRecipesLoading = false;
       },
       error: (err) => {
-        this.snackBarService.openSnackBar("can´t load liked recipes!", "warn");
+        this.snackBarService.openSnackBar("can´t load custom recipes!", "warn");
         console.log(err);
       }
     });

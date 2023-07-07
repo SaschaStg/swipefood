@@ -1,6 +1,10 @@
 <mat-tab-group>
   <mat-tab class="label-container" label="SAVED RECIPES">
     <div class="book-card-container">
+      <mat-spinner *ngIf="likedRecipesLoading"></mat-spinner>
+      <div *ngIf="likedRecipes?.length === 0">
+        <p>You don't have any saved recipes yet, start swiping!</p>
+      </div>
       <mat-card *ngFor="let likedRecipe of likedRecipes" class="book-card">
         <div class="book-image-container">
           <img mat-card-image [src]="likedRecipe.image" alt="{{likedRecipe.title}}" class="book-image"
@@ -31,6 +35,10 @@
   </mat-tab>
   <mat-tab label="MY RECIPES">
     <div class="book-card-container">
+      <mat-spinner *ngIf="likedRecipesLoading"></mat-spinner>
+      <div *ngIf="customRecipes?.length === 0">
+        <p>You don't have any custom recipes yet.</p>
+      </div>
       <mat-card *ngFor="let customRecipe of customRecipes" class="book-card">
         <div class="book-image-container">
           <img mat-card-image class="book-image" [src]="customRecipe.image" alt="{{customRecipe.title}}">
