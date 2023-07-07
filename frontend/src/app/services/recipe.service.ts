@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {Recipe} from "../models/recipe";
-import {HttpClient, HttpEvent} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
+import {CreateRecipe} from "../models/create-recipe";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,11 @@ export class RecipeService {
     return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
   }
 
-  patchRecipeWithId(recipe: Recipe): Observable<Recipe>{
+  patchRecipeWithId(recipe: CreateRecipe): Observable<Recipe>{
     return this.httpClient.patch<Recipe>(`api/recipes/${recipe.id}`, recipe);
   }
 
-  postRecipe(recipe: Recipe): Observable<Recipe>{
+  postRecipe(recipe: CreateRecipe): Observable<Recipe>{
       return this.httpClient.post<Recipe>(`api/recipes`, recipe);
   }
 

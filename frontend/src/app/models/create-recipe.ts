@@ -1,10 +1,9 @@
-export interface Recipe {
+export interface CreateRecipe {
   id: string;
   title: string;
   readyInMinutes: number;
   servings: number;
-  imageId?: number | null; // Only present for custom recipes if they have an image
-  image: string;
+  imageId: number | null;
   //imageType: string;
   summary: string;
   instructions: string;
