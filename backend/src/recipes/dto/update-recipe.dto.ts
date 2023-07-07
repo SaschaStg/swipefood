@@ -34,7 +34,7 @@ export class UpdateRecipeDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  image?: number;
+  imageId?: number | null;
 
   @IsOptional()
   @IsString()
