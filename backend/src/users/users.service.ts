@@ -15,6 +15,10 @@ export class UsersService {
   create(userAttrs: Omit<User, 'id' | 'recipes'>): Promise<User> {
     const user = new User();
     user.displayName = userAttrs.displayName;
+    user.vegan = userAttrs.vegan;
+    user.vegetarian = userAttrs.vegetarian;
+    user.glutenFree = userAttrs.glutenFree;
+    user.dairyFree = userAttrs.dairyFree;
     return this.usersRepo.save(user);
   }
 
