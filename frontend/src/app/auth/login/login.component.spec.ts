@@ -79,17 +79,4 @@ import { LoginComponent } from './login.component';
     password.setValue('test');
     expect(password.hasError('required')).toBeFalsy();
   });
-
-/*   it('route to home after submitting', () => {
-    expect(component.loginForm.valid).toBeFalsy();
-    component.loginForm.controls['username'].setValue('Max Mustermann');
-    component.loginForm.controls['password'].setValue('VerySecurePassword');
-    expect(component.loginForm.valid).toBeTruthy();
-    fixture.detectChanges();
-    const button = fixture.debugElement.nativeElement.querySelector('.register-container > button');
-    button.click();
-    fixture.detectChanges();
-  }); */
-
-
  });

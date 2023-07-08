@@ -214,7 +214,6 @@ export class SwipeComponent implements OnInit {
     this.moveCard(-200, -20);
     this.hideCard(dislikeElement);
     this.buttonTimeout(dislikeElement);
-    console.log(this.recipe)
   }
 
   likeButton() {
