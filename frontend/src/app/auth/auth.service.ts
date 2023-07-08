@@ -118,6 +118,8 @@ export class AuthService {
   }
 
   private updateToken(token: string) {
+    // Remove signature as this copy of the token will not be used for authentication (auth is done via cookies)
+    token = token.substring(0, token.lastIndexOf('.'));
     this.localStorage.setItem('token', token)
     this.token = token;
   }

@@ -1,11 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { DemoService } from './demo.service';
 import { Public } from '../auth/public';
 
 @Controller('demo')
 @ApiTags('demo')
-@ApiBearerAuth()
+@ApiCookieAuth()
 export class DemoController {
   constructor(private demoService: DemoService) {}
 
