@@ -37,6 +37,11 @@ export class RecipeInputComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const recipeId = params.get('id');
 
+      //check if it is a swipefood recipe
+      if(!recipeId?.startsWith('sw')){
+        this.openRecipeBook();
+      }
+
       this.recipeForm =
         this.fb.group({
           id: [''],
