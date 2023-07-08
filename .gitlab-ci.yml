@@ -216,6 +216,32 @@ build:migrations:
     paths:
       - "backend/.npm"
 
+test:frontend:
+  image: trion/ng-cli-karma
+  extends: .test_template
+  rules: !reference [ .frontend_rules_template, rules ]
+  needs:
+    - "build:frontend"
+  variables:
+    CONTEXT: frontend
+    TARGET: test:ci
+  coverage: /Statements.*?(\d+(?:\.\d+)?)%/
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - frontend/TESTS.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: frontend/coverage/frontend/cobertura-coverage.xml
+  cache:
+    key:
+      files:
+        - "frontend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "frontend/.npm"
+
 test:backend:
   extends: .test_template
   rules: !reference [ .backend_rules_template, rules ]

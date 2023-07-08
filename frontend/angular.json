@@ -135,7 +135,8 @@
                 "bundleName": "style"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
           }
         },
         "lint": {
