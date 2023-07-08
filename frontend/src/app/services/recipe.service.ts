@@ -20,12 +20,12 @@ export class RecipeService {
     return this.httpClient.get<Recipe[]>(`api/recipes/liked`);
   }
 
-  patchRecipeWithId(recipe: CreateRecipe): Observable<Recipe>{
+  patchRecipeWithId(recipe: CreateRecipe): Observable<Recipe> {
     return this.httpClient.patch<Recipe>(`api/recipes/${recipe.id}`, recipe);
   }
 
-  postRecipe(recipe: CreateRecipe): Observable<Recipe>{
-      return this.httpClient.post<Recipe>(`api/recipes`, recipe);
+  postRecipe(recipe: CreateRecipe): Observable<Recipe> {
+    return this.httpClient.post<Recipe>(`api/recipes`, recipe);
   }
 
   addRecipeToUser(recipeId: string, isLiked: boolean): Observable<Recipe> {
@@ -42,19 +42,13 @@ export class RecipeService {
   }
 
 
-  postCustomRecipeImage(formData: any){
-    return this.httpClient.post<{id: number}>(`api/images`, formData);
+  postCustomRecipeImage(formData: FormData): Observable<{ id: number }> {
+    return this.httpClient.post<{ id: number }>(`api/images`, formData);
 
   }
 
-  putCustomRecipeImage(formData:any, imageId: number){
-    return this.httpClient.put(`api/images/${imageId}`, formData);
+
+  putCustomRecipeImage(formData: FormData, imageId: number): Observable<void> {
+    return this.httpClient.put<void>(`api/images/${imageId}`, formData);
   }
-
-
-  // um zu überschreiben
-
-
-
-
 }
