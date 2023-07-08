@@ -24,6 +24,5 @@ export class UpdateIngredientDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   unit?: string;
 }
