@@ -5,6 +5,7 @@ import {Recipe} from "../models/recipe";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatChipSelectionChange} from "@angular/material/chips";
 import {CreateRecipe} from "../models/create-recipe";
+import {NavigateService} from "../services/navigate.service";
 
 
 @Component({
@@ -24,6 +25,7 @@ export class RecipeInputComponent implements OnInit {
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
+    private navigateService: NavigateService,
   ) {
   }
 
@@ -227,10 +229,15 @@ export class RecipeInputComponent implements OnInit {
         });
       }
 
-      return;
+      //return;
     }
+    //redirekt to cookbook
+    this.openRecipebook();
   }
-
+  openRecipebook(): void {
+    const endpoint = `/cookbook`;
+    this.navigateService.navigateTo(this.router.url, endpoint);
+  }
 
 //get the checkbox value
 
@@ -264,6 +271,7 @@ export class RecipeInputComponent implements OnInit {
       }
     }
   }
+
 
   deleteImage() {
     if (this.recipe) {
