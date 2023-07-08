@@ -101,6 +101,31 @@ workflow:
   script:
     - printf "$COMMANDS" | ssh -o "BatchMode=yes" -o "UserKnownHostsFile=$HOST_KEY" $DEPLOY_USER@$DEPLOY_HOST
 
+no-code-changes:
+  # this is a noop job that is used to trigger the pipeline if there are no code changes
+  # (since merge requests need the pipeline to succeed)
+  rules:
+    # don't run if there are changes in the frontend or backend directory, since then other jobs will run
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - frontend/**/*
+          - backend/**/*
+          # run if pipeline config changes
+          - .gitlab-ci.yml
+        compare_to: "main"
+      when: never
+    # only run if there are changes to the no-code files only (since there would be no pipeline otherwise)
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        paths:
+          - README.md
+          - docker-compose.yaml
+          - .gitignore
+        compare_to: "main"
+  script:
+    - echo "Changes to README.md, docker-compose.yaml or .gitignore only. Skipping pipeline."
+
 lint:frontend:
   extends: .lint_template
   variables:
