@@ -20,8 +20,8 @@
                 </div>
 
                 <p>{{fileName || recipe.image || "No file uploaded yet."}}</p>
-                <button type="button" (click)="deleteImage()">
-                  <mat-icon>delete</mat-icon>
+                <button mat-button (click)="deleteImage()">
+                  <mat-icon matSuffix>delete</mat-icon>
                 </button>
 
               </mat-card-content>
@@ -132,7 +132,7 @@
                     <mat-icon matSuffix>edit</mat-icon>
                   </mat-form-field>
                   <button mat-button (click)="removeIngredient(i)">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon matSuffix>delete</mat-icon>
                   </button>
                 </mat-card-content>
 
