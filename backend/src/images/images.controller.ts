@@ -1,7 +1,10 @@
 import {
   Controller,
+  Delete,
   Get,
   Header,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseFilePipeBuilder,
   ParseIntPipe,
@@ -16,13 +19,13 @@ import {
   ApiBody,
   ApiConsumes,
   ApiCookieAuth,
+  ApiNoContentResponse,
   ApiProperty,
   ApiTags,
 } from '@nestjs/swagger';
 import { createReadStream } from 'fs';
 import * as path from 'path';
 import * as process from 'process';
-import { Public } from '../auth/public';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
 import { ReqUser } from '../auth/user.decorator';
@@ -107,5 +110,17 @@ export class ImagesController {
     @ReqUser() user: User,
   ) {
     await this.imagesService.processUpdatedImage(file.buffer, id, user);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
+  async deleteImage(
+    @Param('id', ParseIntPipe) id: number,
+    @ReqUser() user: User,
+  ): Promise<void> {
+    // Removes the image from the database and the file system
+    // This also removes the image from the recipes that use it
+    await this.imagesService.deleteImage(id, user);
   }
 }
