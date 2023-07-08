@@ -229,10 +229,10 @@ export class RecipeInputComponent implements OnInit {
         });
       }
 
-      //return;
+
     }
-    //redirekt to cookbook
     this.openRecipebook();
+    return;
   }
   openRecipebook(): void {
     const endpoint = `/cookbook`;
