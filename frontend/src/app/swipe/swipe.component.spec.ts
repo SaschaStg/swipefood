@@ -6,21 +6,28 @@ import {of} from "rxjs";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatIconModule} from "@angular/material/icon";
+import { SnackBarService } from '../services/snackbar.service';
+import { MatCardModule } from '@angular/material/card';
 
 describe('SwipeComponent', () => {
   let component: SwipeComponent;
   let fixture: ComponentFixture<SwipeComponent>;
 
+  const snackServiceMockData = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule,
         BrowserModule,
         BrowserAnimationsModule,
-        MatIconModule
+        MatIconModule,
+        MatCardModule
       ],
       providers: [
         SwipeComponent,
+        {provide: SnackBarService,
+          useValue: snackServiceMockData
+        },
         {
           provide: ActivatedRoute,
           useValue: {
