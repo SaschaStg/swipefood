@@ -24,10 +24,10 @@ export class RegisterComponent {
     username: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
     password: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
     displayName: new FormControl<string>('', {validators: [Validators.required], nonNullable: true}),
-    vegan: new FormControl<boolean>(true),
-    vegetarian: new FormControl<boolean>(true),
-    glutenFree: new FormControl<boolean>(true),
-    dairyFree: new FormControl<boolean>(true),
+    vegan: new FormControl<boolean>(false),
+    vegetarian: new FormControl<boolean>(false),
+    glutenFree: new FormControl<boolean>(false),
+    dairyFree: new FormControl<boolean>(false),
   });
 
   onSubmit(): void {
