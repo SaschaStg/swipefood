@@ -230,7 +230,7 @@ test:frontend:
     when: always
     reports:
       junit:
-        - frontend/TESTS.xml
+        - frontend/junit.xml
       coverage_report:
         coverage_format: cobertura
         path: frontend/coverage/frontend/cobertura-coverage.xml
