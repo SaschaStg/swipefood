@@ -202,7 +202,7 @@ export class RecipesController {
     if (!taggedId.startsWith('sw-')) {
       throw new BadRequestException('Cannot delete non-custom recipes');
     }
-    await this.recipeService.deleteRecipe(taggedId, user);
+    await this.recipeService.deleteRecipe(+taggedId.split('-')[1], user);
   }
 
   @Post(':id/swipe')

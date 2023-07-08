@@ -201,9 +201,7 @@ export class RecipesService {
     return dbRecipe;
   }
 
-  async deleteRecipe(taggedId: string, user: User) {
-    const recipeId = +taggedId.split('-')[1]; // Remove the 'sw-' prefix
-
+  async deleteRecipe(recipeId: number, user: User) {
     const dbRecipe = await this.getSwipefoodRecipeById(recipeId, user);
     if (!dbRecipe) {
       throw new BadRequestException('Recipe not found');
