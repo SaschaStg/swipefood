@@ -22,6 +22,8 @@ services:
       DEMO_ENABLED: "true"
       JWT_SECRET_FILE: "/var/run/secrets/jwt-secret"
       SPOONACULAR_API_KEY_FILE: "/var/run/secrets/spoonacular-api-key"
+    volumes:
+      - "backend-data:/app/data"
     secrets:
       - "jwt-secret"
       - "spoonacular-api-key"
@@ -57,3 +59,4 @@ secrets:
 
 volumes:
   db-data:
+  backend-data:
