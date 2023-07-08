@@ -19,23 +19,20 @@
   padding: 10px;
 }
 
-.book-image {
-  border-radius: 15px !important; // !important because of the default border-radius of the mdc-card
-}
-
 .book-image-container {
   width: 35%;
   align-content: center;
   display: flex;
+  height: 120px;
 }
 
 .book-image {
   object-fit: cover;
   width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  border-radius: 25px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px !important; // !important because of the default border-radius of the mdc-card
 }
 
 .book-information-container {
