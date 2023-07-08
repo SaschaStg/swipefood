@@ -46,6 +46,6 @@ describe('authGuard', () => {
       .toBe(true);
 
     expect(result.toString())
-      .toBe('/auth/login');
+      .toBe('/home');
   });
 })
