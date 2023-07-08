@@ -52,7 +52,7 @@
               <mat-icon class="book-icon">access_time</mat-icon>
               <span>{{customRecipe.readyInMinutes}} minutes</span>
             </div>
-            <button [routerLink]="['/recipes/' + customRecipe.id]" mat-flat-button color="primary">
+            <button (click)="openRecipe(customRecipe.id)" mat-flat-button color="primary">
               more info
             </button>
             <button mat-flat-button [routerLink]="['/recipe-input/' + customRecipe.id]" color="primary">
