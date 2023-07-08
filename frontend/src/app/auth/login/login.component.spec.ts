@@ -1,7 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+ import {ComponentFixture, TestBed} from '@angular/core/testing';
+ import {LoginComponent} from './login.component';
+ import {AuthService} from "../auth.service";
+ import {SnackBarService} from "../../services/snackbar.service";
+ import {MatFormFieldModule} from "@angular/material/form-field";
+ import {MatIconModule} from "@angular/material/icon";
+ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+ import {ActivatedRoute} from "@angular/router";
+ import {MatInputModule} from "@angular/material/input";
+ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { By } from '@angular/platform-browser';
+import {RouterTestingModule} from "@angular/router/testing";
+import { SwipeComponent } from 'src/app/swipe/swipe.component';
 
-import { LoginComponent } from './login.component';
- 
  describe('LoginComponent', () => {
    let component: LoginComponent;
    let fixture: ComponentFixture<LoginComponent>;
@@ -15,7 +25,11 @@ import { LoginComponent } from './login.component';
    beforeEach(async () => {
      await TestBed.configureTestingModule({
        declarations: [LoginComponent],
-       imports: [MatFormFieldModule, MatIconModule, ReactiveFormsModule, FormsModule, RouterModule, MatInputModule, BrowserAnimationsModule],
+       imports: [MatFormFieldModule, MatIconModule, ReactiveFormsModule, FormsModule, 
+        RouterTestingModule.withRoutes( 
+          [{path: 'login', component: LoginComponent},
+          { path:' ' , component: SwipeComponent}]), 
+        MatInputModule, BrowserAnimationsModule],
        providers: [
          {provide: AuthService, useValue: authServiceMockData},
          {provide: ActivatedRoute, useValue: {snapshot: {queryParams: {returnUrl: '/'}}}},
@@ -79,4 +93,16 @@ import { LoginComponent } from './login.component';
     password.setValue('test');
     expect(password.hasError('required')).toBeFalsy();
   });
+
+  it('route to home after submitting', () => {
+    expect(component.loginForm.valid).toBeFalsy();
+    component.loginForm.controls['username'].setValue('Max Mustermann');
+    component.loginForm.controls['password'].setValue('VerySecurePassword');
+    expect(component.loginForm.valid).toBeTruthy();
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('.login-btn-container')).nativeElement;
+    button.click();
+    fixture.detectChanges();
+   expect(location.pathname).toBe('/context.html');
+  }); 
  });
