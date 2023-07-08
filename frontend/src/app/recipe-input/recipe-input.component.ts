@@ -32,7 +32,6 @@ export class RecipeInputComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.recipe);
     this.route.paramMap.subscribe(params => {
       const recipeId = params.get('id');
 
@@ -41,10 +40,8 @@ export class RecipeInputComponent implements OnInit {
           id: [''],
           title: ['', Validators.required],
           readyInMinutes: [0],
-          //readyInHours: [hours],
           servings: [1],
           image: [''],
-          //imageType: [this.recipe?.imageType],
           imageId: [undefined],
           summary: ['', Validators.required],
           instructions: ['', Validators.required],
@@ -98,15 +95,9 @@ export class RecipeInputComponent implements OnInit {
           },]
         }
         this.recipeForm.patchValue(this.recipe);
-        console.error('No recipe ID found in route');
       }
-
     });
-
   }
-
-// helper for the form
-
 
   newIngredient(): FormGroup {
     return this.fb.group({
@@ -115,7 +106,6 @@ export class RecipeInputComponent implements OnInit {
       amount: [''],
       unit: ['']
     })
-
   }
 
 
@@ -124,7 +114,6 @@ export class RecipeInputComponent implements OnInit {
   }
 
   loadIngredient() {
-
     this.recipeForm.setControl('ingredients', this.fb.array(this.recipe?.ingredients?.map((ingredient) =>
         this.fb.group({
           id: [ingredient.id],
@@ -145,7 +134,10 @@ export class RecipeInputComponent implements OnInit {
     return this.recipeForm.get('ingredients') as FormArray;
   }
 
-  /*public deleteNotDirtys(group: FormGroup | FormArray): void {
+  /*
+  //send only changed values(dirty)
+
+  public deleteNotDirtys(group: FormGroup | FormArray): void {
     if(this.recipe){
 
       for (const key of Object.keys(group.controls)) {
@@ -163,37 +155,31 @@ export class RecipeInputComponent implements OnInit {
   }*/
 
   onSubmit() {
-    console.log(this.newRecipe);
-    //
+
+    //new recipe
     if (this.newRecipe) {
-      console.log('new recipe');
 
-      //get imageid
-      console.log(this.formData);
-
+      //image uploaded by user
       if (this.formData.has('image')) {
         this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
-          console.log(`create a new ImageId for an new Image ` + imageId);
+
           if (imageId.id >= 0) {
-            console.log("image id greater 0");
+
             // set imageid manually
             this.recipeForm.controls['imageId'].setValue(imageId.id);
-            console.log(`set recipeForm image to imageid` + this.recipeForm.controls['image'].value);
           }
-          this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(data => {
-            console.log(`posted new recipe with this data` + data);
+          this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(() => {
+            console.info('New Recipe created');
           });
         });
-
+      //image not uploaded by user
       } else {
-        this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(data => {
-          console.log(`posted new recipe with this data` + data);
+        this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(() => {
+          console.info('New Recipe created')
         });
       }
 
 
-      console.info('new recipe post');
-      //route to cookbook
     }
     //recipe update
     if (!this.newRecipe && this.recipe) {
@@ -201,19 +187,17 @@ export class RecipeInputComponent implements OnInit {
       //this.deleteNotDirtys(this.recipeForm);
 
 
-      console.log('update a recipe');
-      console.log(this.recipe);
       //set image
-      if(this.formData.has('image')){
+      if (this.formData.has('image')) {
         //image already set
         if (this.recipe.imageId) {
 
           //override image
-          this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(data => { //this.recipeForm.controls['imageId'].value
-            console.log(`Put Image with` + this.formData + `and getting back` + data);
+          this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(() => { //this.recipeForm.controls['imageId'].value
+
             //patch recipe
-            this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(data => {
-              console.log(data);
+            this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
+
               console.info('recipe patched');
             });
           });
@@ -221,25 +205,24 @@ export class RecipeInputComponent implements OnInit {
         } else {
           //create new image and get id
           this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
-            console.log(`Posted Image and get imageId back` + imageId.id);
+
             if (imageId.id >= 0) {
-              console.log("image id greater 0");
+
               // set imageid manually
               this.recipeForm.controls['imageId'].setValue(imageId.id);
-              console.log(`set image value to` + this.recipeForm.controls['imageId'].value);
+
             }
             //patch recipe
-            this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(data => {
-              console.log(data);
+            this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
+
               console.info('recipe patched');
             });
           });
         }
-      }
-      else{
+      } else {
         //patch recipe
-        this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(data => {
-          console.log(data);
+        this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
+
           console.info('recipe patched');
         });
       }
@@ -271,28 +254,27 @@ export class RecipeInputComponent implements OnInit {
   }
 
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.fileName = file.name;
-      this.formData.set("image", file);
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      const file: File = input.files[0];
+      if (file) {
+        this.fileName = file.name;
+        this.formData.set("image", file);
+      }
     }
   }
 
-  deleteImage(){
-    if(this.recipe){
-      console.log(this.formData);
+  deleteImage() {
+    if (this.recipe) {
+
       this.formData.delete("image");
-
-      console.log(this.formData, this.recipe.imageId);
-
       this.recipe.imageId = null;
-      console.log(this.recipeForm.controls['imageId'].value);
       this.recipe.image = "";
       this.recipeForm.controls['imageId'].setValue(null);
       this.fileName = '';
-      console.log(this.recipe);
-      console.log('delete!');
+
+      console.info('Image deleted!');
 
 
     }
