@@ -5,7 +5,6 @@ export interface Recipe {
   servings: number;
   imageId?: number | null; // Only present for custom recipes if they have an image
   image: string;
-  //imageType: string;
   summary: string;
   instructions: string;
   categories: {

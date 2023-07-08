@@ -136,26 +136,6 @@ export class RecipeInputComponent implements OnInit {
     return this.recipeForm.get('ingredients') as FormArray;
   }
 
-  /*
-  //send only changed values(dirty)
-
-  public deleteNotDirtys(group: FormGroup | FormArray): void {
-    if(this.recipe){
-
-      for (const key of Object.keys(group.controls)) {
-        const abstractControl = group.controls[key];
-        if (abstractControl instanceof FormGroup || abstractControl instanceof FormArray) {
-          this.deleteNotDirtys(abstractControl);
-        } else {
-          if (!group.controls[key].dirty) {
-            delete this.recipe[key as keyof Recipe];
-          }
-        }
-      }
-    }
-
-  }*/
-
   onSubmit() {
 
     //new recipe
@@ -171,13 +151,13 @@ export class RecipeInputComponent implements OnInit {
             this.recipeForm.controls['imageId'].setValue(imageId.id);
           }
           this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(() => {
-            console.info('New Recipe created');
+            console.debug('New Recipe created');
           });
         });
       //image not uploaded by user
       } else {
         this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(() => {
-          console.info('New Recipe created')
+          console.debug('New Recipe created')
         });
       }
 
@@ -186,8 +166,6 @@ export class RecipeInputComponent implements OnInit {
     //recipe update
     if (!this.newRecipe && this.recipe) {
 
-      //this.deleteNotDirtys(this.recipeForm);
-
 
       //set image
       if (this.formData.has('image')) {
@@ -195,12 +173,12 @@ export class RecipeInputComponent implements OnInit {
         if (this.recipe.imageId) {
 
           //override image
-          this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(() => { //this.recipeForm.controls['imageId'].value
+          this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(() => {
 
             //patch recipe
             this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
 
-              console.info('recipe patched');
+              console.debug('recipe patched');
             });
           });
           //image not set
@@ -210,14 +188,14 @@ export class RecipeInputComponent implements OnInit {
 
             if (imageId.id >= 0) {
 
-              // set imageid manually
+              // set imageId manually
               this.recipeForm.controls['imageId'].setValue(imageId.id);
 
             }
             //patch recipe
             this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
 
-              console.info('recipe patched');
+              console.debug('recipe patched');
             });
           });
         }
@@ -225,16 +203,16 @@ export class RecipeInputComponent implements OnInit {
         //patch recipe
         this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
 
-          console.info('recipe patched');
+          console.debug('recipe patched');
         });
       }
 
 
     }
-    this.openRecipebook();
+    this.openRecipeBook();
     return;
   }
-  openRecipebook(): void {
+  openRecipeBook(): void {
     const endpoint = `/cookbook`;
     this.navigateService.navigateTo(this.router.url, endpoint);
   }
@@ -282,7 +260,7 @@ export class RecipeInputComponent implements OnInit {
       this.recipeForm.controls['imageId'].setValue(null);
       this.fileName = '';
 
-      console.info('Image deleted!');
+      console.debug('Image deleted!');
 
 
     }

@@ -4,7 +4,6 @@ export interface CreateRecipe {
   readyInMinutes: number;
   servings: number;
   imageId: number | null;
-  //imageType: string;
   summary: string;
   instructions: string;
   categories: {
