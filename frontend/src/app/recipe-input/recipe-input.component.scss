@@ -91,19 +91,20 @@ mat-icon {
   display: none;
 }
 
-.z-index-behind{
-  z-index:0;
-}
-.z-index-front{
-  z-index:1;
+.z-index-behind {
+  z-index: 0;
 }
 
-.picture{
+.z-index-front {
+  z-index: 1;
+}
+
+.picture {
 
 }
 
 
-.upload-btn{
+.upload-btn {
   display: flex;
   flex-direction: column;
   outline: none;
