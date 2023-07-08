@@ -8,8 +8,22 @@
           <div class="information-container">
             <mat-card class="card">
               <mat-card-content class="picture">
-                <mat-icon>publish</mat-icon>
-                <p>Upload a picture</p>
+
+
+                <div class="file-upload, z-index-front">
+                  <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+                  <button mat-button type="button" class="upload-btn" (click)="fileUpload.click()">
+                    <div class="column">
+                      <mat-icon>publish</mat-icon>
+                      <p>Upload a picture</p>
+                    </div>
+                  </button>
+                </div>
+
+                <p>{{fileName || recipe.image || "No file uploaded yet."}}</p>
+                <button mat-button (click)="deleteImage()" type="button">
+                  <mat-icon matSuffix>delete</mat-icon>
+                </button>
 
               </mat-card-content>
             </mat-card>
@@ -21,7 +35,6 @@
                   <input matInput id="title" value="enter title" formControlName="title">
                   <mat-icon matSuffix>edit</mat-icon>
                 </mat-form-field>
-
               </mat-card-content>
             </mat-card>
 
@@ -36,83 +49,79 @@
             </mat-card>
 
 
-              <mat-card class="card">
+            <mat-card class="card">
 
-                <mat-card-content>
-                  <div class="beneath">
-                    <div class="iconText">
-                      <mat-icon matSuffix>schedule</mat-icon>
-                      <span>Duration</span>
-                    </div>
-                    <mat-form-field>
-                      <mat-label>min</mat-label>
-                      <input matInput type="number" min="0" formControlName="readyInMinutes">
-
-                    </mat-form-field>
+              <mat-card-content>
+                <div class="beneath">
+                  <div class="iconText">
+                    <mat-icon matSuffix>schedule</mat-icon>
+                    <span>Duration</span>
                   </div>
-                </mat-card-content>
+                  <mat-form-field>
+                    <mat-label>min</mat-label>
+                    <input matInput type="number" min="0" formControlName="readyInMinutes">
+
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
 
 
-                <mat-card-content>
-                  <div class="beneath">
-                    <div class="iconText">
-                      <mat-icon matSuffix>person</mat-icon>
+              <mat-card-content>
+                <div class="beneath">
+                  <div class="iconText">
+                    <mat-icon matSuffix>person</mat-icon>
                     <span>Servings</span>
-                      </div>
-                    <mat-form-field>
-                      <mat-label>servings</mat-label>
-                      <input matInput type="number" min="1" formControlName="servings">
-                    </mat-form-field>
                   </div>
-                </mat-card-content>
+                  <mat-form-field>
+                    <mat-label>servings</mat-label>
+                    <input matInput type="number" min="1" formControlName="servings">
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
 
-              </mat-card>
-
-
-
-              <mat-card class="card">
-                <mat-card-content formGroupName="categories">
-                  <!--<mat-form-field class="inputFullWidth">-->
-                  <input matInput hidden="true" readonly>
-                  <mat-label>Categories</mat-label>
-                  <mat-chip-listbox aria-label="Diary selection" multiple class="information-chipbox">
-                    <mat-chip-option [selected]="recipe.categories.vegetarian"
-                                     (selectionChange)="updateDiet($event,'vegetarian')">vegetarian
-                    </mat-chip-option>
-                    <mat-chip-option [selected]="recipe.categories.vegan"
-                                     (selectionChange)="updateDiet($event,'vegan')">vegan
-                    </mat-chip-option>
-                    <mat-chip-option [selected]="recipe.categories.glutenFree"
-                                     (selectionChange)="updateDiet($event,'glutenFree')">glutenFree
-                    </mat-chip-option>
-                    <mat-chip-option [selected]="recipe.categories.dairyFree"
-                                     (selectionChange)="updateDiet($event,'dairyFree')">dairyFree
-                    </mat-chip-option>
-                  </mat-chip-listbox>
+            </mat-card>
 
 
-                  <!--</mat-form-field>-->
-                </mat-card-content>
-              </mat-card>
-            </div>
+            <mat-card class="card">
+              <mat-card-content formGroupName="categories">
+
+                <input matInput hidden readonly>
+                <mat-label>Categories</mat-label>
+                <mat-chip-listbox aria-label="Diary selection" multiple class="information-chipbox">
+                  <mat-chip-option [selected]="recipe.categories.vegetarian"
+                                   (selectionChange)="updateDiet($event,'vegetarian')">vegetarian
+                  </mat-chip-option>
+                  <mat-chip-option [selected]="recipe.categories.vegan"
+                                   (selectionChange)="updateDiet($event,'vegan')">vegan
+                  </mat-chip-option>
+                  <mat-chip-option [selected]="recipe.categories.glutenFree"
+                                   (selectionChange)="updateDiet($event,'glutenFree')">glutenFree
+                  </mat-chip-option>
+                  <mat-chip-option [selected]="recipe.categories.dairyFree"
+                                   (selectionChange)="updateDiet($event,'dairyFree')">dairyFree
+                  </mat-chip-option>
+                </mat-chip-listbox>
+              </mat-card-content>
+            </mat-card>
+          </div>
 
         </mat-tab>
 
         <mat-tab label="Ingredients">
           <div formArrayName="ingredients" class="information-container">
-            <div *ngFor="let ingredient of getIngredients().controls; let i= index" [formGroupName]="i" class="card">
-              <mat-card >
+            <div *ngFor="let _ of getIngredients().controls; let i= index" [formGroupName]="i" class="card">
+              <mat-card>
                 <mat-card-content>
                   <div class="beneath">
                     <mat-form-field>
                       <mat-label>Amount</mat-label>
-                      <input matInput id="amount" type="number" min="1" formControlName="amount">
+                      <input matInput id="amount" type="number" min="0" formControlName="amount">
                       <mat-icon matSuffix>edit</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field>
-                        <mat-label>Unit</mat-label>
-                        <mat-icon matSuffix>edit</mat-icon>
+                      <mat-label>Unit</mat-label>
+                      <mat-icon matSuffix>edit</mat-icon>
 
                       <input matInput formControlName="unit">
                     </mat-form-field>
@@ -124,14 +133,14 @@
                     <mat-icon matSuffix>edit</mat-icon>
                   </mat-form-field>
                   <button mat-button (click)="removeIngredient(i)">
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon matSuffix>delete</mat-icon>
                   </button>
                 </mat-card-content>
 
               </mat-card>
             </div>
-            <button mat-flat-button color="primary" type="button" (click)="addIngredient()" >+ Add Ingredient
-          </button>
+            <button mat-flat-button color="primary" type="button" (click)="addIngredient()">+ Add Ingredient
+            </button>
           </div>
 
         </mat-tab>
@@ -149,10 +158,11 @@
             </mat-card>
 
 
-            <button mat-raised-button color="primary" (click)="updateRecipe()" [disabled]="!recipeForm.valid" type="submit">
+            <button mat-raised-button color="primary" [disabled]="!recipeForm.valid" type="submit">
               <mat-icon matSuffix>save</mat-icon>
               <mat-label>Save Recipe</mat-label>
             </button>
+            <!--<p>Form Status: {{ recipeForm.status }}</p>-->
           </div>
 
         </mat-tab>

@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecipeService} from "../services/recipe.service";
 import {Recipe} from "../models/recipe";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatTableDataSource} from "@angular/material/table";
-import {Ingredients} from "../models/ingredients";
-import {Diet} from "../services/diet";
 import {MatChipSelectionChange} from "@angular/material/chips";
+import {CreateRecipe} from "../models/create-recipe";
+import {NavigateService} from "../services/navigate.service";
 
 
 @Component({
@@ -17,6 +16,8 @@ import {MatChipSelectionChange} from "@angular/material/chips";
 
 export class RecipeInputComponent implements OnInit {
   recipe?: Recipe;
+  fileName?: string = "";
+  formData = new FormData();
 
 
   constructor(
@@ -24,28 +25,28 @@ export class RecipeInputComponent implements OnInit {
     private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
+    private navigateService: NavigateService,
   ) {
   }
 
   recipeForm!: FormGroup;
   newRecipe?: boolean;
 
+
   ngOnInit() {
-    console.log(this.recipe);
     this.route.paramMap.subscribe(params => {
       const recipeId = params.get('id');
 
       this.recipeForm =
         this.fb.group({
           id: [''],
-          title: [''],
+          title: ['', Validators.required],
           readyInMinutes: [0],
-          //readyInHours: [hours],
           servings: [1],
-          //image: [this.recipe?.image],
-          //imageType: [this.recipe?.imageType],
-          summary: [''],
-          instructions: [''],
+          image: [''],
+          imageId: [undefined],
+          summary: ['', Validators.required],
+          instructions: ['', Validators.required],
 
           categories: this.fb.group({
             vegetarian: [false],
@@ -56,7 +57,7 @@ export class RecipeInputComponent implements OnInit {
           ingredients: this.fb.array([
             this.fb.group({
               id: [''],
-              name: [''],
+              name: ['', Validators.required],
               amount: ['1'],
               unit: ['']
             }),
@@ -76,10 +77,10 @@ export class RecipeInputComponent implements OnInit {
         this.recipe = {
           id: '',
           title: '',
-          readyInMinutes: 0,
+          readyInMinutes: 1,
           servings: 1,
           image: '',
-          imageType: '',
+          imageId: undefined,
           summary: '',
           instructions: '',
           categories: {
@@ -96,14 +97,9 @@ export class RecipeInputComponent implements OnInit {
           },]
         }
         this.recipeForm.patchValue(this.recipe);
-        console.error('No recipe ID found in route');
       }
     });
-
   }
-
-// helper for the form
-
 
   newIngredient(): FormGroup {
     return this.fb.group({
@@ -112,7 +108,6 @@ export class RecipeInputComponent implements OnInit {
       amount: [''],
       unit: ['']
     })
-
   }
 
 
@@ -121,7 +116,6 @@ export class RecipeInputComponent implements OnInit {
   }
 
   loadIngredient() {
-
     this.recipeForm.setControl('ingredients', this.fb.array(this.recipe?.ingredients?.map((ingredient) =>
         this.fb.group({
           id: [ingredient.id],
@@ -137,37 +131,96 @@ export class RecipeInputComponent implements OnInit {
     this.getIngredients().removeAt(index);
   }
 
-  updateRecipe() {
-    return 0;
-  }
-
 
   getIngredients() {
     return this.recipeForm.get('ingredients') as FormArray;
   }
 
   onSubmit() {
-    console.log(this.newRecipe);
-    if (this.newRecipe) {
-      this.recipeService.postRecipe(this.recipeForm.value as Recipe).subscribe(data => {
-        console.log(data)
-      });
-      console.info('new recipe post');
-      //route to cookbook
-    }
-    if (!this.newRecipe) {
-      this.recipeService.patchRecipeWithId(this.recipeForm.value as Recipe).subscribe(data => {
-        console.log(data)
-      });
-      console.info('recipe patched');
-    }
 
+    //new recipe
+    if (this.newRecipe) {
+
+      //image uploaded by user
+      if (this.formData.has('image')) {
+        this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
+
+          if (imageId.id >= 0) {
+
+            // set imageid manually
+            this.recipeForm.controls['imageId'].setValue(imageId.id);
+          }
+          this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(() => {
+            console.debug('New Recipe created');
+          });
+        });
+      //image not uploaded by user
+      } else {
+        this.recipeService.postRecipe(this.recipeForm.value as CreateRecipe).subscribe(() => {
+          console.debug('New Recipe created')
+        });
+      }
+
+
+    }
+    //recipe update
+    if (!this.newRecipe && this.recipe) {
+
+
+      //set image
+      if (this.formData.has('image')) {
+        //image already set
+        if (this.recipe.imageId) {
+
+          //override image
+          this.recipeService.putCustomRecipeImage(this.formData, this.recipe.imageId).subscribe(() => {
+
+            //patch recipe
+            this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
+
+              console.debug('recipe patched');
+            });
+          });
+          //image not set
+        } else {
+          //create new image and get id
+          this.recipeService.postCustomRecipeImage(this.formData).subscribe(imageId => {
+
+            if (imageId.id >= 0) {
+
+              // set imageId manually
+              this.recipeForm.controls['imageId'].setValue(imageId.id);
+
+            }
+            //patch recipe
+            this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
+
+              console.debug('recipe patched');
+            });
+          });
+        }
+      } else {
+        //patch recipe
+        this.recipeService.patchRecipeWithId(this.recipeForm.value as CreateRecipe).subscribe(() => {
+
+          console.debug('recipe patched');
+        });
+      }
+
+
+    }
+    this.openRecipeBook();
     return;
   }
+  openRecipeBook(): void {
+    const endpoint = `/cookbook`;
+    this.navigateService.navigateTo(this.router.url, endpoint);
+  }
 
-  //get the checkbox value
+//get the checkbox value
+
   updateDiet(diet: MatChipSelectionChange, dietName: string) {
-    if (this.recipe) { 
+    if (this.recipe) {
       switch (dietName) {
         case 'vegetarian':
           this.recipe.categories.vegetarian = diet.selected;
@@ -184,4 +237,34 @@ export class RecipeInputComponent implements OnInit {
       }
     }
   }
+
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      const file: File = input.files[0];
+      if (file) {
+        this.fileName = file.name;
+        this.formData.set("image", file);
+      }
+    }
+  }
+
+
+  deleteImage() {
+    if (this.recipe) {
+
+      this.formData.delete("image");
+      this.recipe.imageId = null;
+      this.recipe.image = "";
+      this.recipeForm.controls['imageId'].setValue(null);
+      this.fileName = '';
+
+      console.debug('Image deleted!');
+
+
+    }
+
+  }
+
 }
