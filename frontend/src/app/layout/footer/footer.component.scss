@@ -9,8 +9,9 @@ a {
   text-decoration: none;
 }
 
-.mdc-button {
-  position: inherit;
+.mat-mdc-button, .mat-mdc-outlined-button {
+  --mat-mdc-button-persistent-ripple-color: none; //This is needed because the buttons have a background color after click
+  padding-right: 0;
 }
 
 /* tablet and pc */
