@@ -37,6 +37,14 @@ You can create a new account or login with the following credentials:
 
 ## Testing
 
+The tests are located in:
+frontend/src/app/auth/login/login.component.spec.ts
+frontend/src/app/theme-toggle/theme-toggle.component.spec.ts
+
+to run them use the following command in the root directory of the project:
+
+```npm run test```
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
