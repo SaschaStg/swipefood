@@ -9,8 +9,9 @@
             <mat-card class="card">
               <mat-card-content class="picture">
 
-                <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+
                 <div class="file-upload, z-index-front">
+                  <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
                   <button mat-button type="button" class="upload-btn" (click)="fileUpload.click()">
                     <div class="column">
                       <mat-icon>publish</mat-icon>

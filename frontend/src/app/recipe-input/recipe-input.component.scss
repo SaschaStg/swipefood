@@ -87,6 +87,31 @@ mat-icon {
   color: unset;
 }
 
+.file-input {
+  display: none;
+}
+
+.z-index-behind{
+  z-index:0;
+}
+.z-index-front{
+  z-index:1;
+}
+
+.picture{
+
+}
+
+
+.upload-btn{
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  background-color: transparent;
+  height: fit-content;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
 @media (min-width: 700px) {
   .card {
     width: 100%;
@@ -102,28 +127,5 @@ mat-icon {
     align-items: center;
   }
 
-  .file-input {
-    display: none;
-  }
 
-  .z-index-behind{
-    z-index:0;
-  }
-  .z-index-front{
-    z-index:1;
-  }
-
-  .picture{
-
-  }
-
-
-  .upload-btn{
-    display: flex;
-    flex-direction: column;
-    outline: none;
-    background-color: transparent;
-    height: fit-content;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-  }
 }
