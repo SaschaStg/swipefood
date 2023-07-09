@@ -12,9 +12,6 @@ export class DemoController {
   @Get('init')
   @Public()
   async initializeDemo() {
-    await this.demoService.initializeDemo();
-    return {
-      message: 'Demo data initialized',
-    };
+    return this.demoService.initializeDemo();
   }
 }
