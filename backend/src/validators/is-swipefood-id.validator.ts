@@ -1,8 +1,4 @@
-import {
-  registerDecorator,
-  ValidationArguments,
-  ValidationOptions,
-} from 'class-validator';
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
 export function IsSwipefoodId(
   validationOptions?: ValidationOptions,
@@ -18,10 +14,7 @@ export function IsSwipefoodId(
         message: '$property must be a valid Swipefood ID',
       },
       validator: {
-        validate(
-          id: any,
-          validationArguments?: ValidationArguments,
-        ): Promise<boolean> | boolean {
+        validate(id: any): Promise<boolean> | boolean {
           if (typeof id !== 'string') {
             return false;
           }
