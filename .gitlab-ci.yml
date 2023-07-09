@@ -267,6 +267,27 @@ test:backend:
     paths:
       - "backend/.npm"
 
+test:backend:e2e:
+  extends: .test_template
+  rules: !reference [ .backend_rules_template, rules ]
+  needs:
+    - "build:backend"
+  variables:
+    CONTEXT: backend
+    TARGET: test:e2e-ci
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - backend/junit.xml
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "backend/.npm"
+
 deploy:staging:frontend:docker:
   extends: .docker_template
   stage: "deploy:staging"
