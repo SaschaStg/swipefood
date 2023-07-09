@@ -172,6 +172,10 @@ export class RecipesService {
         // If the ingredient is not in the updated list, delete it
         if (!updatedIngredient) {
           await this.swIngredientRepo.delete({ id: ingredient.id });
+          // Remove the ingredient from the recipe, so it doesn't get added again
+          dbRecipe.ingredients = dbRecipe.ingredients.filter(
+            (i) => i.id !== ingredient.id,
+          );
         } else {
           // Otherwise, update it
           assignDefined(ingredient, updatedIngredient);
