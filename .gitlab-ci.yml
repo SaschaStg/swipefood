@@ -69,6 +69,15 @@ workflow:
     - "npm ci --cache .npm --prefer-offline"
     - "npm run lint"
 
+.test_template:
+  stage: "test"
+  variables:
+    TARGET: "test"
+  script:
+    - "cd $CONTEXT"
+    - "npm ci --cache .npm --prefer-offline"
+    - "npm run $TARGET"
+
 .docker_template:
   image: docker:cli
   tags:
@@ -207,6 +216,78 @@ build:migrations:
     paths:
       - "backend/.npm"
 
+test:frontend:
+  image: trion/ng-cli-karma
+  extends: .test_template
+  rules: !reference [ .frontend_rules_template, rules ]
+  needs:
+    - "build:frontend"
+  variables:
+    CONTEXT: frontend
+    TARGET: test:ci
+  coverage: /Statements.*?(\d+(?:\.\d+)?)%/
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - frontend/junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: frontend/coverage/frontend/cobertura-coverage.xml
+  cache:
+    key:
+      files:
+        - "frontend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "frontend/.npm"
+
+test:backend:
+  extends: .test_template
+  rules: !reference [ .backend_rules_template, rules ]
+  needs:
+    - "build:backend"
+  variables:
+    CONTEXT: backend
+    TARGET: test:ci
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - backend/junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: backend/coverage/cobertura-coverage.xml
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "backend/.npm"
+
+test:backend:e2e:
+  extends: .test_template
+  rules: !reference [ .backend_rules_template, rules ]
+  needs:
+    - "build:backend"
+  variables:
+    CONTEXT: backend
+    TARGET: test:e2e-ci
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - backend/junit.xml
+  cache:
+    key:
+      files:
+        - "backend/package-lock.json"
+      prefix: "backend"
+    paths:
+      - "backend/.npm"
+
 deploy:staging:frontend:docker:
   extends: .docker_template
   stage: "deploy:staging"
@@ -237,6 +318,7 @@ deploy:staging:backend:docker:
   stage: "deploy:staging"
   needs:
     - "build:backend"
+    - "test:backend"
   variables:
     IMAGE_REPO: registry.mi.kienhoefr.de/swipefood/backend
     TAG: staging
