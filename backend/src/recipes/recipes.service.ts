@@ -56,6 +56,11 @@ export class RecipesService {
 
   async isRecipeIdValid(taggedId: string): Promise<boolean> {
     const [collection, id] = taggedId.split('-');
+
+    if (isNaN(+id)) {
+      return false;
+    }
+
     switch (collection) {
       case 'sw':
         // SwipefoodRecipe
@@ -172,6 +177,10 @@ export class RecipesService {
         // If the ingredient is not in the updated list, delete it
         if (!updatedIngredient) {
           await this.swIngredientRepo.delete({ id: ingredient.id });
+          // Remove the ingredient from the recipe, so it doesn't get added again
+          dbRecipe.ingredients = dbRecipe.ingredients.filter(
+            (i) => i.id !== ingredient.id,
+          );
         } else {
           // Otherwise, update it
           assignDefined(ingredient, updatedIngredient);
@@ -201,9 +210,7 @@ export class RecipesService {
     return dbRecipe;
   }
 
-  async deleteRecipe(taggedId: string, user: User) {
-    const recipeId = +taggedId.split('-')[1]; // Remove the 'sw-' prefix
-
+  async deleteRecipe(recipeId: number, user: User) {
     const dbRecipe = await this.getSwipefoodRecipeById(recipeId, user);
     if (!dbRecipe) {
       throw new BadRequestException('Recipe not found');

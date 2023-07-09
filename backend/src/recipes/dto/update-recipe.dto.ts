@@ -10,10 +10,12 @@ import {
 } from 'class-validator';
 import { UpdateRecipeCategoriesDto } from './update-recipe-categories.dto';
 import { Type } from 'class-transformer';
+import { IsSwipefoodId } from '../../validators';
 
 export class UpdateRecipeDto {
   @IsString()
   @IsNotEmpty()
+  @IsSwipefoodId()
   id: string;
 
   @IsOptional()

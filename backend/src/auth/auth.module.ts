@@ -22,9 +22,11 @@ import { JwtAuthGuard } from './jwt-auth.guard';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: await readFile(configService.getOrThrow('JWT_SECRET_FILE'), {
-          encoding: 'utf-8',
-        }),
+        secret:
+          configService.get('JWT_SECRET') ??
+          (await readFile(configService.getOrThrow('JWT_SECRET_FILE'), {
+            encoding: 'utf-8',
+          })),
         signOptions: { expiresIn: '1h' },
       }),
     }),

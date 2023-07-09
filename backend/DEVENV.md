@@ -6,7 +6,7 @@ To set up your local clone to start developing the backend, you need to perform 
 
 * Install npm packages (`npm install`)
 * Create a local `.env` file
-* Create a local `jwt.secret` file
+* **(Optional)** Create a local `jwt.secret` file
 
 ## Create local `.env` file
 
@@ -20,6 +20,8 @@ DB_USER=swipefood
 DB_PASSWORD=someSooperSecurePassword
 DB_NAME=swipefood
 
+# Can use either (direct secret will override file)
+JWT_SECRET=<SECRET>
 # Could use any file, but *.secret files are ignored by git.
 JWT_SECRET_FILE=./jwt.secret
 

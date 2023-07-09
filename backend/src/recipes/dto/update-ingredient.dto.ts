@@ -5,11 +5,13 @@ import {
   IsString,
   Min,
 } from 'class-validator';
+import { IsSwipefoodId } from '../../validators';
 
 export class UpdateIngredientDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
+  @IsSwipefoodId()
   id?: string;
 
   @IsOptional()
