@@ -56,6 +56,11 @@ export class RecipesService {
 
   async isRecipeIdValid(taggedId: string): Promise<boolean> {
     const [collection, id] = taggedId.split('-');
+
+    if (isNaN(+id)) {
+      return false;
+    }
+
     switch (collection) {
       case 'sw':
         // SwipefoodRecipe

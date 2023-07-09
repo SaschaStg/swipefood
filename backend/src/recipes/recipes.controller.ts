@@ -151,6 +151,11 @@ export class RecipesController {
   @Get(':id')
   getRecipeById(@Param('id') taggedId: string, @ReqUser() user: User) {
     const [collection, id] = taggedId.split('-');
+
+    if (isNaN(+id)) {
+      throw new BadRequestException('Invalid recipe id');
+    }
+
     switch (collection) {
       case 'sw':
         // get SwipefoodRecipe
@@ -186,12 +191,17 @@ export class RecipesController {
     @Body() recipe: UpdateRecipeDto,
     @ReqUser() user: User,
   ) {
-    if (!recipe.id || !recipe.id.startsWith('sw-')) {
+    if (
+      !recipe.id ||
+      !recipe.id.startsWith('sw-') ||
+      isNaN(+taggedId.split('-')[1])
+    ) {
       throw new BadRequestException('Invalid recipe id');
     }
     if (recipe.id !== taggedId) {
       throw new BadRequestException('Cannot change recipe id');
     }
+
     return RecipeDto.fromSwipefoodRecipe(
       await this.recipeService.updateRecipe(recipe, user),
     );
@@ -202,7 +212,12 @@ export class RecipesController {
     if (!taggedId.startsWith('sw-')) {
       throw new BadRequestException('Cannot delete non-custom recipes');
     }
-    await this.recipeService.deleteRecipe(+taggedId.split('-')[1], user);
+
+    const id = +taggedId.split('-')[1];
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid recipe id');
+    }
+    await this.recipeService.deleteRecipe(id, user);
   }
 
   @Post(':id/swipe')
