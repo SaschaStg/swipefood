@@ -109,7 +109,7 @@ export class RecipeInputComponent implements OnInit {
 
   newIngredient(): FormGroup {
     return this.fb.group({
-      id: [''],
+      id: [undefined], // New ingredients do not have an ID
       name: [''],
       amount: [''],
       unit: ['']
