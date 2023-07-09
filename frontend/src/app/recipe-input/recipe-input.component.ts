@@ -38,7 +38,8 @@ export class RecipeInputComponent implements OnInit {
       const recipeId = params.get('id');
 
       //check if it is a swipefood recipe
-      if(!recipeId?.startsWith('sw')){
+      if(recipeId && !recipeId.startsWith('sw')){
+        // Return to recipe book when recipe id is set, but not a custom "swipefood" recipe.
         this.openRecipeBook();
       }
 
