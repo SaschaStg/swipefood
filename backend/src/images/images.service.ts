@@ -89,17 +89,29 @@ export class ImagesService {
   }
 
   async deleteImage(id: number, user: User) {
-    const image = await this.getImageFromDb(id, user);
-    if (image) {
+    const image = await this.imageRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        owner: true,
+      },
+    });
+    const isImageOwner = image && image.owner.id === user.id;
+
+    if (image && isImageOwner) {
       await this.imageRepository.remove(image);
     }
 
-    try {
-      await fs.promises.unlink(path.join(this.storageDir, `${id}.webp`));
-    } catch (e) {
-      if (e.code !== 'ENOENT') {
-        // The file exists but could not be deleted
-        throw e;
+    if (!image) {
+      // Image not found in the database; delete it from disk if it exists
+      try {
+        await fs.promises.unlink(path.join(this.storageDir, `${id}.webp`));
+      } catch (e) {
+        if (e.code !== 'ENOENT') {
+          // The file exists but could not be deleted
+          throw e;
+        }
       }
     }
   }
