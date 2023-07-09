@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import { promisify } from 'util';
-import { UsersService } from '../users/users.service';
 import { RecipesService } from '../recipes/recipes.service';
 import { demoSpoonacularRecipes, demoSwipefoodRecipes } from './demo-data';
 import { User } from '../users/user.entity';
+import { AuthService } from '../auth/auth.service';
 
 const randomBytesP = promisify(randomBytes);
 
@@ -13,7 +13,7 @@ export class DemoService {
   private readonly logger = new Logger(DemoService.name);
 
   constructor(
-    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
     private readonly recipesService: RecipesService,
   ) {}
 
@@ -43,7 +43,7 @@ export class DemoService {
     ];
     this.logger.log(`Creating ${users.length} demo users...`);
     for (const user of users) {
-      const createdUser = await this.usersService.create({
+      const token = await this.authService.register({
         ...user,
         vegan: Math.random() < 0.25,
         vegetarian: Math.random() < 0.25,
@@ -51,7 +51,11 @@ export class DemoService {
         dairyFree: Math.random() < 0.25,
       });
 
-      user.id = createdUser.id;
+      user.id = JSON.parse(
+        Buffer.from(token.access_token.split('.')[1], 'base64').toString(
+          'utf-8',
+        ),
+      ).sub;
     }
 
     // Create demo swipes

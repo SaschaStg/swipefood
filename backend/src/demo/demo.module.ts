@@ -1,9 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { DemoController } from './demo.controller';
 import { DemoService } from './demo.service';
-import { UsersModule } from '../users/users.module';
 import { RecipesModule } from '../recipes/recipes.module';
 import { ConfigService } from '@nestjs/config';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({})
 export class DemoModule {
@@ -20,7 +20,7 @@ export class DemoModule {
 
     // Enable demo if DEMO_ENABLED is set to a non-empty value
     if (!!config.get('DEMO_ENABLED')) {
-      module.imports.push(UsersModule, RecipesModule);
+      module.imports.push(AuthModule, RecipesModule);
       module.controllers.push(DemoController);
       module.providers.push(DemoService);
     }
