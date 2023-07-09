@@ -157,10 +157,9 @@ export class RecipesService {
     if (recipe.ingredients) {
       let ingredients: Omit<SwipefoodIngredient, 'recipe'>[] =
         recipe.ingredients.map((ingredient) => ({
-          id:
-            ingredient.id !== undefined
-              ? +ingredient.id.split('-')[1] // Remove the 'sw-' prefix
-              : undefined, // If the ingredient doesn't have an id, it's a new ingredient
+          id: ingredient.id
+            ? +ingredient.id.split('-')[1] // Remove the 'sw-' prefix
+            : undefined, // If the ingredient doesn't have an id, it's a new ingredient
           name: ingredient.name,
           amount: ingredient.amount,
           unit: ingredient.unit,
