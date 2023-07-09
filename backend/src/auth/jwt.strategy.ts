@@ -18,9 +18,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         return token;
       },
       ignoreExpiration: false,
-      secretOrKey: readFileSync(configService.getOrThrow('JWT_SECRET_FILE'), {
-        encoding: 'utf-8',
-      }),
+      secretOrKey:
+        configService.get('JWT_SECRET') ??
+        readFileSync(configService.getOrThrow('JWT_SECRET_FILE'), {
+          encoding: 'utf-8',
+        }),
     });
   }
 
