@@ -1,5 +1,7 @@
 # SwipeFood
 
+
+
 ## Members
 
 | Name              | Student short | Matriculation Number |
@@ -50,10 +52,6 @@ This will generate three user accounts, the credentials are returned in the resp
     },
 ]
 ```
-
-You can also use the deployed version of the application.  
-**Staging:** https://swipefood-staging.mi.kienhoefr.de  
-**Production:** https://swipefood.mi.kienhoefr.de
 
 ## Testing
 
